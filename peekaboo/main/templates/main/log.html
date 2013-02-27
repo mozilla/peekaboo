@@ -1,0 +1,43 @@
+{% extends 'main/main_base.html' %}
+
+{% block extrahead %}
+    {% compress css %}
+    <link href="{{ static('main/css/log.css') }}" rel="stylesheet" type="text/css">
+    {% endcompress %}
+{% endblock %}
+
+{% block extrajs %}
+    {% compress js %}
+    <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
+    <script src="{{ static('main/js/libs/jquery.timeago.js') }}"></script>
+    <script src="{{ static('main/js/libs/moment.min.js') }}"></script>
+    <script src="{{ static('main/js/log.js') }}"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block main %}
+<div id="entry-template" style="display:none">
+  <div class="entry">
+  <time class="timeago jstime" data-format="ddd, MMM D, YYYY, h:mma UTCZZ"></time>
+  <h3 class="name"></h3>
+  <button class="btn btn-small" name="edit">Edit</button>
+  <img src="javascript:void(0)">
+  <p class="email">
+    <strong>Email: </strong>
+    <a></a>
+  </p>
+  <p class="company">
+    <strong>Company: </strong>
+    <span></span>
+  </p>
+  <p class="visiting">
+    <strong>Visiting: </strong>
+    <span></span>
+  </p>
+  </div>
+</div>
+
+<div id="entries">
+
+</div>
+{% endblock %}

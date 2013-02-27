@@ -1,0 +1,6 @@
+/* overrides */
+
+#picture,
+#thankyou {
+    display: none;
+}

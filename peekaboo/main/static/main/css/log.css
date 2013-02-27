@@ -1,0 +1,15 @@
+.new {
+    border: 1px solid green;
+}
+
+.entry {
+    border-bottom: 1px solid #ccc;
+}
+
+.entry time {
+    float: right;
+}
+
+.entry button {
+    float: right;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Peek-a-boo!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% compress css %}
+    <link href="{{ static('main/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ static('main/css/tablet.css') }}" rel="stylesheet" type="text/css">
+    {% endcompress %}
+
+    <link rel="shortcut icon" href="{{ static('main/images/favicon.ico') }}">
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+
+      <div class="row-fluid pane" id="signin">
+      <form action="{{ url('main.tablet-sign-in') }}" method="post">
+        {{ csrf() }}
+        {{ tabletform(form)|safe }}
+        <div>
+        <!--<a class="btn btn-large btn-success" href="#">Sign in!</a>-->
+        <button class="btn btn-large btn-success">Sign in!</button>
+        </div>
+      </form>
+      </div>
+
+      <div class="row-fluid pane" id="picture">
+        <h2>Take a picture</h2>
+        <h4>Name: <span class="name"></span></h4>
+
+        <form>
+        <input type="file" accept="image/*;capture=camera">
+        <!-- http://wolframhempel.github.com/photobooth-js/ -->
+        </form>
+        <div>
+        <a class="btn btn-success" href="#">Skip this</a>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="footer">
+       <!-- <p>&copy; Mozilla</p>-->
+      </div>
+
+    </div> <!-- /container -->
+
+    {% compress js %}
+    <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
+    <script src="{{ static('main/js/tablet.js') }}"></script>
+    {% endcompress %}
+
+  </body>
+</html>
