@@ -35,9 +35,6 @@ def tablet_signin(request):
         errors = defaultdict(list)
         for name, error in form.errors.items():
             errors[name] = error
-        #for error in form.non_field_errors():
-        #    errors['_general'].append(error)
-        print dict(errors)
         return {'errors': errors}
 
 
@@ -48,7 +45,6 @@ def log(request):
 
 @json_view
 def log_entries(request):
-    print 'LATEST', request.GET.get('latest')
     data = {
         'latest': None,
         'rows': []
@@ -69,7 +65,6 @@ def log_entries(request):
         # add some to prevent fetching it again
         latest += datetime.timedelta(seconds=1)
         qs = qs.filter(modified__gte=latest)
-        print "\tLATEST", repr(latest)
     first = None
     for visitor in qs.order_by('modified'):
 
@@ -84,7 +79,6 @@ def log_entries(request):
             'company': visitor.company,
             'email': visitor.email,
         }
-        print visitor.get_name(), repr(visitor.modified)
         data['rows'].append(row)
         first = visitor.modified
     if first:

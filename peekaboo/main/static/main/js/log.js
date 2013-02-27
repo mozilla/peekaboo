@@ -34,8 +34,12 @@ var Log = (function() {
     });
   }
 
+  function getURL() {
+    return location.pathname + 'entries/';
+  }
+
   function fetch(highlight) {
-    $.getJSON('/log/entries/', {latest: latest}, function(response) {
+    $.getJSON(getURL(), {latest: latest}, function(response) {
       if (response.latest) {
         latest = response.latest;
       }
