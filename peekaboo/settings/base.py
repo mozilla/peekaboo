@@ -19,6 +19,7 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     '%s.main' % PROJECT_MODULE,
     'sorl.thumbnail',
     'south',
+    'bootstrapform',
 
 ]
 
@@ -30,6 +31,7 @@ LOCALE_PATHS = (
 # apps here:
 JINGO_EXCLUDE_APPS = [
     'admin',
+    'bootstrapform',
 ]
 
 # BrowserID configuration

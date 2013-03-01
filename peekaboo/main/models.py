@@ -35,6 +35,7 @@ class Visitor(models.Model):
     picture = ImageField(upload_to=_upload_path('visitors'))
 
     def get_name(self, formal=False):
+        return ("%s %s" % (self.first_name, self.last_name)).strip()
         if formal:
             if self.title and self.last_name:
                 return "%s %s" % (self.title, self.last_name)

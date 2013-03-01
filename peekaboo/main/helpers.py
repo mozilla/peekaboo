@@ -11,3 +11,10 @@ def tabletform(form):
     template = get_template('main/tabletform.html')
     context = Context({'form': form})
     return template.render(context)
+
+
+@register.function
+def bootstrapform(form):
+    template = get_template("bootstrapform/form.html")
+    context = Context({'form': form})
+    return template.render(context)
