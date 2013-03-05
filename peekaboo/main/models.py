@@ -1,4 +1,6 @@
+import os
 import datetime
+import hashlib
 
 from django.db import models
 from django.utils.timezone import utc

@@ -1,9 +1,13 @@
 import datetime
 import time
+from cStringIO import StringIO
 from collections import defaultdict
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 from django import http
+from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor
 from .utils import json_view
@@ -37,6 +41,17 @@ def tablet_signin(request):
             errors[name] = error
         return {'errors': errors}
 
+@require_POST
+@json_view
+@csrf_exempt
+def tablet_upload(request, pk):
+    visitor = get_object_or_404(Visitor, pk=pk)
+    form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
+    if form.is_valid():
+        form.save()
+    # XXX return a nice thumbnail url
+    return {'ok': True}
+
 
 def log(request):
     data = {
@@ -51,6 +66,7 @@ def log_entries(request):
         'latest': None,
         'rows': []
     }
+    thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
 
     def format_date(dt):
         dt_date = dt.strftime('%m/%d/%Y')
@@ -69,17 +85,28 @@ def log_entries(request):
         qs = qs.filter(created__gte=latest)
     first = None
     for visitor in qs.order_by('created'):
+
         row = {
             'id': visitor.pk,
             'created': format_date(visitor.created),
             'created_iso': visitor.created.isoformat(),
             'title': visitor.title,
             'name': visitor.get_name(formal=True),
-            'thumbnail_url': None,
+            'thumbnail': None,
             'visiting': visitor.visiting,
             'company': visitor.company,
             'email': visitor.email,
         }
+        if visitor.picture:
+            thumbnail = get_thumbnail(
+                visitor.picture,
+                thumbnail_geometry
+            )
+            row['thumbnail'] = {
+                'url': thumbnail.url,
+                'width': thumbnail.width,
+                'height': thumbnail.height,
+            }
         data['rows'].append(row)
         first = visitor.created
     if first:
@@ -90,12 +117,13 @@ def log_entries(request):
 @json_view
 def log_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
+    thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
 
     if request.method == 'POST':
         form = forms.SignInForm(request.POST, instance=visitor)
         if form.is_valid():
             form.save()
-            return form.cleaned_data
+            data = form.cleaned_data
         else:
             raise NotImplementedError
     else:
@@ -108,4 +136,14 @@ def log_entry(request, pk):
             'visiting': visitor.visiting,
             'thumbnail_url': None,
         }
-        return data
+    if visitor.picture:
+        thumbnail = get_thumbnail(
+            visitor.picture,
+            thumbnail_geometry
+        )
+        data['thumbnail'] = {
+            'url': thumbnail.url,
+            'width': thumbnail.width,
+            'height': thumbnail.height,
+        }
+    return data

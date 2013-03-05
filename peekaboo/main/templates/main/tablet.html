@@ -32,19 +32,29 @@
         <h2>Take a picture</h2>
         <h4>Name: <span class="name"></span></h4>
 
-        <form>
+        <div class="uploading">
+          <p>Uploading your gorgeous mug...</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
         <input type="file" accept="image/*;capture=camera">
-        <!-- http://wolframhempel.github.com/photobooth-js/ -->
         </form>
+        <div class="preview">
+          <img src="javascript:void(0)" alt="Preview" width="200">
+          <a class="btn btn-success proceed" href="#">Proceed &raquo;</a>
+        </div>
+        <p class="error">
+          <b>Error:</b>
+          <span></span>
+        </p>
         <div>
         <a class="btn btn-success" href="#">Skip this</a>
         </div>
       </div>
 
-      <hr>
-
-      <div class="footer">
-       <!-- <p>&copy; Mozilla</p>-->
+      <div class="row-fluid pane" id="thankyou">
+        <h2>That's it!</h2>
+        <h3>Welcome to Mozilla</h3>
       </div>
 
     </div> <!-- /container -->

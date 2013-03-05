@@ -6,6 +6,8 @@ from . import views
 urlpatterns = patterns('',
     url(r'^$', views.home, name='main.home'),
     url(r'^tablet/$', views.tablet, name='main.tablet'),
+    url(r'^tablet/upload/(?P<pk>\d+)/$', views.tablet_upload,
+        name='main.tablet_upload'),
     url(r'^tablet/signin/$', views.tablet_signin,
         name='main.tablet-sign-in'),
     url(r'^log/$', views.log, name='main.log'),

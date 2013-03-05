@@ -1,6 +1,9 @@
 /* overrides */
 
 #picture,
-#thankyou {
+#thankyou,
+#picture .error,
+#picture .uploading,
+#picture .preview {
     display: none;
 }

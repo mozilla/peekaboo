@@ -13,3 +13,11 @@
 .entry .edit {
     float: right;
 }
+
+.entry img {
+    float: left;
+}
+
+.entry dl {
+    margin-left: 150px;
+}

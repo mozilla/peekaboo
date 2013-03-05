@@ -40,3 +40,9 @@ class SignInForm(BaseModelForm):
             if not (data['first_name'] or data['last_name']):
                 raise forms.ValidationError(_(u'A name must be entered'))
         return data
+
+
+class PictureForm(BaseModelForm):
+    class Meta:
+        model = Visitor
+        fields = ('picture',)

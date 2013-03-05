@@ -67,6 +67,15 @@ var Log = (function() {
     $('time', container)
       .attr('datetime', data.created_iso)
       .text(data.created);
+    if (data.thumbnail) {
+      $('img', container)
+        .attr('src', data.thumbnail.url)
+        .attr('width', data.thumbnail.width)
+        .attr('height', data.thumbnail.height)
+        .attr('alt', data.name);
+    } else {
+      $('img', container).hide();
+    }
   }
 
   function getURL(id) {
