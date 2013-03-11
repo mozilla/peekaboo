@@ -10,7 +10,8 @@
     float: right;
 }
 
-.entry .edit {
+.entry .buttons {
+    text-align: right;
     float: right;
 }
 
@@ -20,4 +21,8 @@
 
 .entry dl {
     margin-left: 150px;
+}
+
+.entry .delete-confirmation {
+    display: none;
 }

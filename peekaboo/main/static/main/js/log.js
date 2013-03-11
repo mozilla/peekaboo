@@ -51,9 +51,34 @@ var Log = (function() {
         open_edit_entry($(this).parents('.entry').data('id'));
         return false;
       });
+      $('button.delete', copy).on('click', function() {
+        $('.delete-confirmation').hide();
+        var parent = $(this).parents('.entry');
+        $('.delete-confirmation', parent).show();
+        return false;
+      });
+      $('button.delete-confirm', copy).on('click', function() {
+        var $form = $('#delete-entry form');
+        var $parent = $(this).parents('.entry');
+        var id = $parent.data('id');
+        $('input[name="id"]', $form).val(id);
+        var url = getURL(id, true);
+        $.post(url, $form.serializeObject(), function(response) {
+          $parent.fadeOut(400);
+        });
+        return false;
+      });
+      $('button.delete-cancel', copy).on('click', function() {
+        var parent = $(this).parents('.entry');
+        $('.delete-confirmation', parent).hide();
+        return false;
+      });
       copy.prependTo(parent);
       make_timeago($('time', copy));
     });
+  }
+
+  function toggle_show_confirmation(element) {
   }
 
   function _fill_row_data(container, data) {
@@ -78,9 +103,13 @@ var Log = (function() {
     }
   }
 
-  function getURL(id) {
+  function getURL(id, delete_) {
     if (id) {
-      return location.pathname + id + '/';
+      if (delete_) {
+        return location.pathname + id + '/delete/';
+      } else {
+        return location.pathname + id + '/';
+      }
     }
     return location.pathname + 'entries/';
   }

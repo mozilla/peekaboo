@@ -18,3 +18,8 @@ def bootstrapform(form):
     template = get_template("bootstrapform/form.html")
     context = Context({'form': form})
     return template.render(context)
+
+
+@register.filter
+def js_bool(variable):
+    return variable and "true" or "false"

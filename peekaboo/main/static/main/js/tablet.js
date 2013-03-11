@@ -23,6 +23,14 @@ var Utils = (function() {
   };
 })();
 
+var Config = (function() {
+  return {
+     get: function(key) {
+       return $('body').data('config-' + key);
+     }
+  }
+})();
+
 
 var SignIn = (function() {
   var current_file;
@@ -40,13 +48,11 @@ var SignIn = (function() {
             if (key === '__all__') {
               Utils.general_error(errors.join('<br>'));
             } else {
-              //console.log($('[name="' + key + '"]', form).parents('.control-group'));
               var $input = $('[name="' + key + '"]', form);
               $input
                 .parents('.control-group')
                   .addClass('error');
               $input.on('change', function() {
-                console.log('fixed');
                 $(this).parents('.error').removeClass('error');
                 $('.help-inline', $(this).parents('.controls')).remove();
               });
@@ -61,9 +67,14 @@ var SignIn = (function() {
         } else {
           form.reset();
           $('#signin').hide();
-          $('#picture .name').text(response.name);
-          $('#picture').data('id', response.id);
-          $('#picture').show(300);
+          $('.yourname').text(response.name);
+          if (Config.get('take-picture')) {
+            $('#picture').data('id', response.id);
+            $('#picture').show(300);
+          } else {
+            $('#thankyou').show(300);
+          }
+
         }
       },
       error: function(xhr, status, error_thrown) {
@@ -106,7 +117,6 @@ var SignIn = (function() {
 
              // Set img src to ObjectURL
              preview_img.attr('src', imgURL);
-             console.log('imgURL', imgURL);
 
              // Revoke ObjectURL
              URL.revokeObjectURL(imgURL);
@@ -118,7 +128,6 @@ var SignIn = (function() {
                fileReader.onload = function (event) {
                  //showPicture.src = event.target.result;
                  preview_img.attr('src', event.target.result);
-                 console.log('event.target.result', event.target.result);
 
                };
                fileReader.readAsDataURL(current_file);
@@ -146,13 +155,36 @@ var SignIn = (function() {
          upload_current_file(current_file, function() {
            $('#picture .uploading').hide();
            $('#picture').hide();
-           $('#thankyou').show(300);
+           $('#picture').show(300);
          });
        });
      }
   }
 })();
 
+
+var Reset = (function() {
+
+  function reset_all() {
+    $('#thankyou').hide();
+    $('#picture').hide();
+    $('#signin form')[0].reset();
+    $('#signin').show();
+    $('.yourname').text('');
+  }
+
+  return {
+     init: function() {
+       $('a.reset').click(function() {
+         reset_all();
+         return false;
+       });
+     }
+  }
+})();
+
+
 $(function() {
   SignIn.init();
+  Reset.init();
 });

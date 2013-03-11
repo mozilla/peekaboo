@@ -13,7 +13,10 @@
     <link rel="shortcut icon" href="{{ static('main/images/favicon.ico') }}">
   </head>
 
-  <body>
+  <body
+    data-config-take-picture="{{ take_picture|js_bool }}">
+
+  <div id="wrap">
 
     <div class="container-fluid">
 
@@ -30,7 +33,7 @@
 
       <div class="row-fluid pane" id="picture">
         <h2>Take a picture</h2>
-        <h4>Name: <span class="name"></span></h4>
+        <h4>Name: <span class="yourname"></span></h4>
 
         <div class="uploading">
           <p>Uploading your gorgeous mug...</p>
@@ -54,10 +57,18 @@
 
       <div class="row-fluid pane" id="thankyou">
         <h2>That's it!</h2>
-        <h3>Welcome to Mozilla</h3>
+        <h3>Welcome to Mozilla <span class="yourname"></span></h3>
       </div>
 
+      <div id="push"></div>
+
     </div> <!-- /container -->
+
+  </div> <!-- /wrap -->
+
+      <div id="footer">
+        <a class="btn btn-mini reset">&laquo; Start over<a>
+      </div>
 
     {% compress js %}
     <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>

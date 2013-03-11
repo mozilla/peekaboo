@@ -34,6 +34,13 @@
     </form>
 </div>
 
+<div class="hide" id="delete-entry">
+  <form action="" method="post" class="form-horizontal">
+    {{ csrf() }}
+    <div><input type="hidden" name="id"></div>
+  </form>
+</div>
+
 <div id="entry-template" style="display:none">
   <div class="entry">
   <time class="timeago jstime" data-format="ddd, MMM D, YYYY, h:mma UTCZZ"></time>
@@ -42,7 +49,17 @@
     <small class="title"></small>
   </h4>
   <img src="javascript:void(0)">
+
+  <div class="buttons">
   <button class="btn btn-small edit" name="edit">Edit</button>
+  <button class="btn btn-small delete" name="delete">Delete</button>
+    <div class="delete-confirmation">
+      <b>Sure?</b>
+      <button class="btn btn-small delete-confirm">Yes</button>
+      <button class="btn btn-small delete-cancel">Cancel</button>
+    </div>
+  </div>
+
 
   <dl class="dl-horizontal">
     <dt>Email:</dt>

@@ -2,11 +2,12 @@ import datetime
 import time
 from cStringIO import StringIO
 from collections import defaultdict
+from django import http
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from django.core.files import File
-from django import http
 from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor
@@ -21,6 +22,7 @@ def home(request):
 def tablet(request):
     data = {}
     data['form'] = forms.SignInForm()
+    data['take_picture'] = settings.TABLET_TAKE_PICTURE
     return render(request, 'main/tablet.html', data)
 
 
@@ -147,3 +149,12 @@ def log_entry(request, pk):
             'height': thumbnail.height,
         }
     return data
+
+
+@json_view
+@require_POST
+def delete_entry(request, pk):
+    visitor = get_object_or_404(Visitor, pk=pk)
+    visitor.delete()
+    # XXX delete all images too??
+    return {'deleted': True}
