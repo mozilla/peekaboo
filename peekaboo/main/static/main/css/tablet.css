@@ -1,27 +1,32 @@
 /* overrides */
 
+html,
+body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+}
+
+
+
 #picture,
+#signin,
 #thankyou,
+#footer,
 #picture .error,
 #picture .uploading,
 #picture .preview {
     display: none;
 }
 
-      html,
-      body {
-        height: 100%;
-        /* The html and body elements cannot have any padding or margin. */
-      }
-
-      /* Wrapper for page content to push down footer */
-      #wrap {
-        min-height: 100%;
-        height: auto !important;
-        height: 100%;
-        /* Negative indent footer by it's height */
-        margin: 0 auto -60px;
-      }
 
 #push,
 #footer {
@@ -32,4 +37,14 @@
     padding-top: 10px;
     padding-left: 10px;
     background-color: #f5f5f5;
+}
+
+#footer .current-location {
+    float: right;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+#footer .current-location a {
+    font-weight: bold;
+    color: black;
 }

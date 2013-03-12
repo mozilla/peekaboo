@@ -24,19 +24,37 @@ var Utils = (function() {
 })();
 
 var Config = (function() {
+  // XXX could set up a cache here
   return {
-     get: function(key) {
-       return $('body').data('config-' + key);
-     }
+    get: function(key) {
+      return $('body').data('config-' + key);
+    },
+    set: function(key, value) {
+      $('body').data('config-' + key, value);
+    }
   }
 })();
 
 
 var SignIn = (function() {
   var current_file;
+  var _auto_reset_timer = null;
+
+  function opened(id) {
+    /* Called when a pain is opened */
+
+    if (id === '#thankyou') {
+      _auto_reset_timer = setTimeout(function() {
+        console.log("Automatically resetting");
+        reset_all();
+      }, 10 * 1000);
+    }
+
+  }
 
   function submit(form) {
     var $form = $(form);
+    $('#id_location', $form).val(Location.get_current_location().id);
     $.ajax({
        url: $form.attr('action'),
       type: 'POST',
@@ -70,9 +88,13 @@ var SignIn = (function() {
           $('.yourname').text(response.name);
           if (Config.get('take-picture')) {
             $('#picture').data('id', response.id);
-            $('#picture').show(300);
+            $('#picture').fadeIn(300, function() {
+              opened('#picture');
+            });
           } else {
-            $('#thankyou').show(300);
+            $('#thankyou').fadeIn(300, function() {
+              opened('#thankyou');
+            });
           }
 
         }
@@ -142,49 +164,129 @@ var SignIn = (function() {
          }
   }
 
-  return {
-     init: function() {
-       $('#signin form').submit(function() {
-         submit(this);
-         return false;
-       });
-
-       $('#picture input[type="file"]').change(picture_changed);
-       $('#picture .proceed').click(function() {
-         $('#picture .uploading').show();
-         upload_current_file(current_file, function() {
-           $('#picture .uploading').hide();
-           $('#picture').hide();
-           $('#picture').show(300);
-         });
-       });
-     }
-  }
-})();
-
-
-var Reset = (function() {
-
   function reset_all() {
     $('#thankyou').hide();
     $('#picture').hide();
     $('#signin form')[0].reset();
-    $('#signin').show();
     $('.yourname').text('');
+    $('#signin').fadeIn(0, function() {
+      SignIn.opened('#signin');
+    });
   }
 
   return {
-     init: function() {
-       $('a.reset').click(function() {
-         reset_all();
-         return false;
-       });
-     }
-  }
+    init: function() {
+
+      $('a.reset').click(function() {
+        if (_auto_reset_timer) {
+          clearTimeout(_auto_reset_timer);
+        }
+        reset_all();
+
+        return false;
+      });
+
+      $('#signin form').submit(function() {
+        submit(this);
+        return false;
+      });
+
+      $('#picture input[type="file"]').change(picture_changed);
+      $('#picture .proceed').click(function() {
+        $('#picture .uploading').show();
+        upload_current_file(current_file, function() {
+          $('#picture .uploading').hide();
+          $('#picture').hide();
+          $('#thankyou').fadeIn(300, function() {
+            opened('#thankyou');
+          });
+         });
+        return false;
+     });
+      $('#picture .skip').click(function() {
+          $('#picture').hide();
+          $('#thankyou').fadeIn(300, function() {
+            opened('#thankyou');
+          });
+        return false;
+      });
+    },
+    opened: function(id) {
+      opened(id);
+    }
+  };
 })();
 
 
+
+var Location = (function() {
+  var current_location_name, current_location_id;
+
+  function clicked_location(event) {
+    var $self = $(this);
+    current_location_name = $self.data('name');
+    current_location_id = $self.data('id');
+    localStorage.setItem('location-name', current_location_name);
+    localStorage.setItem('location-id', current_location_id);
+    location_chosen();
+    return false;
+  }
+
+  function location_chosen() {
+    Config.set('current-location', current_location_id);
+    $('#location').hide();
+    $('#footer .current-location a').text(current_location_name);
+    $('#footer').show();
+    $('#signin').fadeIn(300, function() {
+      SignIn.opened('#signin');
+    });
+  }
+
+  function location_not_chosen() {
+    $('.pane:visible').hide();
+    $('#location').fadeIn(0, function() {
+      SignIn.opened('#location');
+    });
+    $('#footer').hide();
+
+    var $choices = $('#location .available-locations');
+    $('p', $choices).remove();
+    $.getJSON('/tablet/locations/', function(response) {
+      $.each(response.locations, function(i, each) {
+        $('<a href="#">')
+          .addClass('btn').addClass('btn-large')
+          .text(each.name)
+          .data('name', each.name)
+          .data('id', each.id)
+          .click(clicked_location)
+          .appendTo($('<p>').appendTo($choices));
+      });
+    });
+  }
+
+  return {
+     get_current_location: function() {
+       return {id: current_location_id, name: current_location_name};
+     },
+     init: function() {
+       $('#footer .current-location a').click(function() {
+         location_not_chosen();
+         return false;
+       });
+
+       current_location_name = localStorage.getItem('location-name');
+       current_location_id = localStorage.getItem('location-id');
+       if (!(current_location_name && current_location_id)) {
+         location_not_chosen();
+       } else {
+         location_chosen();
+       }
+
+     }
+  };
+})();
+
 $(function() {
+  Location.init();
   SignIn.init();
-  Reset.init();
 });

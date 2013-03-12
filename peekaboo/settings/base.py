@@ -47,6 +47,7 @@ LOGIN_REDIRECT_URL_FAILURE = 'main.home'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'django_browserid.context_processors.browserid_form',
+    'peekaboo.main.context_processors.main',
 ]
 
 # Should robots.txt deny everything or disallow a calculated list of URLs we

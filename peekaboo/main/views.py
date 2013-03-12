@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.files import File
 from sorl.thumbnail import get_thumbnail
 from . import forms
-from .models import Visitor
+from .models import Visitor, Location
 from .utils import json_view
 
 
@@ -55,19 +55,26 @@ def tablet_upload(request, pk):
     return {'ok': True}
 
 
-def log(request):
+def log_start(request):
+    data = {}
+    return render(request, 'main/log-start.html', data)
+
+
+def log(request, location):
     data = {
         'edit_form': forms.SignInForm(),
+        'location': get_object_or_404(Location, slug=location),
     }
     return render(request, 'main/log.html', data)
 
 
 @json_view
-def log_entries(request):
+def log_entries(request, location):
     data = {
         'latest': None,
         'rows': []
     }
+    location = get_object_or_404(Location, slug=location)
     thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
 
     def format_date(dt):
@@ -76,7 +83,7 @@ def log_entries(request):
         dt_tz = dt.tzname() or 'UTC'
         return ' '.join([dt_date, dt_time, dt_tz])
 
-    qs = Visitor.objects.all()
+    qs = Visitor.objects.filter(location=location)
     if request.GET.get('latest'):
         latest = datetime.datetime.fromtimestamp(
             float(request.GET['latest'])
@@ -127,7 +134,7 @@ def log_entry(request, pk):
             form.save()
             data = form.cleaned_data
         else:
-            raise NotImplementedError
+            return {'errors': form.errors}
     else:
         data = {
             'first_name': visitor.first_name,
@@ -158,3 +165,21 @@ def delete_entry(request, pk):
     visitor.delete()
     # XXX delete all images too??
     return {'deleted': True}
+
+
+@json_view
+def tablet_locations(request):
+    locations = []
+    # temporary hack
+    if not Location.objects.all().count():
+        Location.objects.create(
+            name='Mountain View',
+            slug='mv',
+            timezone='US/Pacific',
+        )
+    for each in Location.objects.all().order_by('name'):
+        locations.append({
+            'id': each.pk,
+            'name': each.name,
+        })
+    return {'locations': locations}

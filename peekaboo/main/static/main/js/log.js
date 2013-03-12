@@ -104,14 +104,18 @@ var Log = (function() {
   }
 
   function getURL(id, delete_) {
+    //var
+    var locale = location.pathname.split('/')[1];
+    var location_ = location.pathname.split('/')[3];
+    var start = '/' + locale + '/log/' ;
     if (id) {
       if (delete_) {
-        return location.pathname + id + '/delete/';
+        return start + 'entry/' + id + '/delete/';
       } else {
-        return location.pathname + id + '/';
+        return start + 'entry/' + id + '/';
       }
     }
-    return location.pathname + 'entries/';
+    return start + location_ + '/entries/';
   }
 
   function fetch(highlight) {

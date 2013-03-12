@@ -30,9 +30,14 @@ class BaseForm(_BaseForm, forms.Form):
 
 
 class SignInForm(BaseModelForm):
+
     class Meta:
         model = Visitor
         exclude = ('created', 'modified', 'picture')
+
+    def __init__(self, *args, **kwargs):
+        super(SignInForm, self).__init__(*args, **kwargs)
+        self.fields['location'].widget = forms.widgets.HiddenInput()
 
     def clean(self):
         data = super(SignInForm, self).clean()
@@ -43,6 +48,7 @@ class SignInForm(BaseModelForm):
 
 
 class PictureForm(BaseModelForm):
+
     class Meta:
         model = Visitor
         fields = ('picture',)

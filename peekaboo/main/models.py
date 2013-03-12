@@ -13,6 +13,15 @@ def _now():
     return datetime.datetime.utcnow().replace(tzinfo=utc)
 
 
+class Location(models.Model):
+    name = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=65, unique=True, db_index=True)
+    timezone = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+
 def _upload_path(tag):
     def _upload_path_tagged(instance, filename):
         now = datetime.datetime.now()
@@ -26,6 +35,7 @@ def _upload_path(tag):
 
 
 class Visitor(models.Model):
+    location = models.ForeignKey(Location, db_index=True)
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     email = models.EmailField(blank=True)

@@ -17,22 +17,46 @@
 
   <body>
 
-    <div class="container">
-
-      <div class="masthead">
-        <h3 class="muted">Peek-a-boo!</h3>
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="container">
-              <ul class="nav">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">Peek-a-boo!</a>
+          <div class="nav-collapse collapse">
+            {% if user.is_authenticated %}
+            <p class="navbar-text pull-right">
+              Logged in as <b>{{ user.username }}</b>
+              <small>(<a href="/admin/logout/?next=/">Log out</a>)</small>
+            </p>
+            <ul class="nav">
                 <li><a href="{{ url('main.home') }}">Home</a></li>
                 <li><a href="{{ url('main.tablet') }}">Sign-in Sheet</a></li>
-                <li><a href="{{ url('main.log') }}">Log</a></li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /.navbar -->
+                <li class="dropdown">
+		    <a href="{{ url('main.log_start') }}"
+		       class="dropdown-toggle" data-toggle="dropdown">Log <b class="caret"></b></a>
+		    <ul class="dropdown-menu">
+		        {% for location in all_locations %}
+		        <li><a href="{{ url('main.log', location.id) }}">{{ location.name }}</a></li>
+			{% endfor %}
+
+		    </ul>
+		</li>
+            </ul>
+            {% else %}
+            <p class="navbar-text pull-right">
+              <a href="/login/?next=/">Log in</a>
+            </p>
+            {% endif %}
+          </div><!--/.nav-collapse -->
+        </div>
       </div>
+    </div>
+
+    <div class="container-fluid">
 
       {% block pre_main %}
       {% endblock %}

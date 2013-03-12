@@ -8,6 +8,7 @@
     {% compress css %}
     <link href="{{ static('main/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ static('main/css/tablet.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ static('main/bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css">
     {% endcompress %}
 
     <link rel="shortcut icon" href="{{ static('main/images/favicon.ico') }}">
@@ -19,6 +20,14 @@
   <div id="wrap">
 
     <div class="container-fluid">
+
+      <div class="row-fluid pane" id="location">
+        <h2>Choose location</h2>
+        <div class="current-location">
+	</div>
+        <div class="available-locations">
+	</div>
+      </div>
 
       <div class="row-fluid pane" id="signin">
       <form action="{{ url('main.tablet-sign-in') }}" method="post">
@@ -51,13 +60,18 @@
           <span></span>
         </p>
         <div>
-        <a class="btn btn-success" href="#">Skip this</a>
+        <a class="btn btn-success skip" href="#">Skip this</a>
         </div>
       </div>
 
       <div class="row-fluid pane" id="thankyou">
         <h2>That's it!</h2>
-        <h3>Welcome to Mozilla <span class="yourname"></span></h3>
+        <h3>Welcome to Mozilla <em class="yourname"></em></h3>
+
+        <p>
+          <a href="#" class="btn btn-large reset">Reset</a>
+        </p>
+
       </div>
 
       <div id="push"></div>
@@ -67,7 +81,8 @@
   </div> <!-- /wrap -->
 
       <div id="footer">
-        <a class="btn btn-mini reset">&laquo; Start over<a>
+        <p class="current-location">Current location: <a href="#"></a></p>
+        <p><a class="btn btn-mini reset">&laquo; Start over<a></p>
       </div>
 
     {% compress js %}
