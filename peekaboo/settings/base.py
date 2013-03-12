@@ -9,6 +9,9 @@ from funfactory.settings_base import *
 # clone.
 PROJECT_MODULE = 'peekaboo'
 
+USE_TZ = True
+TIME_ZONE = 'US/Pacific'
+
 # Defines the views served for root URLs.
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 

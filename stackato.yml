@@ -1,0 +1,47 @@
+# This is a template to get your Playdoh app up and running on Stackato.
+# You may need to customize a few settings that are marked as such below.
+
+# Customize this name so it's unique on the system.
+name: peekaboo
+framework:
+  type: python
+  start-file: wsgi/peekaboo.wsgi
+runtime: python26
+env:
+  # Customize this import path if you renamed your project module.
+  DJANGO_SETTINGS_MODULE: peekaboo.settings
+  # TODO: these random words are very short! Fix this.
+  DJANGO_SECRET_KEY: ${random-word}
+  #DJANGO_HMAC_KEY: ${random-word}
+  #PIP_OPTS: --no-deps
+  #PIP_REQUIREMENTS_FILE: requirements/prod.txt
+requirements:
+  pypm:
+    # These must be kept in sync with requirements/compiled.txt
+    - dj-database-url
+    - jinja2==2.6
+    - mysql-python==1.2.3
+    - py-bcrypt==0.2
+    - PIL==1.1.7
+min_version:
+  client: 1.4.5
+services:
+  ${name}-db: mysql
+  ${name}-memcache: memcached
+  media: filesystem
+hooks:
+  post-staging:
+    - python manage.py syncdb --noinput
+    - python manage.py migrate peekaboo.main
+    - python manage.py collectstatic --noinput
+ignores:
+  - ".git"
+  - "*.pyc"
+  - "*.pyo"
+  - "*.swp"
+  - "*.un~"
+  - "*.sublime*"
+  - ".coverage*"
+  - "_coverage/*"
+  - ".noseids"
+  - "*settings/local.py"
