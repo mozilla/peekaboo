@@ -16,10 +16,17 @@ $.fn.serializeObject = function() {
 
 var Utils = (function() {
   return {
-     general_error: function(msg, reload_tip) {
-       console.log('XXX -- this needs a lot more work');
-       alert(msg);
-     }
+    general_error: function(msg, reload_tip) {
+      console.log('XXX -- this needs a lot more work');
+      alert(msg);
+    },
+    ajax_error: function(x, callback) {
+      //console.log('X', x);
+      $('#error').modal();
+      if (callback) {
+        callback();
+      }
+    }
   };
 })();
 
@@ -55,12 +62,7 @@ var SignIn = (function() {
   function submit(form) {
     var $form = $(form);
     $('#id_location', $form).val(Location.get_current_location().id);
-    $.ajax({
-       url: $form.attr('action'),
-      type: 'POST',
-      dataType: 'json',
-      data: $form.serializeObject(),
-      success: function(response) {
+    $.post($form.attr('action'), $form.serializeObject(), function(response) {
         if (response.errors) {
           $.each(response.errors, function(key, errors) {
             if (key === '__all__') {
@@ -98,13 +100,6 @@ var SignIn = (function() {
           }
 
         }
-      },
-      error: function(xhr, status, error_thrown) {
-        var msg = status;
-        if (xhr.responseText)
-          msg += ': ' + xhr.responseText;
-        Utils.general_error(msg, "Try again in a minute. Sorry.");
-      }
     });
   }
 
@@ -165,6 +160,7 @@ var SignIn = (function() {
   }
 
   function reset_all() {
+    $('#loading').hide();
     $('#thankyou').hide();
     $('#picture').hide();
     $('#signin form')[0].reset();
@@ -286,7 +282,24 @@ var Location = (function() {
   };
 })();
 
+
 $(function() {
   Location.init();
   SignIn.init();
+
+  $(document).ajaxStart(function() {
+    $('#loading').show();
+  });
+
+  $(document).ajaxStop(function() {
+    $('#loading').hide();
+  });
+
+  $(document).ajaxError(function(event, jqxhr, settings, exception) {
+    console.log('exception', exception);
+    $('#loading').hide();
+    Utils.ajax_error("Internal server error", function() {
+      // reset_all() ??
+    });
+  });
 });

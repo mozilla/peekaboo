@@ -17,6 +17,7 @@ body {
 
 
 
+#loading,
 #picture,
 #signin,
 #thankyou,
@@ -47,4 +48,9 @@ body {
 #footer .current-location a {
     font-weight: bold;
     color: black;
+}
+
+#loading {
+    float: right;
+    color: #666;
 }

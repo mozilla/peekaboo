@@ -9,6 +9,7 @@
     <link href="{{ static('main/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ static('main/css/tablet.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ static('main/bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css">
+
     {% endcompress %}
 
     <link rel="shortcut icon" href="{{ static('main/images/favicon.ico') }}">
@@ -20,6 +21,10 @@
   <div id="wrap">
 
     <div class="container-fluid">
+      <p id="loading">
+        <img src="{{ static('main/images/loading.gif') }}" alt="Loading">
+	loading...
+      </p>
 
       <div class="row-fluid pane" id="location">
         <h2>Choose location</h2>
@@ -30,14 +35,14 @@
       </div>
 
       <div class="row-fluid pane" id="signin">
-      <form action="{{ url('main.tablet-sign-in') }}" method="post">
-        {{ csrf() }}
-        {{ tabletform(form)|safe }}
-        <div>
-        <!--<a class="btn btn-large btn-success" href="#">Sign in!</a>-->
-        <button class="btn btn-large btn-success">Sign in!</button>
-        </div>
-      </form>
+        <h2>Sign in</h2>
+        <form action="{{ url('main.tablet-sign-in') }}" method="post">
+          {{ csrf() }}
+          {{ tabletform(form)|safe }}
+          <div>
+          <button class="btn btn-large btn-success">Sign in!</button>
+          </div>
+        </form>
       </div>
 
       <div class="row-fluid pane" id="picture">
@@ -80,13 +85,30 @@
 
   </div> <!-- /wrap -->
 
-      <div id="footer">
-        <p class="current-location">Current location: <a href="#"></a></p>
-        <p><a class="btn btn-mini reset">&laquo; Start over<a></p>
-      </div>
+
+
+    <div id="footer">
+      <p class="current-location">Current location: <a href="#"></a></p>
+      <p><a class="btn btn-mini reset">&laquo; Start over</a></p>
+    </div>
+
+<div class="modal hide fade" id="error">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Internal server error</h3>
+    </div>
+    <div class="modal-body">
+      <p>Sorry. It appears a server error happened.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+    </form>
+</div>
 
     {% compress js %}
     <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
+    <script src="{{ static('main/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ static('main/js/tablet.js') }}"></script>
     {% endcompress %}
 
