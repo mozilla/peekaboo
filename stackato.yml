@@ -16,13 +16,15 @@ env:
   #PIP_OPTS: --no-deps
   #PIP_REQUIREMENTS_FILE: requirements/prod.txt
 requirements:
+  ubuntu:
+    - python-imaging-dbg
   pypm:
     # These must be kept in sync with requirements/compiled.txt
     - dj-database-url
     - jinja2==2.6
     - mysql-python==1.2.3
     - py-bcrypt==0.2
-    - PIL==1.1.7
+    - Pillow==1.7.8
 min_version:
   client: 1.4.5
 services:
