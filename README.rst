@@ -28,20 +28,17 @@ In each command, replace peekaboo.main with the appropriate app.
 Stackato
 --------
 
-To use [stackato][stackto] you need to be log in and then you can
+To use `stackato <http://api.stacka.to/docs/>`_ you need to be log in and then you can
 simply run::
 
-    $ stackato push
-    $ stackato start peekaboo
+    $ stackato push -n
 
 Note: If it's already registered under that name you need to override
 the name with something else.
 
 If you make changes to the stackato.yml file run::
 
-    $ stackato update
-    $ stackato restart peekaboo
-
+    $ stackato update -n
 
 License
 -------
