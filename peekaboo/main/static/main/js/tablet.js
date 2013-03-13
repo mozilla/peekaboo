@@ -20,8 +20,13 @@ var Utils = (function() {
       console.log('XXX -- this needs a lot more work');
       alert(msg);
     },
-    ajax_error: function(x, callback) {
-      //console.log('X', x);
+    ajax_error: function(msg, description, callback) {
+      $('#error h3').text(msg);
+      if (description) {
+        $('#error .description').text(description);
+      } else {
+        $('#error .description').text($('#error .description').data('default'));
+      }
       $('#error').modal();
       if (callback) {
         callback();
@@ -54,7 +59,7 @@ var SignIn = (function() {
       _auto_reset_timer = setTimeout(function() {
         console.log("Automatically resetting");
         reset_all();
-      }, 10 * 1000);
+      }, 20 * 1000);
     }
 
   }
@@ -168,17 +173,16 @@ var SignIn = (function() {
     $('#signin').fadeIn(0, function() {
       SignIn.opened('#signin');
     });
+    if (_auto_reset_timer) {
+      clearTimeout(_auto_reset_timer);
+    }
   }
 
   return {
     init: function() {
 
       $('a.reset').click(function() {
-        if (_auto_reset_timer) {
-          clearTimeout(_auto_reset_timer);
-        }
         reset_all();
-
         return false;
       });
 
@@ -190,9 +194,19 @@ var SignIn = (function() {
       $('#picture input[type="file"]').change(picture_changed);
       $('#picture .proceed').click(function() {
         $('#picture .uploading').show();
-        upload_current_file(current_file, function() {
+        upload_current_file(current_file, function(response) {
+          console.log(response);
           $('#picture .uploading').hide();
           $('#picture').hide();
+          if (response.thumbnail) {
+            $('#thankyou .thumbnail')
+              .attr('src', response.thumbnail.url)
+              .attr('width', response.thumbnail.width)
+              .attr('height', response.thumbnail.height);
+              $('#thankyou .thumbnail').show();
+          } else {
+             $('#thankyou .thumbnail').hide();
+          }
           $('#thankyou').fadeIn(300, function() {
             opened('#thankyou');
           });
@@ -296,9 +310,8 @@ $(function() {
   });
 
   $(document).ajaxError(function(event, jqxhr, settings, exception) {
-    console.log('exception', exception);
     $('#loading').hide();
-    Utils.ajax_error("Internal server error", function() {
+    Utils.ajax_error("Internal server error", jqxhr.responseText, function() {
       // reset_all() ??
     });
   });

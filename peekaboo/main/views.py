@@ -50,9 +50,23 @@ def tablet_upload(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
     if form.is_valid():
-        form.save()
-    # XXX return a nice thumbnail url
-    return {'ok': True}
+        visitor = form.save()
+        thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
+        thumbnail = get_thumbnail(
+            visitor.picture,
+            thumbnail_geometry
+        )
+        data = {
+            'ok': True,
+            'thumbnail': {
+                'url': thumbnail.url,
+                'width': thumbnail.width,
+                'height': thumbnail.height,
+            }
+        }
+    else:
+        data = {'errors': form.errors}
+    return data
 
 
 def log_start(request):
@@ -61,10 +75,12 @@ def log_start(request):
 
 
 def log(request, location):
+    location = get_object_or_404(Location, slug=location)
     data = {
         'edit_form': forms.SignInForm(),
-        'location': get_object_or_404(Location, slug=location),
+        'location': location,
     }
+    request.session['default-location'] = location.slug
     return render(request, 'main/log.html', data)
 
 

@@ -84,5 +84,7 @@ DOMAIN_METHODS['messages'] = [
 
 LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 # Whether the picture taking part of tablet should be enabled
 TABLET_TAKE_PICTURE = True

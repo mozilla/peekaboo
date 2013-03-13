@@ -36,12 +36,16 @@
                 <li><a href="{{ url('main.home') }}">Home</a></li>
                 <li><a href="{{ url('main.tablet') }}">Sign-in Sheet</a></li>
                 <li class="dropdown">
-		    <a href="{{ url('main.log_start') }}"
+		    <a href="{% if current_location %}{{ url('main.log', current_location.slug) }}{% else %}{{ url('main.log_start') }}{% endif %}"
 		       class="dropdown-toggle" data-toggle="dropdown">Log <b class="caret"></b></a>
 		    <ul class="dropdown-menu">
 		        {% for location in all_locations %}
-		        <li><a href="{{ url('main.log', location.id) }}">{{ location.name }}</a></li>
+		        <li><a href="{{ url('main.log', location.slug) }}">{{ location.name }}</a></li>
 			{% endfor %}
+                        {% if current_location %}
+                        <li class="divider"></li>
+		        <li><a href="{{ url('main.log_start') }}">Change default location</a></li>
+                        {% endif %}
 
 		    </ul>
 		</li>
