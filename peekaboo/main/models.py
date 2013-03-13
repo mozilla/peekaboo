@@ -1,6 +1,7 @@
 import os
 import datetime
 import hashlib
+import unicodedata
 
 from django.db import models
 from django.utils.timezone import utc
@@ -24,6 +25,12 @@ class Location(models.Model):
 
 def _upload_path(tag):
     def _upload_path_tagged(instance, filename):
+        if isinstance(filename, unicode):
+            filename = (
+                unicodedata
+                .normalize('NFD', filename)
+                .encode('ascii', 'ignore')
+            )
         now = datetime.datetime.now()
         path = os.path.join(now.strftime('%Y'), now.strftime('%m'),
                             now.strftime('%d'))
