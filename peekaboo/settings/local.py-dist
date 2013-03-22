@@ -84,3 +84,9 @@ ENGAGE_ROBOTS = True
 # Uncomment this line if you are running a local development install without
 # HTTPS to disable HTTPS-only cookies.
 #SESSION_COOKIE_SECURE = False
+
+# Overwrite this to set which program should convert the HTML to PDF.
+# If you're on OSX you might want to install wkpdf (gem installable)
+# or if you want to you can change this to for example
+# '/opt/bin/wkhtmlpdf' or something like that
+#PDF_PROGRAM = 'wkhtmltopdf'

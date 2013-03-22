@@ -1,7 +1,14 @@
+import os
+import subprocess
+import tempfile
+import shutil
+import stat
+import time
 import datetime
 import time
 from cStringIO import StringIO
 from collections import defaultdict
+from pyquery import PyQuery as pq
 from django import http
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -140,16 +147,22 @@ def log_entries(request, location):
 
 
 @json_view
+@csrf_exempt
 def log_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
 
     if request.method == 'POST':
-        form = forms.SignInForm(request.POST, instance=visitor)
+        form = forms.SignInEditForm(request.POST, instance=visitor)
+        print "POSTING"
         if form.is_valid():
+            print "VALID"
+            print form.cleaned_data
             form.save()
             data = form.cleaned_data
         else:
+            print "ERRORS"
+            print form.errors
             return {'errors': form.errors}
     else:
         data = {
@@ -181,6 +194,114 @@ def delete_entry(request, pk):
     visitor.delete()
     # XXX delete all images too??
     return {'deleted': True}
+
+
+def print_entry(request, pk):
+    visitor = get_object_or_404(Visitor, pk=pk)
+    data = {
+        'visitor': visitor,
+    }
+    return render(request, 'main/print-entry.html', data)
+
+
+def print_entry_pdf(request, pk):
+    visitor = get_object_or_404(Visitor, pk=pk)
+    data = {
+        'visitor': visitor,
+    }
+    response = render(request, 'main/print-entry.pdf.html', data)
+    html = response.content
+
+    tmp_dir = os.path.join(
+        tempfile.gettempdir(),
+        'peekaboopdfs'
+    )
+    if not os.path.isdir(tmp_dir):
+        os.mkdir(tmp_dir)
+
+    input_file = os.path.join(tmp_dir, 'visitor-%s.html' % visitor.pk)
+    output_file = os.path.join(tmp_dir, 'visitor-%s.pdf' % visitor.pk)
+
+    dom = pq(html)
+
+    for img in dom('img'):
+        src = img.attrib['src']
+        if settings.STATIC_URL in src:
+            source = os.path.join(
+                settings.STATIC_ROOT,
+                src.replace(settings.STATIC_URL, '')
+            )
+        else:
+            source = os.path.join(
+                settings.MEDIA_ROOT,
+                src.replace(settings.MEDIA_URL, '')
+            )
+        if not os.path.isfile(source):
+            raise IOError("Couldn't find %s (Tried: %s)" %
+                (img.attrib['src'], source)
+            )
+        filename = os.path.basename(source)
+        destination = os.path.join(
+            tmp_dir, filename
+        )
+        if os.path.isfile(destination):
+            age = time.time() - os.stat(destination)[stat.ST_MTIME]
+            if settings.DEBUG or age > 60 * 60:
+                shutil.copyfile(source, destination)
+        else:
+            shutil.copyfile(source, destination)
+        html = html.replace(img.attrib['src'], filename)
+
+    with open(input_file, 'w') as f:
+        f.write(html)
+
+    pdf_program = getattr(settings, 'PDF_PROGRAM', 'wkhtmltopdf')
+    if 'wkpdf' in pdf_program:
+        cmd = (
+            pdf_program +
+            ' --source %(input_file)s --output %(output_file)s'
+        )
+    elif 'wkhtmltopdf' in pdf_program:
+        cmd = (
+            pdf_program +
+            ' %(input_file)s %(output_file)s'
+        )
+    cmd = cmd % {
+        'input_file': input_file,
+        'output_file': output_file,
+    }
+    #print cmd
+    proc = subprocess.Popen(
+        cmd,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    out, err = proc.communicate()
+    exit_code = proc.returncode
+    #print output_file
+    #print "EXIT"
+    #print exit_code
+    #print "OUT"
+    #print out
+    #print "ERR"
+    #print err
+    #print
+    #print "FILE CREATED", os.path.isfile(output_file) and "Yes!" or "No"
+    #print '-' * 70
+    if os.path.isfile(output_file):
+        response['Content-Disposition'] = (
+            'filename="%s.pdf"' % os.path.basename(output_file)
+        )
+        response = http.HttpResponse(mimetype='application/pdf')
+        response.write(open(output_file).read())
+
+        os.remove(input_file)
+        os.remove(output_file)
+        return response
+
+
+    return http.HttpResponse("PDF could not be created")
 
 
 @json_view

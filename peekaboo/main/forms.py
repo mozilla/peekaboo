@@ -37,7 +37,8 @@ class SignInForm(BaseModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SignInForm, self).__init__(*args, **kwargs)
-        self.fields['location'].widget = forms.widgets.HiddenInput()
+        if 'location' in self.fields:
+            self.fields['location'].widget = forms.widgets.HiddenInput()
 
     def clean(self):
         data = super(SignInForm, self).clean()
@@ -45,6 +46,13 @@ class SignInForm(BaseModelForm):
             if not (data['first_name'] or data['last_name']):
                 raise forms.ValidationError(_(u'A name must be entered'))
         return data
+
+
+class SignInEditForm(SignInForm):
+
+    class Meta:
+        model = Visitor
+        exclude = ('created', 'modified', 'picture', 'location')
 
 
 class PictureForm(BaseModelForm):

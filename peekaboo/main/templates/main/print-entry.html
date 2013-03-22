@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ visitor.get_name() }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+h1, h2 {
+    text-align: center;
+}
+h1 {
+    font-size: 30pt;
+}
+h2 {
+    font-size: 25pt;
+    color: #999;
+}
+
+#wrap {
+    z-index: 1;
+    position: relative;
+    border: 1px solid black;
+    /*background: url({{ static('main/images/firefox-logo-220.png') }}) 99% center no-repeat;*/
+}
+
+.logo {
+    position: absolute;
+    z-index: 100;
+    top: 5px;
+    right: 5px;
+    /*float: right;*/
+    opacity: 0.6;
+
+}
+
+@page {
+    @top-left{
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 18pt;
+        font-weight: bolder;
+        content: "XHTML-Print: A Proposal --- August 25, 2000";
+    }
+}
+    </style>
+  <head>
+  <body>
+
+  <div id="wrap">
+    <img src="{{ static('main/images/firefox-logo-100.png') }}" class="logo">
+    <h1>{{ visitor.get_name() }}</h1>
+
+    {% if visitor.company %}
+    <h2>{{ visitor.company }}</h2>
+    {% endif %}
+
+    {% if visitor.picture %}
+    <p class="thumbnail">
+    {% set thumb = thumbnail(visitor.picture, '260x260') %}
+      <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
+            alt="{{ visitor.get_name() }}">
+    </p>
+    {% endif %}
+  </div>
+
+  <script type="text/javascript">
+  window.onload = function() {
+//    window.print();
+  };
+  </script>
+  </body>
+</html>

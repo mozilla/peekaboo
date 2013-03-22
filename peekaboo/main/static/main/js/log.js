@@ -24,6 +24,11 @@ var Log = (function() {
     });
   }
 
+  function open_print_entry(id) {
+    var url = getPrintURL(id);
+    open(url);
+  }
+
   function submit_edit_entry(event) {
     var $form = $(this);
     $.post($form.attr('action'), $form.serializeObject(), function(response) {
@@ -49,6 +54,10 @@ var Log = (function() {
       _fill_row_data(copy, row);
       $('button.edit', copy).on('click', function() {
         open_edit_entry($(this).parents('.entry').data('id'));
+        return false;
+      });
+      $('button.print', copy).on('click', function() {
+        open_print_entry($(this).parents('.entry').data('id'));
         return false;
       });
       $('button.delete', copy).on('click', function() {
@@ -103,19 +112,25 @@ var Log = (function() {
     }
   }
 
-  function getURL(id, delete_) {
-    //var
+  function getURL(id, delete_, print) {
     var locale = location.pathname.split('/')[1];
     var location_ = location.pathname.split('/')[3];
     var start = '/' + locale + '/log/' ;
     if (id) {
       if (delete_) {
         return start + 'entry/' + id + '/delete/';
+      } else if (print) {
+        //return start + 'entry/' + id + '/print/';
+        return start + 'entry/' + id + '/print.pdf';
       } else {
         return start + 'entry/' + id + '/';
       }
     }
     return start + location_ + '/entries/';
+  }
+
+  function getPrintURL(id) {
+    return getURL(id, false, true);
   }
 
   function fetch(highlight) {
