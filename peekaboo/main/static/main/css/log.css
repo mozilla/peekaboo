@@ -1,8 +1,9 @@
 .new {
-    border: 1px solid green;
+    background-color: #ffd773;
 }
 
 .entry {
+    padding: 6px;
     border-bottom: 1px solid #ccc;
 }
 
@@ -20,9 +21,19 @@
 }
 
 .entry dl {
-    margin-left: 150px;
+    /*margin-left: 150px;*/
+    float: left;
+
+}
+
+.entry img {
+    float: left;
 }
 
 .entry .delete-confirmation {
     display: none;
+}
+
+.entry .clear {
+    clear: both;
 }
