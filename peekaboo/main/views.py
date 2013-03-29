@@ -259,18 +259,20 @@ def print_entry_pdf(request, pk):
     if 'wkpdf' in pdf_program:
         cmd = (
             pdf_program +
+            ' --orientation %(orientation)s'
             ' --source %(input_file)s --output %(output_file)s'
         )
     elif 'wkhtmltopdf' in pdf_program:
         cmd = (
             pdf_program +
+            ' --orientation %(orientation)s'
             ' %(input_file)s %(output_file)s'
         )
     cmd = cmd % {
         'input_file': input_file,
         'output_file': output_file,
+        'orientation': 'landscape',
     }
-    #print cmd
     proc = subprocess.Popen(
         cmd,
         shell=True,
