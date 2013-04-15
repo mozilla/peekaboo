@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="windows no-js" lang="{{ LANG }}" dir="{{ DIR }}">
+    <head>
+        <!-- If you are using sandstone for a static website, you can safely delete this file -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block page_title_prefix %}Mozilla — {% endblock %}{% block page_title %}Peekaboo{% endblock %}{% block page_title_suffix %} — mozilla.org{% endblock %}</title>
+
+        {% block favicon %}<link rel="shortcut icon" href="{{ static('img/favicon.ico') }}" />{% endblock %}
+        <link rel="stylesheet" type="text/css" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" media="screen" />
+
+        {% compress css %}
+        <link rel="stylesheet" type="text/less" href="{{ static('css/sandstone/sandstone-resp.less') }}" media="screen" />
+        <link rel="stylesheet" type="text/less" href="{{ static('css/peekaboo.less') }}" media="screen" />
+        {% endcompress %}
+        {% block site_css %}{% endblock %}
+
+        {% block extrahead %}{% endblock %}
+    </head>
+    <body id="sandstone" class="{% block body_class %}stone{% endblock %}"
+                         data-config-take-picture="{{ take_picture|js_bool }}">
+        <div id="outer-wrapper">
+            <div id="wrapper">
+
+                {% block site_header %}
+                <header id="masthead">
+                    <a href="/" id="tabzilla">{{ _('Mozilla') }}</a>
+
+                    {% block site_header_logo %}
+                    <h2><a href="/"><img src="{{ static('img/sandstone/header-mozilla-stone.png') }}" alt="mozilla"></a></h2>
+                    {% endblock %}
+
+                    {% block breadcrumbs %}{% endblock %}
+
+                </header>
+                {% endblock %}
+
+                {% block content %}{% endblock %}
+
+            </div>
+
+            {% block site_footer %}
+            <footer id="colophon">
+              <div class="row">
+                  {% block extra_footer %}{% endblock %}
+                  <div class="footer-logo">
+                      <a href="http://mozilla.org"><img src="{{ static('img/sandstone/footer-mozilla.png') }}" alt="mozilla"></a>
+                  </div>
+
+                  <ul class="footer-nav">
+                    <li><a href="http://mozilla.org/about/contact.html#map-mountain_view">{{_('Contact Us')}}</a></li>
+                    <li><a href="http://mozilla.org/privacy-policy.html">{{_('Privacy Policy')}}</a></li>
+                    <li><a href="http://mozilla.org/about/legal.html">{{_('Legal Notices')}}</a></li>
+                  </ul>
+              </div>
+            </footer>
+            {% endblock %}
+        </div>
+
+        {% block site_js %}
+            <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+            <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
+          {% compress js %}
+            <script src="{{ static('js/site.js') }}"></script>
+            {% block page_js %}{% endblock %}
+          {% endcompress %}
+        {% endblock %}
+    </body>
+</html>
