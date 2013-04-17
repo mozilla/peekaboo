@@ -1,3 +1,5 @@
+var loader = null;
+
 $.fn.serializeObject = function() {
   var o = {};
   var a = this.serializeArray();
@@ -16,11 +18,33 @@ $.fn.serializeObject = function() {
 
 var Utils = (function() {
   return {
+    showPanel: function(panel) {
+      var currentPanel = document.getElementById(panel);
+      window.location.hash = "#" + panel;
+
+      currentPanel.addEventListener('transitionend', function() {
+        SignIn.opened('#' + panel);
+      });
+    },
+    setActiveStep: function (step) {
+      var menuBar = $('.menu-bar'),
+          menuItems = menuBar.find('li');
+
+      // Remove active from all items
+      menuItems.each(function() {
+        $(this).removeClass('active');
+      });
+
+      // Set the correct step as active
+      $(step).addClass('active');
+    },
     general_error: function(msg, reload_tip) {
       console.log('XXX -- this needs a lot more work');
       alert(msg);
     },
     ajax_error: function(msg, description, callback) {
+      console.log(msg);
+      console.log(description);
       $('#error h3').text(msg);
       if (description) {
         $('#error .description').text(description);
@@ -44,7 +68,7 @@ var Config = (function() {
     set: function(key, value) {
       $('body').data('config-' + key, value);
     }
-  }
+  };
 })();
 
 
@@ -91,17 +115,25 @@ var SignIn = (function() {
 
         } else {
           form.reset();
-          $('#signin').hide();
+
+          // If the form submission was a success,
+          // at this point, we want to offer the user
+          // the option to start over.
+          $('.restart').show();
+
           $('.yourname').text(response.name);
+
           if (Config.get('take-picture')) {
+            Utils.showPanel('picture');
+            Utils.setActiveStep('#step_picture');
+
             $('#picture').data('id', response.id);
             $('#picture').fadeIn(300, function() {
               opened('#picture');
             });
           } else {
-            $('#thankyou').fadeIn(300, function() {
-              opened('#thankyou');
-            });
+            Utils.showPanel('thankyou');
+            Utils.setActiveStep('#step_thankyou');
           }
 
         }
@@ -165,14 +197,15 @@ var SignIn = (function() {
   }
 
   function reset_all() {
-    $('#loading').hide();
-    $('#thankyou').hide();
-    $('#picture').hide();
     $('#signin form')[0].reset();
     $('.yourname').text('');
-    $('#signin').fadeIn(0, function() {
-      SignIn.opened('#signin');
-    });
+    $('.preview').hide();
+    $('.restart').hide();
+    $('.uploading').hide();
+
+    Utils.showPanel('signin');
+    Utils.setActiveStep('step_signup');
+
     if (_auto_reset_timer) {
       clearTimeout(_auto_reset_timer);
     }
@@ -196,8 +229,7 @@ var SignIn = (function() {
         $('#picture .uploading').show();
         upload_current_file(current_file, function(response) {
           console.log(response);
-          $('#picture .uploading').hide();
-          $('#picture').hide();
+
           if (response.thumbnail) {
             $('#thankyou .thumbnail')
               .attr('src', response.thumbnail.url)
@@ -207,18 +239,14 @@ var SignIn = (function() {
           } else {
              $('#thankyou .thumbnail').hide();
           }
-          $('#thankyou').fadeIn(300, function() {
-            opened('#thankyou');
-          });
+          Utils.showPanel('thankyou');
          });
         return false;
      });
       $('#picture .skip').click(function() {
-          $('#picture').hide();
-          $('#thankyou').fadeIn(300, function() {
-            opened('#thankyou');
-          });
-        return false;
+          Utils.showPanel('thankyou');
+          Utils.setActiveStep('#step_thankyou');
+          return false;
       });
     },
     opened: function(id) {
@@ -243,21 +271,17 @@ var Location = (function() {
   }
 
   function location_chosen() {
+    loader.hide();
+
     Config.set('current-location', current_location_id);
-    $('#location').hide();
-    $('#footer .current-location a').text(current_location_name);
-    $('#footer').show();
-    $('#signin').fadeIn(300, function() {
-      SignIn.opened('#signin');
-    });
+    $('footer .current-location a').text(current_location_name);
+
+    Utils.showPanel('signin');
+    Utils.setActiveStep('signin');
   }
 
   function location_not_chosen() {
-    $('.pane:visible').hide();
-    $('#location').fadeIn(0, function() {
-      SignIn.opened('#location');
-    });
-    $('#footer').hide();
+    Utils.showPanel('location');
 
     var $choices = $('#location .available-locations');
     $('p', $choices).remove();
@@ -279,7 +303,7 @@ var Location = (function() {
        return {id: current_location_id, name: current_location_name};
      },
      init: function() {
-       $('#footer .current-location a').click(function() {
+       $('footer .current-location a').click(function() {
          location_not_chosen();
          return false;
        });
@@ -298,15 +322,17 @@ var Location = (function() {
 
 
 $(function() {
+  loader = $('#loading');
+
   Location.init();
   SignIn.init();
 
   $(document).ajaxStart(function() {
-    $('#loading').show();
+    loader.show();
   });
 
   $(document).ajaxStop(function() {
-    $('#loading').hide();
+    loader.hide();
   });
 
   $(document).ajaxError(function(event, jqxhr, settings, exception) {

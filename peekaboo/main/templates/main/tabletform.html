@@ -11,6 +11,36 @@
     {{ field }}
 {% endfor %}
 
-{% for field in form.visible_fields() %}
-    {% include 'main/tabletfield.html' %}
-{% endfor %}
+<fieldset>
+    <label for="id_title">Title</label>
+    <div class="controls">
+        {{ form.title }}
+    </div>
+
+    <label for="id_first_name">First Name</label>
+    <div class="controls">
+        {{ form.first_name }}
+    </div>
+
+    <label for="id_last_name">Last Name</label>
+    <div class="controls">
+        {{ form.last_name }}
+    </div>
+</fieldset>
+
+<fieldset>
+    <label for="id_email">Email</label>
+    <div class="controls">
+        {{ form.email }}
+    </div>
+
+    <label for="id_company">Company</label>
+    <div class="controls">
+        {{ form.company }}
+    </div>
+
+    <label for="id_visiting">Visiting</label>
+    <div class="controls">
+        {{ form.visiting }}
+    </div>
+</fieldset>
