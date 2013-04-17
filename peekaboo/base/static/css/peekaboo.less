@@ -1,0 +1,187 @@
+@import "mixins.less";
+
+#main-content {
+    position: relative;
+}
+#wrapper {
+    width: 85%;
+    min-height: 400px;
+}
+#welcome {
+    margin-top: 8%;
+}
+.home {
+    h1 {
+        margin-bottom: 30px;
+    }
+    #main-content {
+        padding-bottom: 0;
+    }
+    .button.open_signin {
+        padding: .8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+    p:last-child {
+        position: relative;
+        text-align: center;
+    }
+}
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    z-index: 9;
+}
+#location,
+#signin,
+#picture,
+#thankyou {
+    position: absolute;
+    left: -760px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: left 400ms,
+                opacity 400ms,
+                width 400ms;
+}
+#location:target,
+#signin:target,
+#picture:target,
+#thankyou:target {
+    top: 65px;
+    left: 15%;
+    width: 650px;
+    height: auto;
+    opacity: 1;
+}
+#signin {
+    h2 {
+        margin-bottom: 20px;
+    }
+}
+#picture {
+    h4,
+    input {
+        margin: 15px 0;
+    }
+}
+#thankyou {
+    text-align: center;
+}
+.uploading,
+.preview,
+.error,
+.thumbnail {
+    display: none;
+}
+nav.menu-bar {
+    ul {
+        li {
+            margin-right: 5%;
+        }
+        .active {
+            font-weight: bold;
+        }
+    }
+}
+#signinform {
+    button {
+        .clearfix;
+    }
+}
+.preview {
+    position: absolute;
+    top: 0;
+    left: 400px;
+    padding: 10px;
+    width: 400px;
+    img {
+        margin-bottom: 10px;
+        border: 7px solid #333;
+    }
+}
+.restart {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 35px;
+}
+.thumbnail {
+    border: 5px solid #333;
+}
+.skip {
+    margin-top: 15px;
+}
+.reset {
+    display: block;
+    margin-top: 10px;
+}
+#colophon {
+    .row {
+        margin: 0;
+    }
+    .footer-logo {
+        float: none;
+        margin-bottom: 5px;
+    }
+    .footer-nav {
+        float: none;
+        width: auto;
+        li {
+            display: inline;
+            list-style-type: none;
+            margin: 0 5px 2px 0;
+        }
+    }
+    .current-location {
+        position: absolute;
+        top: 0;
+        background-color: rgb(60, 136, 204);
+        color: #fff;
+        padding: 5px 5px 5px 10px;
+        width: 98.5%;
+        a:link,
+        a:visited,
+        a:hover {
+            color: #fff;
+        }
+    }
+}
+form {
+    width: 800px;
+    fieldset:nth-of-type(odd) {
+        float: left;
+    }
+    fieldset:nth-of-type(even) {
+        float: right;
+    }
+    button {
+        float: right;
+    }
+    .controls {
+        margin-bottom: 9px;
+    }
+}
+/*http://developer.yahoo.com/blogs/ydn/posts/2012/10/clip-your-hidden-content-for-better-accessibility/*/
+label {
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding:0;
+    border:0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 350px;
+    height: 40px;
+    font-size: 1.2rem;
+}
+
+@media only screen and (min-width: @breakTablet) and (max-width: breakDesktop) {
+
+}

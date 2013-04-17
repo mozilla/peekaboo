@@ -1,47 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Peek-a-boo!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'main/tablet_base.html' %}
 
-    {% compress css %}
-    <link href="{{ static('main/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ static('main/css/tablet.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ static('main/bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css">
+{% block content %}
+<div id="main-content">
+      <nav class="menu-bar billboard">
+          <ul>
+              <li id="step_signup" class="active">Signup Info &raquo;</li>
+              <li id="step_picture">Add A Picture &raquo;</li>
+              <li id="step_thankyou">Thank You and Welcome &raquo;</li>
+          </ul>
+      </nav>
+      <p><a href="{{ url('main.tablet') }}" class="restart">&laquo; Start over</a></p>
 
-    {% endcompress %}
-
-    <link rel="shortcut icon" href="{{ static('main/images/favicon.ico') }}">
-  </head>
-
-  <body
-    data-config-take-picture="{{ take_picture|js_bool }}">
-
-  <div id="wrap">
-
-    <div class="container-fluid">
       <p id="loading">
-        <img src="{{ static('main/images/loading.gif') }}" alt="Loading">
-	loading...
+        <img src="{{ static('main/images/loader.png') }}" alt="Loading" />
       </p>
 
-      <div class="row-fluid pane" id="location">
+      <div class="pane" id="location">
         <h2>Choose location</h2>
-        <div class="current-location">
-	</div>
-        <div class="available-locations">
-	</div>
+        <div class="current-location"></div>
+        <div class="available-locations"></div>
       </div>
 
-      <div class="row-fluid pane" id="signin">
+      <div class="pane" id="signin">
         <h2>Sign in</h2>
-        <form action="{{ url('main.tablet-sign-in') }}" method="post">
+        <form class="signin_form" action="{{ url('main.tablet-sign-in') }}" method="post">
           {{ csrf() }}
           {{ tabletform(form)|safe }}
-          <div>
-          <button class="btn btn-large btn-success">Sign in!</button>
-          </div>
+          <button class="button clearfix">Sign in!</button>
         </form>
       </div>
 
@@ -54,19 +39,19 @@
         </div>
 
         <form method="post" enctype="multipart/form-data">
-        <input type="file" accept="image/*;capture=camera">
+          <input type="file" accept="image/*;capture=camera" />
+          <p><a class="button skip" href="#">Skip This &raquo;</a><p>
         </form>
         <div class="preview">
-          <img src="javascript:void(0)" alt="Preview" width="200">
-          <a class="btn btn-success proceed" href="#">Proceed &raquo;</a>
+          <img src="javascript:void(0)" alt="Preview" width="200" />
+          <div>
+            <a class="button-green proceed" href="#">Proceed &raquo;</a>
+          </div>
         </div>
         <p class="error">
           <b>Error:</b>
           <span></span>
         </p>
-        <div>
-        <a class="btn btn-success skip" href="#">Skip this</a>
-        </div>
       </div>
 
       <div class="row-fluid pane" id="thankyou">
@@ -74,49 +59,18 @@
         <h3>Welcome to Mozilla</h3>
 
         <div class="summary">
+          <p><img class="thumbnail" src="javascript:void(0)" alt="Thumbnail"></p>
           <h4 class="yourname"></h4>
-          <p>
-            <img class="thumbnail" src="javascript:void(0)" alt="Thumbnail">
-          </p>
         </div>
-        <p class="reset">
-          <a href="#" class="btn btn-large reset">Reset</a>
-        </p>
-
       </div>
 
-      <div id="push"></div>
-
-    </div> <!-- /container -->
-
-  </div> <!-- /wrap -->
-
-
-
-    <div id="footer">
-      <p class="current-location">Current location: <a href="#"></a></p>
-      <p><a class="btn btn-mini reset">&laquo; Start over</a></p>
     </div>
+{% endblock %}
 
-<div class="modal hide fade" id="error">
-    <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Internal server error</h3>
-    </div>
-    <div class="modal-body">
-      <p class="description" data-default="Sorry. It appears a server error happened."></p>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn" data-dismiss="modal">Close</a>
-    </div>
-    </form>
-</div>
+{% block extra_footer %}
+  <p class="current-location">Current location: <a href="#">No Location Selected</a></p>
+{% endblock %}
 
-    {% compress js %}
-    <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
-    <script src="{{ static('main/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ static('main/js/tablet.js') }}"></script>
-    {% endcompress %}
-
-  </body>
-</html>
+{% block page_js %}
+  <script src="{{ static('main/js/tablet.js') }}"></script>
+{% endblock %}

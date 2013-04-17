@@ -1,0 +1,14 @@
+// Breakpoints for common devices
+@breakDesktop: 1000px;
+@breakTablet: 760px;
+
+.clearfix() {
+    zoom: 1;
+    &:after {
+        display: block;
+        visibility: hidden;
+        height: 0;
+        clear: both;
+        content: ".";
+    }
+}
