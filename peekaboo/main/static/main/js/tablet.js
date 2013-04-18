@@ -321,7 +321,27 @@ var Location = (function() {
 })();
 
 
+// Find the right method, call on correct element
+function launchFullScreen(element) {
+  if(element.requestFullScreen) {
+    element.requestFullScreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullScreen) {
+    element.webkitRequestFullScreen();
+  }
+}
+
+
 $(function() {
+
+  $('.fullscreen').click(function(e) {
+    $(this).hide();
+    e.preventDefault();
+    // Launch fullscreen for browsers that support it!
+    launchFullScreen(document.documentElement); // the whole page
+  });
+
   loader = $('#loading');
 
   Location.init();
