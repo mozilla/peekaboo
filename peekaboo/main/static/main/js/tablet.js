@@ -38,6 +38,9 @@ var Utils = (function() {
       // Set the correct step as active
       $(step).addClass('active');
     },
+    toTitleCase: function (str) {
+        return str.replace(/\w*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    },
     general_error: function(msg, reload_tip) {
       console.log('XXX -- this needs a lot more work');
       alert(msg);
@@ -334,6 +337,17 @@ function launchFullScreen(element) {
 
 
 $(function() {
+
+  var signinForm = $('.signin_form');
+
+  if(signinForm.length > 0) {
+    var txtInputs = signinForm.find('input[type="text"]');
+    txtInputs.blur(function() {
+      if($(this).attr('name') !== 'email') {
+        $(this).val(Utils.toTitleCase($(this).val()));
+      }
+    });
+  }
 
   $('.fullscreen').click(function(e) {
     $(this).hide();
