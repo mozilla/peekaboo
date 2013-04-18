@@ -26,6 +26,11 @@
                 {% block site_header %}
                 <header id="masthead">
 
+                    <ul class="topnav">
+                        <li><a href="{{ url('main.tablet') }}" class="restart">&laquo; Start Over</a></li>
+                        <li><a href="#" class="fullscreen">&laquo; Fullscreen</a></li>
+                    </ul>
+
                     {% block site_header_logo %}
                     <h2><a href="/"><img src="{{ static('img/sandstone/header-mozilla-stone.png') }}" alt="mozilla"></a></h2>
                     {% endblock %}
@@ -41,7 +46,6 @@
 
             <footer id="colophon">
               <div class="row">
-                  <a href="#" class="fullscreen" style="float:right">fullscreen</a>
                   {% block extra_footer %}{% endblock %}
               </div>
             </footer>

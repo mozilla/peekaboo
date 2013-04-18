@@ -10,6 +10,16 @@
 #welcome {
     margin-top: 8%;
 }
+#masthead {
+    h2 {
+        padding-top: 10px;
+    }
+}
+h3 {
+    font-size: 52px;
+    letter-spacing: -0.5px;
+    font-weight: bold;
+}
 .home {
     h1 {
         margin-bottom: 30px;
@@ -49,7 +59,7 @@
 #signin:target,
 #picture:target,
 #thankyou:target {
-    top: 65px;
+    top: -10px;
     left: 15%;
     width: 650px;
     height: auto;
@@ -68,6 +78,9 @@
 }
 #thankyou {
     text-align: center;
+}
+.yourname {
+    font-size: 36px;
 }
 .uploading,
 .preview,
@@ -101,11 +114,19 @@ nav.menu-bar {
         border: 7px solid #333;
     }
 }
+.topnav {
+    position: absolute;
+    top: 20px;
+    left: 85%;
+    width: 250px;
+    font-size: 16px;
+    li {
+        display: inline;
+        list-style: none;
+    }
+}
 .restart {
     display: none;
-    position: absolute;
-    top: 50px;
-    left: 35px;
 }
 .thumbnail {
     border: 5px solid #333;
@@ -116,6 +137,13 @@ nav.menu-bar {
 .reset {
     display: block;
     margin-top: 10px;
+}
+.button,
+.button:link,
+.button:visited {
+    padding: 0 30px;
+    font-size: 21px;
+    height: 50px;
 }
 #colophon {
     .row {
@@ -135,12 +163,14 @@ nav.menu-bar {
         }
     }
     .current-location {
-        position: absolute;
-        top: 0;
-        background-color: rgb(60, 136, 204);
+        position: fixed;
+        bottom: 0;
+        background-color: rgb(39, 97, 149);
         color: #fff;
+        margin-bottom: 0;
         padding: 5px 5px 5px 10px;
         width: 98.5%;
+        font-size: 16px;
         a:link,
         a:visited,
         a:hover {
