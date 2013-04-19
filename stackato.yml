@@ -18,6 +18,7 @@ env:
 requirements:
   ubuntu:
     - python-imaging-dbg
+    - python-lxml
   pypm:
     # These must be kept in sync with requirements/compiled.txt
     - dj-database-url
@@ -25,6 +26,7 @@ requirements:
     - mysql-python==1.2.3
     - py-bcrypt==0.2
     - Pillow==1.7.8
+    - lxml==3.1.0
 min_version:
   client: 1.4.5
 services:
