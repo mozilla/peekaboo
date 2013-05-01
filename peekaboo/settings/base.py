@@ -18,11 +18,12 @@ ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 INSTALLED_APPS = list(INSTALLED_APPS) + [
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
-    # Example code. Can (and should) be removed for actual projects.
     '%s.main' % PROJECT_MODULE,
+    '%s.sheet' % PROJECT_MODULE,
     'sorl.thumbnail',
     'south',
     'bootstrapform',
+    'django.contrib.admin'
 
 ]
 
@@ -45,8 +46,8 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_URL = 'http://localhost:8000'
 LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = 'main.home'
-LOGIN_REDIRECT_URL_FAILURE = 'main.home'
+LOGIN_REDIRECT_URL = 'main:home'
+LOGIN_REDIRECT_URL_FAILURE = 'main:home'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'django_browserid.context_processors.browserid_form',
@@ -90,4 +91,4 @@ LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # Whether the picture taking part of tablet should be enabled
-TABLET_TAKE_PICTURE = True
+DEFAULT_TAKE_PICTURE = True

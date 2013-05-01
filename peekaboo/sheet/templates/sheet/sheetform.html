@@ -12,10 +12,6 @@
 {% endfor %}
 
 <fieldset>
-    <label for="id_title">Title</label>
-    <div class="controls">
-        {{ form.title }}
-    </div>
 
     <label for="id_first_name">First Name</label>
     <div class="controls">
@@ -26,17 +22,24 @@
     <div class="controls">
         {{ form.last_name }}
     </div>
-</fieldset>
 
-<fieldset>
     <label for="id_email">Email</label>
     <div class="controls">
         {{ form.email }}
     </div>
 
+</fieldset>
+
+<fieldset>
+
     <label for="id_company">Company</label>
     <div class="controls">
         {{ form.company }}
+    </div>
+
+    <label for="id_job_title">Job Title</label>
+    <div class="controls">
+        {{ form.job_title }}
     </div>
 
     <label for="id_visiting">Visiting</label>

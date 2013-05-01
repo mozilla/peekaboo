@@ -1,9 +1,9 @@
-{% extends 'main/tablet_base.html' %}
+{% extends 'sheet/base.html' %}
 
 {% block content %}
 <div id="main-content">
       <p id="loading">
-        <img src="{{ static('main/images/loader.png') }}" alt="Loading" />
+        <img src="{{ static('sheet/images/loader.png') }}" alt="Loading" />
       </p>
 
       <div class="pane" id="location">
@@ -14,10 +14,11 @@
 
       <div class="pane" id="signin">
         <h2>Sign in</h2>
-        <form class="signin_form" action="{{ url('main.tablet-sign-in') }}" method="post">
+        <form class="signin_form" action="{{ url('sheet:sign_in') }}" method="post">
           {{ csrf() }}
-          {{ tabletform(form)|safe }}
-          <button class="button clearfix">Sign in!</button>
+          {{ sheetform(form)|safe }}
+          <button class="button">Sign in!</button>
+          <button class="button">We're all from the same company</button>
         </form>
       </div>
 
@@ -63,6 +64,6 @@
 {% endblock %}
 
 {% block page_js %}
-  <script src="{{ static('main/js/tablet.js') }}"></script>
+  <script src="{{ static('sheet/js/sheet.js') }}"></script>
 
 {% endblock %}

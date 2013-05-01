@@ -23,12 +23,12 @@ class Migration(SchemaMigration):
             ('location', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['main.Location'])),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
+            ('job_title', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
             ('company', self.gf('django.db.models.fields.CharField')(max_length=250, blank=True)),
             ('visiting', self.gf('django.db.models.fields.CharField')(max_length=250, blank=True)),
-            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 3, 12, 0, 0))),
-            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 3, 12, 0, 0), db_index=True)),
+            ('created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 5, 1, 0, 0))),
+            ('modified', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 5, 1, 0, 0), db_index=True)),
             ('picture', self.gf('sorl.thumbnail.fields.ImageField')(max_length=100)),
         ))
         db.send_create_signal('main', ['Visitor'])
@@ -53,15 +53,15 @@ class Migration(SchemaMigration):
         'main.visitor': {
             'Meta': {'object_name': 'Visitor'},
             'company': ('django.db.models.fields.CharField', [], {'max_length': '250', 'blank': 'True'}),
-            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 3, 12, 0, 0)'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 5, 1, 0, 0)'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'job_title': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
             'location': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['main.Location']"}),
-            'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 3, 12, 0, 0)', 'db_index': 'True'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 5, 1, 0, 0)', 'db_index': 'True'}),
             'picture': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
             'visiting': ('django.db.models.fields.CharField', [], {'max_length': '250', 'blank': 'True'})
         }
     }

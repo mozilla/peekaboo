@@ -16,7 +16,7 @@
 <h3>Pick a default location</h3>
 {% for location in all_locations %}
 <p>
-  <a class="btn btn-large" href="{{ url('main.log', location.slug) }}">{{ location.name }}</a>
+  <a class="btn btn-large" href="{{ url('main:log', location.slug) }}">{{ location.name }}</a>
 </p>
 {% endfor %}
 </div>

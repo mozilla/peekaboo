@@ -3,6 +3,23 @@ Peek-a-boo
 
 Peek-a-boo! Who's visiting a Mozilla office?
 
+
+Setting up database
+-------------------
+
+From a blank newly created database with no tables, run:
+
+``./manage.py syncdb``
+
+followed by:
+
+``./manage.py migrate peekaboo.main``
+
+This will apply the migration ``migrations/0001_initial.py``. If you
+haven't already created this file you first have to run:
+
+``./manage.py schemamigration main --initial``
+
 Migrations
 ----------
 

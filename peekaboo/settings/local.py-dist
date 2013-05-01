@@ -61,7 +61,7 @@ PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
 SECRET_KEY = ''
 
 # Should robots.txt allow web crawlers?  Set this to True for production
-ENGAGE_ROBOTS = True
+ENGAGE_ROBOTS = False
 
 # Uncomment these to activate and customize Celery:
 # CELERY_ALWAYS_EAGER = False  # required to activate celeryd
@@ -90,3 +90,14 @@ ENGAGE_ROBOTS = True
 # or if you want to you can change this to for example
 # '/opt/bin/wkhtmlpdf' or something like that
 #PDF_PROGRAM = 'wkhtmltopdf'
+
+
+## Cache settings
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'KEY_PREFIX': 'peekaboo',
+        'TIMEOUT': 6 * 60 * 60,
+        'LOCATION': '127.0.0.1:11211'
+    }
+}

@@ -1,4 +1,3 @@
-
 var Log = (function() {
   var latest = null;
 
@@ -92,7 +91,7 @@ var Log = (function() {
 
   function _fill_row_data(container, data) {
     $('.name', container).text(data.name);
-    $('.title', container).text(data.title);
+    $('.job_title', container).text(data.job_title);
     $('.company', container).text(data.company);
     $('.visiting', container).text(data.visiting);
     $('.email a', container)

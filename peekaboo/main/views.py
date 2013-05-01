@@ -21,59 +21,17 @@ from .models import Visitor, Location
 from .utils import json_view
 
 
+def robots_txt(request):
+    return http.HttpResponse(
+        'User-agent: *\n'
+        '%s: /' % ('Allow' if settings.ENGAGE_ROBOTS else 'Disallow'),
+        mimetype='text/plain',
+    )
+
+
 def home(request):
     data = {}
     return render(request, 'main/home.html', data)
-
-
-def tablet(request):
-    data = {}
-    data['form'] = forms.SignInForm()
-    data['take_picture'] = settings.TABLET_TAKE_PICTURE
-    return render(request, 'main/tablet.html', data)
-
-
-@require_POST
-@json_view
-def tablet_signin(request):
-    form = forms.SignInForm(request.POST)
-    if form.is_valid():
-        visitor = form.save()
-        data = {
-            'id': visitor.pk,
-            'name': visitor.get_name(),
-        }
-        return data
-    else:
-        errors = defaultdict(list)
-        for name, error in form.errors.items():
-            errors[name] = error
-        return {'errors': errors}
-
-@require_POST
-@json_view
-@csrf_exempt
-def tablet_upload(request, pk):
-    visitor = get_object_or_404(Visitor, pk=pk)
-    form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
-    if form.is_valid():
-        visitor = form.save()
-        thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
-        thumbnail = get_thumbnail(
-            visitor.picture,
-            thumbnail_geometry
-        )
-        data = {
-            'ok': True,
-            'thumbnail': {
-                'url': thumbnail.url,
-                'width': thumbnail.width,
-                'height': thumbnail.height,
-            }
-        }
-    else:
-        data = {'errors': form.errors}
-    return data
 
 
 def log_start(request):
@@ -122,7 +80,7 @@ def log_entries(request, location):
             'id': visitor.pk,
             'created': format_date(visitor.created),
             'created_iso': visitor.created.isoformat(),
-            'title': visitor.title,
+            'job_title': visitor.job_title,
             'name': visitor.get_name(formal=True),
             'thumbnail': None,
             'visiting': visitor.visiting,
@@ -154,21 +112,16 @@ def log_entry(request, pk):
 
     if request.method == 'POST':
         form = forms.SignInEditForm(request.POST, instance=visitor)
-        print "POSTING"
         if form.is_valid():
-            print "VALID"
-            print form.cleaned_data
             form.save()
             data = form.cleaned_data
         else:
-            print "ERRORS"
-            print form.errors
             return {'errors': form.errors}
     else:
         data = {
             'first_name': visitor.first_name,
             'last_name': visitor.last_name,
-            'title': visitor.title,
+            'job_title': visitor.job_title,
             'email': visitor.email,
             'company': visitor.company,
             'visiting': visitor.visiting,
@@ -304,21 +257,3 @@ def print_entry_pdf(request, pk):
 
 
     return http.HttpResponse("PDF could not be created")
-
-
-@json_view
-def tablet_locations(request):
-    locations = []
-    # temporary hack
-    if not Location.objects.all().count():
-        Location.objects.create(
-            name='Mountain View',
-            slug='mv',
-            timezone='US/Pacific',
-        )
-    for each in Location.objects.all().order_by('name'):
-        locations.append({
-            'id': each.pk,
-            'name': each.name,
-        })
-    return {'locations': locations}

@@ -3,16 +3,14 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--<meta name="viewport"
-         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">-->
 
         <title>{% block page_title_prefix %}Mozilla — {% endblock %}{% block page_title %}Peekaboo{% endblock %}{% block page_title_suffix %}{% endblock %}</title>
 
         {% block favicon %}<link rel="shortcut icon" href="{{ static('img/favicon.ico') }}" />{% endblock %}
 
         {% compress css %}
-        <link rel="stylesheet" type="text/less" href="{{ static('css/sandstone/sandstone-resp.less') }}" media="screen" />
-        <link rel="stylesheet" type="text/less" href="{{ static('css/peekaboo.less') }}" media="screen" />
+        <link rel="stylesheet" type="text/less" href="{{ static('sandstone/sandstone-resp.less') }}" media="screen" />
+        <link rel="stylesheet" type="text/less" href="{{ static('sheet/css/peekaboo.less') }}" media="screen" />
         {% endcompress %}
         {% block site_css %}{% endblock %}
 
@@ -27,7 +25,7 @@
                 <header id="masthead">
 
                     <ul class="topnav">
-                        <li><a href="{{ url('main.tablet') }}" class="restart">&laquo; Start Over</a></li>
+                        <li><a href="{{ url('sheet:home') }}" class="restart">&laquo; Start Over</a></li>
                         <li><a href="#" class="fullscreen">&laquo; Fullscreen</a></li>
                     </ul>
 
@@ -53,9 +51,9 @@
         </div>
 
         {% block site_js %}
-            <script src="{{ static('main/js/libs/jquery-1.9.1.min.js') }}"></script>
+            <script src="{{ static('js/libs/jquery-1.9.1.min.js') }}"></script>
           {% compress js %}
-            <script src="{{ static('js/site.js') }}"></script>
+            <!--<script src="{{ static('js/site.js') }}"></script>-->
             {% block page_js %}{% endblock %}
           {% endcompress %}
         {% endblock %}
