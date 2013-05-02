@@ -350,7 +350,7 @@ var Location = (function() {
 
 // Find the right method, call on correct element
 function launchFullScreen(element) {
-  if(element.requestFullScreen) {
+  if (element.requestFullScreen) {
     element.requestFullScreen();
   } else if(element.mozRequestFullScreen) {
     element.mozRequestFullScreen();
@@ -358,15 +358,26 @@ function launchFullScreen(element) {
     element.webkitRequestFullScreen();
   }
 }
-
+document.addEventListener("fullscreenchange", function(e) {
+  if (!$('a.fullscreen:visible').length) {
+    $('a.fullscreen').show();
+  }
+});
+document.addEventListener("mozfullscreenchange", function(e) {
+  if (!$('a.fullscreen:visible').length) {
+    $('a.fullscreen').show();
+  }
+});
 
 $(function() {
 
-  $('.fullscreen').click(function(e) {
+  $('a.fullscreen').click(function(e) {
     e.preventDefault();
-    $(this).hide();
     // Launch fullscreen for browsers that support it!
     launchFullScreen(document.documentElement); // the whole page
+    setTimeout(function() {
+      $('a.fullscreen').hide();
+    }, 2 * 1000);
   });
 
   loader = $('#loading');
