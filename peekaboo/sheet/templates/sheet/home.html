@@ -17,8 +17,10 @@
         <form class="signin_form" action="{{ url('sheet:sign_in') }}" method="post">
           {{ csrf() }}
           {{ sheetform(form)|safe }}
-          <button class="button">Sign in!</button>
-          <button class="button">We're all from the same company</button>
+          <div class="signin_buttons">
+            <button class="button group_signin">Group Sign in!</button>
+            <button class="button">Sign in!</button>
+          </div>
         </form>
       </div>
 
