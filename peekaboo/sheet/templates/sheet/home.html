@@ -1,4 +1,4 @@
-{% extends 'sheet/base.html' %}
+{% extends "sheet/base.html" %}
 
 {% block content %}
 <div id="main-content">
@@ -17,9 +17,13 @@
         <form class="signin_form" action="{{ url('sheet:sign_in') }}" method="post">
           {{ csrf() }}
           {{ sheetform(form)|safe }}
-          <div class="signin_buttons">
-            <button class="button group_signin">Group Sign in!</button>
+          <div class="signin_buttons individual">
             <button class="button">Sign in!</button>
+            <button class="button rightmost group_signin">We're all from the same company</button>
+          </div>
+          <div class="signin_buttons group" style="display:none">
+            <button class="button group_signin">Next</button>
+            <button class="button rightmost">Last in group</button>
           </div>
         </form>
       </div>

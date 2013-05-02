@@ -38,11 +38,7 @@ var Utils = (function() {
       // Set the correct step as active
       $(step).addClass('active');
     },
-    toTitleCase: function (str) {
-        return str.replace(/\w*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-    },
     general_error: function(msg, reload_tip) {
-      console.log('XXX -- this needs a lot more work');
       alert(msg);
     },
     ajax_error: function(msg, description, callback) {
@@ -91,9 +87,21 @@ var SignIn = (function() {
 
   }
 
-  function submit(form) {
-    var $form = $(form);
-    $('#id_location', $form).val(Location.get_current_location().id);
+  function submit($form, group_signin) {
+    var location_id = Location.get_current_location().id;
+    if (!location_id) {
+      showPanel('location');
+      return;
+    }
+    if (group_signin && !$('#id_company').val()) {
+      Utils.general_error("Enter a Company name");
+      return;
+    }
+
+    var company = $('#id_company').val();
+    var visiting = $('#id_visiting').val();
+
+    $('#id_location', $form).val(location_id);
     $.post($form.attr('action'), $form.serializeObject(), function(response) {
         if (response.errors) {
           $.each(response.errors, function(key, errors) {
@@ -117,7 +125,14 @@ var SignIn = (function() {
           });
 
         } else {
-          form.reset();
+          $form[0].reset();
+          if (group_signin) {
+            $('#id_company').val(company);
+            $('#id_visiting').val(visiting);
+            setTimeout(function() {
+              $('#id_first_name').focus();
+            }, 100);
+          }
 
           // If the form submission was a success,
           // at this point, we want to offer the user
@@ -126,7 +141,10 @@ var SignIn = (function() {
 
           $('.yourname').text(response.name);
 
-          if (Config.get('take-picture')) {
+          if (group_signin) {
+            $('.individual', $form).hide();
+            $('.group', $form).show();
+          } else if (Config.get('take-picture')) {
             Utils.showPanel('picture');
             Utils.setActiveStep('#step_picture');
 
@@ -223,9 +241,15 @@ var SignIn = (function() {
       });
 
       $('#signin form').submit(function() {
-        submit(this);
+        submit($(this), false);
         return false;
       });
+
+      $('#signin button.group_signin').click(function() {
+        submit($('#signin form'), true);
+        return false;
+      });
+
 
       $('#picture input[type="file"]').change(picture_changed);
       $('#picture .proceed').click(function() {
@@ -338,20 +362,9 @@ function launchFullScreen(element) {
 
 $(function() {
 
-  var signinForm = $('.signin_form');
-
-  if(signinForm.length > 0) {
-    var txtInputs = signinForm.find('input[type="text"]');
-    txtInputs.blur(function() {
-      if($(this).attr('name') !== 'email') {
-        $(this).val(Utils.toTitleCase($(this).val()));
-      }
-    });
-  }
-
   $('.fullscreen').click(function(e) {
-    $(this).hide();
     e.preventDefault();
+    $(this).hide();
     // Launch fullscreen for browsers that support it!
     launchFullScreen(document.documentElement); // the whole page
   });
