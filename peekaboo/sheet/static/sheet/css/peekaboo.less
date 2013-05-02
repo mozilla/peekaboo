@@ -98,7 +98,13 @@ nav.menu-bar {
         }
     }
 }
-#signinform {
+.signin_form {
+    .signin_buttons {
+        float: right;
+    }
+    .group_signin {
+        margin-right: 10px;
+    }
     button {
         .clearfix;
     }
@@ -137,13 +143,6 @@ nav.menu-bar {
 .reset {
     display: block;
     margin-top: 10px;
-}
-.button,
-.button:link,
-.button:visited {
-    padding: 0 30px;
-    font-size: 21px;
-    height: 50px;
 }
 #colophon {
     .row {
@@ -184,9 +183,6 @@ form {
         float: left;
     }
     fieldset:nth-of-type(even) {
-        float: right;
-    }
-    button {
         float: right;
     }
     .controls {
