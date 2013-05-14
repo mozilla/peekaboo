@@ -26,11 +26,13 @@ var Utils = (function() {
   return {
     showPanel: function(panel) {
       var currentPanel = document.getElementById(panel);
-      window.location.hash = "#" + panel;
-
+      window.location.hash = '#' + panel;
+      SignIn.opened('#' + panel);
+      /*
       currentPanel.addEventListener('transitionend', function() {
         SignIn.opened('#' + panel);
       });
+      */
     },
     setActiveStep: function (step) {
       var menuBar = $('.menu-bar'),
@@ -85,16 +87,22 @@ var SignIn = (function() {
   var snap_blob = null;
 
   function opened(id) {
-    /* Called when a pain is opened */
+    /* Called when a pane is opened */
 
     if (id === '#thankyou') {
       _auto_reset_timer = setTimeout(function() {
-        console.log("Automatically resetting");
         reset_all();
-      }, 20 * 1000);
+      }, 15 * 1000);
+    } else if (id === '#signin') {
+      if (_auto_reset_timer) {
+        // just to be safe
+        clearTimeout(_auto_reset_timer);
+      }
     }
 
   }
+
+  var was_group_signin = false;
 
   function submit($form, group_signin) {
     var location_id = Location.get_current_location().id;
@@ -153,20 +161,24 @@ var SignIn = (function() {
           if (group_signin) {
             $('.individual', $form).hide();
             $('.group', $form).show();
-          } else if (Config.get('take-picture')) {
-            Utils.showPanel('picture');
-            Utils.setActiveStep('#step_picture');
-
-            $('#picture').data('id', response.id);
-            $('#picture').fadeIn(300, function() {
-              opened('#picture');
-            });
+          } else if (was_group_signin) {
+            // XXX we could potentially summarize all the group logged in here
+            $('.individual', $form).show();
+            $('.group', $form).hide();
           } else {
-            Utils.showPanel('thankyou');
-            Utils.setActiveStep('#step_thankyou');
+            if (Config.get('take-picture')) {
+              Utils.showPanel('picture');
+              Utils.setActiveStep('#step_picture');
+              $('#picture').data('id', response.id);
+              $('#picture').fadeIn(300);
+            } else {
+              Utils.showPanel('thankyou');
+              Utils.setActiveStep('#step_thankyou');
+            }
           }
 
         }
+      was_group_signin = group_signin;
     });
   }
 
