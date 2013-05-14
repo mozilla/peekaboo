@@ -155,38 +155,6 @@ var SignIn = (function() {
             $('.group', $form).show();
           } else if (Config.get('take-picture')) {
             Utils.showPanel('picture');
-            if (!_photobooth_setup) {
-              Photobooth.setup(function() {
-                $('a.snap').click(function(e) {
-                  e.preventDefault();
-
-                  var flash = $('.flash').show();
-                  setTimeout(function() {
-                    flash.addClass('fadeout');
-                    setTimeout(function() {
-                      flash.hide().removeClass('fadeout');
-                    }, 1000);
-                  }, 200);
-                  /*
-                  $('.flash')
-                    .show()  //show the hidden div
-                    .animate({opacity: 0.5}, 300)
-                    .fadeOut(300);
-                   */
-
-                  var canvas = Photobooth.getCanvas();
-                  document.getElementById('shutter-sound').play();
-                  canvas.toBlob(function(blob) {
-                    snap_blob = blob; // keep it in memory
-                  });
-                  $('.preview img').attr('src', canvas.toDataURL());
-                  $('#picture form').hide();
-                  $('.preview').show();
-                  //Photobooth.takeSnapshot();
-                });
-              });
-              _photobooth_setup = true;
-            }
             Utils.setActiveStep('#step_picture');
 
             $('#picture').data('id', response.id);
@@ -273,11 +241,38 @@ var SignIn = (function() {
         });
         return false;
       });
+
       $('#picture .skip').click(function() {
           Utils.showPanel('thankyou');
           Utils.setActiveStep('#step_thankyou');
           return false;
       });
+
+      if (Config.get('take-picture')) {
+        Photobooth.setup(function() {
+          $('a.snap').click(function(e) {
+            e.preventDefault();
+
+            var flash = $('.flash').show();
+            setTimeout(function() {
+              flash.addClass('fadeout');
+              setTimeout(function() {
+                flash.hide().removeClass('fadeout');
+              }, 1000);
+            }, 200);
+
+            var canvas = Photobooth.getCanvas();
+            document.getElementById('shutter-sound').play();
+            canvas.toBlob(function(blob) {
+              snap_blob = blob; // keep it in memory
+            });
+            $('.preview img').attr('src', canvas.toDataURL());
+            $('#picture form').hide();
+            $('.preview').show();
+          });
+        });
+      }
+
     },
     opened: function(id) {
       opened(id);
