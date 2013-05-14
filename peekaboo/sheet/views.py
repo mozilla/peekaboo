@@ -41,6 +41,16 @@ def signin(request):
 @json_view
 @csrf_exempt
 def upload(request, pk):
+    print "POST"
+    print repr(str(request.POST.items())[:250])
+    print
+    print "FILES"
+    print request.FILES.items()
+    print
+    try:
+        print repr(str(request.FILES.values()[0])[:250])
+    except:
+        print ":(error"
     visitor = get_object_or_404(Visitor, pk=pk)
     form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
     if form.is_valid():

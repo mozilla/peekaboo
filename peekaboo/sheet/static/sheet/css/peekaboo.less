@@ -110,7 +110,7 @@ nav.menu-bar {
         .clearfix;
     }
 }
-.preview {
+.xpreview {
     position: absolute;
     top: 0;
     left: 400px;
@@ -190,6 +190,23 @@ form {
         margin-bottom: 9px;
     }
 }
+
+.flash {
+    z-index: 1000;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:#fff;
+    -moz-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+ }
+
+ .fadeout {
+   opacity: 0;
+ }
+
 /*http://developer.yahoo.com/blogs/ydn/posts/2012/10/clip-your-hidden-content-for-better-accessibility/*/
 label {
     position: absolute;

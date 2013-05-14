@@ -1,3 +1,9 @@
+/*
+setTimeout(function() {
+$('.flash').addClass('fadeout');
+}, 3000);
+ */
+
 var loader = null;
 
 $.fn.serializeObject = function() {
@@ -72,8 +78,11 @@ var Config = (function() {
 
 
 var SignIn = (function() {
-  var current_file;
+  //var current_file;// deprecated?
   var _auto_reset_timer = null;
+  var _photobooth_setup = false;
+  //var snap_data_url = null;
+  var snap_blob = null;
 
   function opened(id) {
     /* Called when a pain is opened */
@@ -146,6 +155,38 @@ var SignIn = (function() {
             $('.group', $form).show();
           } else if (Config.get('take-picture')) {
             Utils.showPanel('picture');
+            if (!_photobooth_setup) {
+              Photobooth.setup(function() {
+                $('a.snap').click(function(e) {
+                  e.preventDefault();
+
+                  var flash = $('.flash').show();
+                  setTimeout(function() {
+                    flash.addClass('fadeout');
+                    setTimeout(function() {
+                      flash.hide().removeClass('fadeout');
+                    }, 1000);
+                  }, 200);
+                  /*
+                  $('.flash')
+                    .show()  //show the hidden div
+                    .animate({opacity: 0.5}, 300)
+                    .fadeOut(300);
+                   */
+
+                  var canvas = Photobooth.getCanvas();
+                  document.getElementById('shutter-sound').play();
+                  canvas.toBlob(function(blob) {
+                    snap_blob = blob; // keep it in memory
+                  });
+                  $('.preview img').attr('src', canvas.toDataURL());
+                  $('#picture form').hide();
+                  $('.preview').show();
+                  //Photobooth.takeSnapshot();
+                });
+              });
+              _photobooth_setup = true;
+            }
             Utils.setActiveStep('#step_picture');
 
             $('#picture').data('id', response.id);
@@ -161,9 +202,9 @@ var SignIn = (function() {
     });
   }
 
-  function upload_current_file(file, callback) {
+  function upload_current_file(image, callback) {
     var fd = new FormData();
-    fd.append('picture', file);
+    fd.append('picture', image);
     $.ajax({
        url: 'upload/' + $('#picture').data('id') + '/',
       type: 'POST',
@@ -175,54 +216,16 @@ var SignIn = (function() {
     });
   }
 
-  function picture_changed(event) {
-         var preview_img = $('#picture .preview img');
-         var files = event.target.files;
-
-         if (files && files.length > 0) {
-           current_file = files[0];
-
-           try {
-             // Get window.URL object
-             var URL = window.URL || window.webkitURL;
-
-
-             // Create ObjectURL
-             var imgURL = URL.createObjectURL(current_file);
-
-             // Set img src to ObjectURL
-             preview_img.attr('src', imgURL);
-
-             // Revoke ObjectURL
-             URL.revokeObjectURL(imgURL);
-             $('#picture .preview').show();
-           } catch (e) {
-             try {
-               // Fallback if createObjectURL is not supported
-               var fileReader = new FileReader();
-               fileReader.onload = function (event) {
-                 //showPicture.src = event.target.result;
-                 preview_img.attr('src', event.target.result);
-
-               };
-               fileReader.readAsDataURL(current_file);
-               $('#picture .preview').show();
-             } catch (e) {
-               // Display error message
-               $('#picture .error span')
-                 .text("Neither createObjectURL or FileReader are supported");
-               $('#picture .error').show();
-             }
-           }
-         }
-  }
-
   function reset_all() {
     $('#signin form')[0].reset();
     $('.yourname').text('');
     $('.preview').hide();
     $('.restart').hide();
     $('.uploading').hide();
+    if (Config.get('take-picture')) {
+      $('#picture form').show();
+    }
+    $('.preview').hide();
 
     Utils.showPanel('signin');
     Utils.setActiveStep('step_signup');
@@ -250,26 +253,26 @@ var SignIn = (function() {
         return false;
       });
 
-
-      $('#picture input[type="file"]').change(picture_changed);
       $('#picture .proceed').click(function() {
         $('#picture .uploading').show();
-        upload_current_file(current_file, function(response) {
-          console.log(response);
-
-          if (response.thumbnail) {
-            $('#thankyou .thumbnail')
-              .attr('src', response.thumbnail.url)
-              .attr('width', response.thumbnail.width)
-              .attr('height', response.thumbnail.height);
-              $('#thankyou .thumbnail').show();
+        upload_current_file(snap_blob, function(response) {
+          if (response.errors) {
+            Utils.general_error(response.errors);
           } else {
-             $('#thankyou .thumbnail').hide();
+            if (response.thumbnail) {
+              $('#thankyou .thumbnail')
+                .attr('src', response.thumbnail.url)
+                  .attr('width', response.thumbnail.width)
+                    .attr('height', response.thumbnail.height);
+              $('#thankyou .thumbnail').show();
+            } else {
+              $('#thankyou .thumbnail').hide();
+            }
+            Utils.showPanel('thankyou');
           }
-          Utils.showPanel('thankyou');
-         });
+        });
         return false;
-     });
+      });
       $('#picture .skip').click(function() {
           Utils.showPanel('thankyou');
           Utils.setActiveStep('#step_thankyou');
