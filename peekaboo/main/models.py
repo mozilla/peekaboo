@@ -55,16 +55,9 @@ class Visitor(models.Model):
 
     def get_name(self, formal=False):
         return ("%s %s" % (self.first_name, self.last_name)).strip()
-        if formal:
-            if self.title and self.last_name:
-                return "%s %s" % (self.title, self.last_name)
-            if self.first_name and self.last_name:
-                return "%s %s" % (self.first_name, self.last_name)
-        if self.first_name:
-            return self.first_name
-        if self.last_name:
-            return self.last_name
-        return u''
+
+    def __unicode__(self):
+        return self.get_name()
 
 
 @receiver(models.signals.pre_save, sender=Visitor)

@@ -1,3 +1,5 @@
+import calendar
+import functools
 import os
 import subprocess
 import tempfile
@@ -10,15 +12,26 @@ from cStringIO import StringIO
 from collections import defaultdict
 from pyquery import PyQuery as pq
 from django import http
+from django.utils.timezone import utc, make_aware
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.files import File
 from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor, Location
 from .utils import json_view
+
+
+def ajax_login_required(view_func):
+    @functools.wraps(view_func)
+    def inner(request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return http.HttpResponse('Forbidden', status=403)
+        return view_func(request, *args, **kwargs)
+    return inner
 
 
 def robots_txt(request):
@@ -50,6 +63,7 @@ def log(request, location):
 
 
 @json_view
+@ajax_login_required
 def log_entries(request, location):
     data = {
         'latest': None,
@@ -66,13 +80,16 @@ def log_entries(request, location):
 
     qs = Visitor.objects.filter(location=location)
     if request.GET.get('latest'):
-        latest = datetime.datetime.fromtimestamp(
+        latest = datetime.datetime.utcfromtimestamp(
             float(request.GET['latest'])
         )
+        latest = latest.replace(tzinfo=utc)
+
         # because latest is potentially lacking in microseconds
         # add some to prevent fetching it again
         latest += datetime.timedelta(seconds=1)
         qs = qs.filter(created__gte=latest)
+
     first = None
     for visitor in qs.order_by('created'):
 
@@ -100,7 +117,8 @@ def log_entries(request, location):
         data['rows'].append(row)
         first = visitor.created
     if first:
-        data['latest'] = time.mktime(first.timetuple())
+        data['latest'] = calendar.timegm(first.utctimetuple())
+
     return data
 
 

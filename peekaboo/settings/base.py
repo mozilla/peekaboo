@@ -24,8 +24,10 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'south',
     'bootstrapform',
     'django.contrib.admin'
-
 ]
+
+INSTALLED_APPS.remove('django_nose')
+INSTALLED_APPS.append('django_nose')
 
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
