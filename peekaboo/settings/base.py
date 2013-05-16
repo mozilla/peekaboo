@@ -20,11 +20,17 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     '%s.base' % PROJECT_MODULE,
     '%s.main' % PROJECT_MODULE,
     '%s.sheet' % PROJECT_MODULE,
+    '%s.auth' % PROJECT_MODULE,
     'sorl.thumbnail',
     'south',
     'bootstrapform',
     'django.contrib.admin'
 ]
+
+
+# django_browserid is supposed to be *after* django.contrib.auth
+INSTALLED_APPS.remove('django_browserid')
+INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.auth') + 1, 'django_browserid')
 
 INSTALLED_APPS.remove('django_nose')
 INSTALLED_APPS.append('django_nose')
@@ -38,6 +44,7 @@ LOCALE_PATHS = (
 JINGO_EXCLUDE_APPS = [
     'admin',
     'bootstrapform',
+    'browserid',
 ]
 
 # BrowserID configuration
@@ -47,12 +54,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_URL = 'http://localhost:8000'
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = 'main:home'
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL_FAILURE = 'main:home'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
-    'django_browserid.context_processors.browserid_form',
+    'django_browserid.context_processors.browserid',
     'peekaboo.main.context_processors.main',
 ]
 

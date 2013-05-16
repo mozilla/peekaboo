@@ -42,16 +42,19 @@ def robots_txt(request):
     )
 
 
+@login_required
 def home(request):
     data = {}
     return render(request, 'main/home.html', data)
 
 
+@login_required
 def log_start(request):
     data = {}
     return render(request, 'main/log-start.html', data)
 
 
+@login_required
 def log(request, location):
     location = get_object_or_404(Location, slug=location)
     data = {
@@ -158,6 +161,7 @@ def log_entry(request, pk):
     return data
 
 
+@login_required
 @json_view
 @require_POST
 def delete_entry(request, pk):
@@ -167,6 +171,7 @@ def delete_entry(request, pk):
     return {'deleted': True}
 
 
+@login_required
 def print_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     data = {
@@ -175,6 +180,7 @@ def print_entry(request, pk):
     return render(request, 'main/print-entry.html', data)
 
 
+@login_required
 def print_entry_pdf(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     data = {

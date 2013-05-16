@@ -1,0 +1,42 @@
+{% extends 'main/main_base.html' %}
+
+{% block extrahead %}
+<style type="text/css">
+.options p,
+.options h3 {
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block extrajs %}
+{{ browserid_js() }}
+{% endblock %}
+
+
+{% block main %}
+{{ browserid_info() }}
+
+<div class="options">
+{% if user.is_authenticated() %}
+  <h3>Logout</h3>
+  <p>Click the Persona logout below.</p>
+{% else %}
+  <h3>Login</h3>
+  <p>
+    You log in with your Mozilla email address using Persona and if you're
+    one of the exclusive few who are welcomed, you're in!
+  </p>
+{% endif %}
+
+<p>
+        {% if user.is_authenticated() %}
+          {{ browserid_logout(text='Logout') }}
+        {% else %}
+          {{ browserid_login(text='Login') }}
+        {% endif %}
+</p>
+
+</div>
+
+{% endblock %}

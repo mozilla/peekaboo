@@ -13,7 +13,9 @@ urlpatterns = patterns('',
     # Example:
     (r'', include('peekaboo.main.urls', namespace='main')),
     (r'^sheet/', include('peekaboo.sheet.urls', namespace='sheet')),
+    (r'^auth/', include('peekaboo.auth.urls', namespace='auth')),
     (r'^admin/', include(admin.site.urls)),
+    (r'^browserid/', include('django_browserid.urls')),
 )
 
 ## In DEBUG mode, serve media files through Django.
