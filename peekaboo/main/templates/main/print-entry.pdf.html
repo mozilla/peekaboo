@@ -7,31 +7,32 @@
     <style type="text/css">
 body {
     font-family: Helvetica, Arial, sans-serif;
+    margin: 0; padding: 0;
 }
 h1, h2 {
     text-align: center;
 }
 h1 {
-    font-size: 30pt;
+    font-size: 50pt;
 }
 h2 {
-    font-size: 25pt;
+    font-size: 37pt;
     color: #999;
 }
 
 #wrap {
     z-index: 1;
     position: relative;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .logo {
     position: absolute;
     z-index: 100;
-    top: 5px;
+    top: 305px;
     right: 5px;
     /*float: right;*/
-    opacity: 0.6;
+    opacity: 0.7;
 
 }
 
@@ -52,7 +53,6 @@ h2 {
   <body>
 
   <div id="wrap">
-    <img src="{{ static('main/images/mozilla-logo-100.png') }}" class="logo">
     <h1>{{ visitor.get_name() }}</h1>
 
     {% if visitor.company %}
@@ -66,6 +66,7 @@ h2 {
             alt="{{ visitor.get_name() }}">
     </p>
     {% endif %}
+    <img src="{{ static('main/images/mozilla-logo-200.png') }}" class="logo">
   </div>
 
   </body>
