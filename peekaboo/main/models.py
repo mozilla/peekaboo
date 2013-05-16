@@ -64,4 +64,8 @@ class Visitor(models.Model):
 def update_modified(sender, instance, raw, *args, **kwargs):
     if raw:
         return
-    instance.modified = _now()
+
+    now = _now()
+    if instance.modified < now:
+        # only if it's not already been set
+        instance.modified = now

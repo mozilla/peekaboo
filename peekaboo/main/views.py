@@ -70,7 +70,8 @@ def log(request, location):
 def log_entries(request, location):
     data = {
         'latest': None,
-        'rows': []
+        'created': [],
+        'modified': []
     }
     location = get_object_or_404(Location, slug=location)
     thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
@@ -91,11 +92,12 @@ def log_entries(request, location):
         # because latest is potentially lacking in microseconds
         # add some to prevent fetching it again
         latest += datetime.timedelta(seconds=1)
-        qs = qs.filter(created__gte=latest)
+        recently_created = qs.filter(created__gte=latest)
+    else:
+        latest = None
+        recently_created = qs
 
-    first = None
-    for visitor in qs.order_by('created'):
-
+    def make_row(visitor):
         row = {
             'id': visitor.pk,
             'created': format_date(visitor.created),
@@ -117,8 +119,26 @@ def log_entries(request, location):
                 'width': thumbnail.width,
                 'height': thumbnail.height,
             }
-        data['rows'].append(row)
-        first = visitor.created
+        return row
+
+    first = None
+    for visitor in recently_created.order_by('created'):
+        row = make_row(visitor)
+        data['created'].append(row)
+        first = max(visitor.created, visitor.modified)
+
+    # now how about those recently updated
+    if latest:
+        recently_modified = qs.filter(
+            created__lt=latest,
+            modified__gt=latest
+        )
+        for visitor in recently_modified.order_by('modified'):
+            row = make_row(visitor)
+            assert row not in data['created']
+            data['modified'].append(row)
+            first = visitor.modified
+
     if first:
         data['latest'] = calendar.timegm(first.utctimetuple())
 

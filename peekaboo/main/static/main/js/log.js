@@ -42,11 +42,13 @@ var Log = (function() {
   function add_rows(rows, highlight) {
     var parent = $('#entries');
     var template = $('#entry-template .entry');
-    $('.new').removeClass('new');
     $.each(rows, function(i, row) {
       var copy = template.clone();
       if (highlight) {
         copy.addClass('new');
+        setTimeout(function() {
+          $('.new').removeClass('new');
+        }, 3 * 1000);
       }
       copy.data('id', row.id);
       copy.attr('id', 'entry-' + row.id);
@@ -83,6 +85,20 @@ var Log = (function() {
       });
       copy.prependTo(parent);
       make_timeago($('time', copy));
+    });
+  }
+
+  function modify_rows(rows, highlight) {
+    $.each(rows, function(i, row) {
+      var entry = $('#entry-' + row.id);
+      if (highlight) {
+        entry.addClass('new');
+        setTimeout(function() {
+          $('.new').removeClass('new');
+        }, 3 * 1000);
+      }
+      _fill_row_data(entry, row);
+      make_timeago($('time', entry));
     });
   }
 
@@ -137,7 +153,8 @@ var Log = (function() {
       if (response.latest) {
         latest = response.latest;
       }
-      add_rows(response.rows, highlight);
+      add_rows(response.created, highlight);
+      modify_rows(response.modified, highlight);
     });
   }
 
