@@ -5,6 +5,9 @@
     <title>{{ visitor.get_name() }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
+* {
+    margin: 0; padding: 0;
+}
 body {
     font-family: Helvetica, Arial, sans-serif;
 }
@@ -12,44 +15,44 @@ h1, h2 {
     text-align: center;
 }
 h1 {
-    font-size: 30pt;
+    font-size: 27px;
+    padding-left:10px;  /* offset for paper not being exact */
 }
 h2 {
-    font-size: 25pt;
-    color: #999;
+    font-size: 20px;
+    padding-left: 10px; /* offset for paper not being exact */
+    color: rgb(200,200,200);
 }
 
 #wrap {
-    z-index: 1;
-    position: relative;
-    border: 1px solid black;
-    /*background: url({{ static('main/images/firefox-logo-220.png') }}) 99% center no-repeat;*/
+    width: 350px;
+    height: 100px;
+    border:1px;
+    /*z-index: 1;
+    position: relative;*/
+    /*border: 1px solid black;*/
 }
 
-.logo {
+.xxxlogo {
     position: absolute;
     z-index: 100;
-    top: 5px;
-    right: 5px;
+    top: 60px;
+    right: 1px;
     /*float: right;*/
-    opacity: 0.6;
+    opacity: 0.7;
 
 }
+.logo {margin-top:5px;float:right}
 
-@page {
-    @top-left{
-        font-family: Helvetica, Arial, sans-serif;
-        font-size: 18pt;
-        font-weight: bolder;
-        content: "XHTML-Print: A Proposal --- August 25, 2000";
-    }
+.thumbnail {
+    text-align: center;
 }
+
     </style>
-  <head>
+  </head>
   <body>
 
   <div id="wrap">
-    <img src="{{ static('main/images/firefox-logo-100.png') }}" class="logo">
     <h1>{{ visitor.get_name() }}</h1>
 
     {% if visitor.company %}
@@ -58,17 +61,14 @@ h2 {
 
     {% if visitor.picture %}
     <p class="thumbnail">
-    {% set thumb = thumbnail(visitor.picture, '260x260') %}
+    {% set thumb = thumbnail(visitor.picture, '160x160') %}
       <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
             alt="{{ visitor.get_name() }}">
     </p>
     {% endif %}
+    <!--<img src="{{ static('main/images/mozilla-logo-200.png') }}" class="logo">-->
+    <img src="{{ static('main/images/mozilla-logo-100.png') }}" class="logo">
   </div>
 
-  <script type="text/javascript">
-  window.onload = function() {
-//    window.print();
-  };
-  </script>
   </body>
 </html>

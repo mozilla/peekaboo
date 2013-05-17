@@ -23,8 +23,41 @@ var Log = (function() {
     });
   }
 
+  /* these three from https://developer.mozilla.org/en-US/docs/Printing */
+  function closePrint () {
+    document.body.removeChild(this.__container__);
+  }
+
+  function setPrint () {
+    this.contentWindow.__container__ = this;
+    this.contentWindow.onbeforeunload = closePrint;
+    this.contentWindow.onafterprint = closePrint;
+    this.contentWindow.print();
+  }
+
+  function printPage (sURL) {
+    var oHiddFrame = document.createElement("iframe");
+    oHiddFrame.onload = setPrint;
+    oHiddFrame.style.visibility = "hidden";
+    oHiddFrame.style.position = "fixed";
+    oHiddFrame.style.right = "0";
+    oHiddFrame.style.bottom = "0";
+    oHiddFrame.src = sURL;
+    document.body.appendChild(oHiddFrame);
+  }
+
   function open_print_entry(id) {
     var url = getPrintURL(id);
+    /* SADLY Firefox does not support printing PDFs in iframes :(
+     * See...
+     * https://bugzilla.mozilla.org/show_bug.cgi?id=647658
+     * http://storage.michaelaquilina.com/ff-print/
+     * http://stackoverflow.com/questions/15011799/firefox-19-print-pdf-from-javascript
+     * http://jsfiddle.net/hytcX/3/
+     *
+     * So for now, we have to rely on window.open(url) or use Chrome :)
+     */
+    //printPage(url);
     open(url);
   }
 
@@ -135,7 +168,7 @@ var Log = (function() {
       if (delete_) {
         return start + 'entry/' + id + '/delete/';
       } else if (print) {
-        //return start + 'entry/' + id + '/print/';
+        //return start + 'entry/' + id + '/print/?print=&iframe=true';
         return start + 'entry/' + id + '/print.pdf';
       } else {
         return start + 'entry/' + id + '/';

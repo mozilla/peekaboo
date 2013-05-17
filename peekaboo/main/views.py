@@ -196,8 +196,13 @@ def print_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     data = {
         'visitor': visitor,
+        'print': request.GET.get('print', False)
     }
-    return render(request, 'main/print-entry.html', data)
+    response = render(request, 'main/print-entry.html', data)
+    if request.GET.get('iframe'):
+        response['X-Frame-Options'] = 'SAMEORIGIN'
+        response["Access-Control-Allow-Origin"] = "*"
+    return response
 
 
 @login_required
@@ -289,10 +294,13 @@ def print_entry_pdf(request, pk):
     #print "FILE CREATED", os.path.isfile(output_file) and "Yes!" or "No"
     #print '-' * 70
     if os.path.isfile(output_file):
-        response['Content-Disposition'] = (
-            'filename="%s.pdf"' % os.path.basename(output_file)
-        )
+        #response['Content-Disposition'] = (
+        #    'filename="%s.pdf"' % os.path.basename(output_file)
+        #)
         response = http.HttpResponse(mimetype='application/pdf')
+        # so we can print from an iframe
+        response['X-Frame-Options'] = 'SAMEORIGIN'
+        #response["Access-Control-Allow-Origin"] = "*"
         response.write(open(output_file).read())
 
         os.remove(input_file)
