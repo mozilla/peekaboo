@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.core.files import File
+from funfactory.urlresolvers import reverse
 from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor, Location
@@ -119,6 +120,10 @@ def log_entries(request, location):
                 'width': thumbnail.width,
                 'height': thumbnail.height,
             }
+            row['picture_url'] = (
+                reverse('main:log_entry_picture', args=(visitor.pk,)) +
+                '?width=600&height=400'
+            )
         return row
 
     first = None
@@ -179,6 +184,25 @@ def log_entry(request, pk):
             'height': thumbnail.height,
         }
     return data
+
+
+@json_view
+@csrf_exempt
+def log_entry_picture(request, pk, format):
+    visitor = get_object_or_404(Visitor, pk=pk)
+    if not visitor.picture:
+        return http.HttpResponseBadRequest("Doesn't have a picture")
+
+    geometry = (
+        '%sx%s' %
+        (request.GET.get('width', 600),
+         request.GET.get('width', 500))
+    )
+    picture = get_thumbnail(
+        visitor.picture,
+        geometry
+    )
+    return http.HttpResponse(picture.read(), mimetype='image/jpeg')
 
 
 @login_required

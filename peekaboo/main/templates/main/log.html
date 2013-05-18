@@ -2,6 +2,7 @@
 
 {% block extrahead %}
     {% compress css %}
+    <link href="{{ static('main/js/libs/magnific-popup.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ static('main/css/log.css') }}" rel="stylesheet" type="text/css">
     {% endcompress %}
 {% endblock %}
@@ -11,6 +12,7 @@
     <script src="{{ static('main/js/libs/jquery.timeago.js') }}"></script>
     <script src="{{ static('main/js/libs/moment.min.js') }}"></script>
     <script src="{{ static('main/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ static('main/js/libs/magnific-popup-v0.8.5.min.js') }}"></script>
     <!--<script src="{{ static('main/js/printer.js') }}"></script>-->
     <script src="{{ static('main/js/log.js') }}"></script>
     {% endcompress %}
@@ -62,7 +64,7 @@
   </div>
 
 
-  <img src="javascript:void(0)">
+  <a href="#" title="Bigger picture"><img src="javascript:void(0)"></a>
   <dl class="dl-horizontal">
     <dt>Email:</dt>
     <dd class="email"><a></a></dd>

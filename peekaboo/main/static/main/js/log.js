@@ -150,6 +150,10 @@ var Log = (function() {
       .attr('datetime', data.created_iso)
       .text(data.created);
     if (data.thumbnail) {
+      $('a', container)
+        .attr('title', data.name)
+        .attr('href', data.picture_url)
+        .magnificPopup({type:'image'});
       $('img', container)
         .attr('src', data.thumbnail.url)
         .attr('width', data.thumbnail.width)

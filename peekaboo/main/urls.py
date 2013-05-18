@@ -18,6 +18,8 @@ urlpatterns = patterns(
         name='log_entries'),
     url(r'^log/entry/(?P<pk>\d+)/$', views.log_entry,
         name='log_entry'),
+    url(r'^log/entry/(?P<pk>\d+)/picture\.jpg$', views.log_entry_picture,
+        {'format': 'jpg'}, name='log_entry_picture'),
     url(r'^log/entry/(?P<pk>\d+)/delete/$', views.delete_entry,
         name='delete_entry'),
     url(r'^log/entry/(?P<pk>\d+)/print/$', views.print_entry,
