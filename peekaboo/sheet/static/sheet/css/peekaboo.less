@@ -8,11 +8,14 @@
 }
 
 html,
-body,
-#outer-wrapper {
+body {
     height: 100%;
 }
-
+#outer-wrapper {
+    position: relative;
+    padding: 0 0 40px;
+    min-height: 100%;
+}
 #main-content {
     position: relative;
 }
@@ -159,21 +162,19 @@ nav.menu-bar {
     margin-top: 10px;
 }
 #colophon {
-    background-color: transparent;
-    .current-location {
-        position: fixed;
-        bottom: 0;
-        background-color: rgb(39, 97, 149);
+    position: absolute;
+    background-color: rgb(39, 97, 149);
+    color: #fff;
+    bottom: 0;
+    left: 0;
+    padding: 5px 5px 5px 10px;
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+    a:link,
+    a:visited,
+    a:hover {
         color: #fff;
-        margin-bottom: 0;
-        padding: 5px 5px 5px 10px;
-        width: 100%;
-        font-size: 16px;
-        a:link,
-        a:visited,
-        a:hover {
-            color: #fff;
-        }
     }
 }
 form {
@@ -186,6 +187,12 @@ form {
     }
     .controls {
         margin-bottom: 9px;
+    }
+    .photobooth {
+        display: none;
+        border:1px solid black;
+        width: 640px;
+        height: 480px;
     }
 }
 

@@ -45,7 +45,7 @@
         </div>
 
         <form method="post" enctype="multipart/form-data">
-          <canvas width="640" height="480" style="border:1px solid black;">
+          <canvas class="photobooth">
           </canvas>
           <audio src="{{ static('sheet/sounds/shutter.ogg') }}" id="shutter-sound">
           </audio>
@@ -78,10 +78,6 @@
       </div>
 
     </div>
-{% endblock %}
-
-{% block extra_footer %}
-  <p class="current-location">Current location: <a href="#">No Location Selected</a></p>
 {% endblock %}
 
 {% block page_js %}

@@ -168,6 +168,8 @@ var SignIn = (function() {
             $('.group', $form).hide();
           } else {
             if (Config.get('take-picture')) {
+              // make the canvas visible
+              $('.photobooth').show();
               Utils.showPanel('picture');
               Utils.setActiveStep('#step_picture');
               $('#picture').data('id', response.id);
