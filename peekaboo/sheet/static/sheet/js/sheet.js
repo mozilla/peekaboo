@@ -168,6 +168,9 @@ var SignIn = (function() {
             $('.group', $form).hide();
           } else {
             if (Config.get('take-picture')) {
+              // make the canvas visible
+              $('#photobooth_container').show();
+              $('.photobooth').show();
               Utils.showPanel('picture');
               Utils.setActiveStep('#step_picture');
               $('#picture').data('id', response.id);
@@ -274,6 +277,10 @@ var SignIn = (function() {
               }, 1000);
             }, 200);
 
+            // Hide the photobooth before showing the preview
+            var photoboothContainer = document.querySelector('#photobooth_container');
+            photoboothContainer.style.display = "none";
+
             var canvas = Photobooth.getCanvas();
             document.getElementById('shutter-sound').play();
             canvas.toBlob(function(blob) {
@@ -348,10 +355,10 @@ var Location = (function() {
 
        current_location_name = localStorage.getItem('location-name');
        current_location_id = localStorage.getItem('location-id');
-       if (!(current_location_name && current_location_id)) {
-         location_not_chosen();
-       } else {
+       if (current_location_name && current_location_id) {
          location_chosen();
+       } else {
+         location_not_chosen();
        }
 
      }
@@ -381,6 +388,10 @@ document.addEventListener("mozfullscreenchange", function(e) {
 });
 
 $(function() {
+    // Prevent the browser from jumping to the anchor
+    window.addEventListener('hashchange', function(event) {
+        window.scrollTo(0, 0);
+    }, false);
 
   $('a.fullscreen').click(function(e) {
     e.preventDefault();

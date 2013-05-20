@@ -40,13 +40,13 @@
                 {% endblock %}
 
                 {% block content %}{% endblock %}
-
+                <div class="push"></div>
             </div>
 
             <footer id="colophon">
-              <div class="row">
-                  {% block extra_footer %}{% endblock %}
-              </div>
+              <p class="current-location">
+                Current location: <a href="#">No Location Selected</a>
+              </p>
             </footer>
 
         </div>
@@ -54,7 +54,6 @@
         {% block site_js %}
           <script src="{{ static('js/libs/jquery-1.9.1.min.js') }}"></script>
           {% compress js %}
-            <!--<script src="{{ static('js/site.js') }}"></script>-->
             {% block page_js %}{% endblock %}
           {% endcompress %}
         {% endblock %}
