@@ -49,7 +49,10 @@ var Log = (function() {
   function open_print_entry(id) {
     var url = getPrintURL(id);
     /* SADLY Firefox does not support printing PDFs in iframes :(
-     * See...
+     * Waiting for:
+     * https://bugzilla.mozilla.org/show_bug.cgi?id=874200
+     *
+     * Also, see...
      * https://bugzilla.mozilla.org/show_bug.cgi?id=647658
      * http://storage.michaelaquilina.com/ff-print/
      * http://stackoverflow.com/questions/15011799/firefox-19-print-pdf-from-javascript
