@@ -49,14 +49,15 @@ JINGO_EXCLUDE_APPS = [
 
 # BrowserID configuration
 AUTHENTICATION_BACKENDS = [
-    'django_browserid.auth.BrowserIDBackend',
+    '%s.auth.backends.SelectiveBrowserIDBackend' % PROJECT_MODULE,
+    #'django_browserid.auth.BrowserIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 SITE_URL = 'http://localhost:8000'
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL_FAILURE = 'main:home'
+LOGIN_REDIRECT_URL_FAILURE = '/auth/login/'
 
 TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
     'django_browserid.context_processors.browserid',

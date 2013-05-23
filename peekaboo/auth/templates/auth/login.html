@@ -21,8 +21,14 @@
 {% if user.is_authenticated() %}
   <h3>Logout</h3>
   <p>Click the Persona logout below.</p>
+{% elif failed %}
+  <h3>Login failed</h3>
+  <p>
+  Unable to log you in. Make sure you log in with your Mozilla LDAP email address.
+  </p>
 {% else %}
   <h3>Login</h3>
+  {{ failed }}
   <p>
     You log in with your Mozilla email address using Persona and if you're
     one of the exclusive few who are welcomed, you're in!

@@ -5,7 +5,9 @@ from django.shortcuts import render
 
 
 def login(request):
-    data = {}
+    data = {
+        'failed': request.GET.get('bid_login_failed'),
+    }
     return render(request, 'auth/login.html', data)
 
 
