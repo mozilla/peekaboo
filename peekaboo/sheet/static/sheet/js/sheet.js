@@ -383,6 +383,10 @@ document.addEventListener("mozfullscreenchange", function(e) {
 });
 
 $(function() {
+    // Prevent the browser from jumping to the anchor
+    window.addEventListener('hashchange', function(event) {
+        window.scrollTo(0, 0);
+    }, false);
 
   $('a.fullscreen').click(function(e) {
     e.preventDefault();

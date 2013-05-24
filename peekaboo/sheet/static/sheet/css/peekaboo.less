@@ -6,80 +6,28 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-
-html,
-body {
+html {
     height: 100%;
 }
-#outer-wrapper {
-    position: relative;
-    padding: 0 0 40px;
+body {
     min-height: 100%;
 }
 #main-content {
-    position: relative;
+    padding-bottom: 0;
 }
-#wrapper {
-    width: 85%;
-    min-height: 400px;
+#outer-wrapper {
+    min-height: 100%;
 }
-#welcome {
-    margin-top: 8%;
-}
-#masthead {
-    h2 {
-        padding-top: 10px;
-    }
-}
-h3 {
-    font-size: 52px;
-    letter-spacing: -0.5px;
-    font-weight: bold;
-}
-.home {
-    h1 {
-        margin-bottom: 30px;
-    }
-    #main-content {
-        padding-bottom: 0;
-    }
-    .button.open_signin {
-        padding: .8rem 1.5rem;
-        font-size: 1.2rem;
-    }
-    p:last-child {
-        position: relative;
-        text-align: center;
-    }
-}
-#loading {
+.topnav {
     position: absolute;
-    top: 50%;
-    left: 45%;
-    z-index: 9;
-}
-#location,
-#signin,
-#picture,
-#thankyou {
-    position: absolute;
-    left: -760px;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    transition: left 400ms,
-                opacity 400ms,
-                width 400ms;
-}
-#location:target,
-#signin:target,
-#picture:target,
-#thankyou:target {
-    top: -10px;
-    left: 15%;
-    width: 650px;
-    height: auto;
-    opacity: 1;
+    top: 20px;
+    left: 85%;
+    width: 250px;
+    font-size: 16px;
+    li {
+        display: inline;
+        list-style: none;
+    }
 }
 #signin {
     h2 {
@@ -98,56 +46,6 @@ h3 {
 .yourname {
     font-size: 36px;
 }
-.uploading,
-.preview,
-.error,
-.thumbnail {
-    display: none;
-}
-nav.menu-bar {
-    ul {
-        li {
-            margin-right: 5%;
-        }
-        .active {
-            font-weight: bold;
-        }
-    }
-}
-.signin_form {
-    .signin_buttons {
-        float: right;
-    }
-    .rightmost {
-        margin-right: 0;
-        font-size: 12px;
-    }
-    button {
-        .clearfix;
-    }
-}
-.xpreview {
-    position: absolute;
-    top: 0;
-    left: 400px;
-    padding: 10px;
-    width: 400px;
-    img {
-        margin-bottom: 10px;
-        border: 7px solid #333;
-    }
-}
-.topnav {
-    position: absolute;
-    top: 20px;
-    left: 85%;
-    width: 250px;
-    font-size: 16px;
-    li {
-        display: inline;
-        list-style: none;
-    }
-}
 .restart {
     display: none;
 }
@@ -160,6 +58,85 @@ nav.menu-bar {
 .reset {
     display: block;
     margin-top: 10px;
+}
+#loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    z-index: 9;
+}
+#location,
+#signin,
+#picture,
+#thankyou {
+    position: relative;
+    left: -1760px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: left 400ms,
+                opacity 400ms,
+                width 400ms;
+}
+#location:target,
+#signin:target,
+#picture:target,
+#thankyou:target {
+    top: 0;
+    left: 15%;
+    width: 650px;
+    height: auto;
+    opacity: 1;
+}
+/* Form styles */
+form {
+    width: 800px;
+    fieldset {
+        border: 0;
+    }
+    fieldset:nth-of-type(odd) {
+        float: left;
+    }
+    fieldset:nth-of-type(even) {
+        float: right;
+    }
+    /*http://developer.yahoo.com/blogs/ydn/posts/2012/10/clip-your-hidden-content-for-better-accessibility/*/
+    label {
+        position: absolute;
+        clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+        clip: rect(1px, 1px, 1px, 1px);
+        padding:0;
+        border:0;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+        width: 350px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    .button {
+        min-width: 110px;
+    }
+}
+.photobooth {
+    display: none;
+    border: 1px solid black;
+    width: 640px;
+    height: 480px;
+}
+.signin_form {
+    .signin_buttons {
+        float: right;
+    }
+    .rightmost {
+        margin-right: 0;
+        font-size: 12px;
+    }
 }
 #colophon {
     position: absolute;
@@ -177,25 +154,6 @@ nav.menu-bar {
         color: #fff;
     }
 }
-form {
-    width: 800px;
-    fieldset:nth-of-type(odd) {
-        float: left;
-    }
-    fieldset:nth-of-type(even) {
-        float: right;
-    }
-    .controls {
-        margin-bottom: 9px;
-    }
-    .photobooth {
-        display: none;
-        border:1px solid black;
-        width: 640px;
-        height: 480px;
-    }
-}
-
 .flash {
     z-index: 1000;
     position:fixed;
@@ -207,30 +165,23 @@ form {
     -moz-transition: opacity 1s ease-in-out;
     transition: opacity 1s ease-in-out;
  }
-
  .fadeout {
    opacity: 0;
  }
-
-/*http://developer.yahoo.com/blogs/ydn/posts/2012/10/clip-your-hidden-content-for-better-accessibility/*/
-label {
+ .xpreview {
     position: absolute;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
-    padding:0;
-    border:0;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
+    top: 0;
+    left: 400px;
+    padding: 10px;
+    width: 400px;
+    img {
+        margin-bottom: 10px;
+        border: 7px solid #333;
+    }
 }
-input[type="email"],
-input[type="password"],
-input[type="text"] {
-    width: 350px;
-    height: 40px;
-    font-size: 1.2rem;
-}
-
-@media only screen and (min-width: @breakTablet) and (max-width: breakDesktop) {
-
+ .uploading,
+.preview,
+.error,
+.thumbnail {
+    display: none;
 }
