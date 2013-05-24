@@ -58,7 +58,8 @@ var Utils = (function() {
       } else {
         $('#error .description').text($('#error .description').data('default'));
       }
-      $('#error').modal();
+      //$('#error').modal();
+      $('#error').show();
       if (callback) {
         callback();
       }
@@ -218,7 +219,7 @@ var SignIn = (function() {
   return {
     init: function() {
 
-      $('a.reset').click(function() {
+      $('a.restart').click(function() {
         reset_all();
         return false;
       });
@@ -322,7 +323,7 @@ var Location = (function() {
 
     var $choices = $('#location .available-locations');
     $('p', $choices).remove();
-    $.getJSON('/tablet/locations/', function(response) {
+    $.getJSON(Config.get('locations-url'), function(response) {
       $.each(response.locations, function(i, each) {
         $('<a href="#">')
           .addClass('btn').addClass('btn-large')

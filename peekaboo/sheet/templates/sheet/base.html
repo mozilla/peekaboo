@@ -17,7 +17,8 @@
         {% block extrahead %}{% endblock %}
     </head>
     <body id="sandstone" class="{% block body_class %}stone{% endblock %}"
-                         data-config-take-picture="{{ take_picture|js_bool }}">
+                         data-config-take-picture="{{ take_picture|js_bool }}"
+                         data-config-locations-url="{{ url('sheet:locations') }}">
         <div id="outer-wrapper">
             <div id="wrapper">
 
@@ -51,7 +52,7 @@
         </div>
 
         {% block site_js %}
-            <script src="{{ static('js/libs/jquery-1.9.1.min.js') }}"></script>
+          <script src="{{ static('js/libs/jquery-1.9.1.min.js') }}"></script>
           {% compress js %}
             <!--<script src="{{ static('js/site.js') }}"></script>-->
             {% block page_js %}{% endblock %}

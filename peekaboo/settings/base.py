@@ -100,5 +100,5 @@ LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
-# Whether the picture taking part of tablet should be enabled
+# Whether the picture taking part of sign in process should be enabled
 DEFAULT_TAKE_PICTURE = True
