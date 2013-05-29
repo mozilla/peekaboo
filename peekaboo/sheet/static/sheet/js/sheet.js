@@ -169,6 +169,7 @@ var SignIn = (function() {
           } else {
             if (Config.get('take-picture')) {
               // make the canvas visible
+              $('#photobooth_container').show();
               $('.photobooth').show();
               Utils.showPanel('picture');
               Utils.setActiveStep('#step_picture');
@@ -275,6 +276,10 @@ var SignIn = (function() {
                 flash.hide().removeClass('fadeout');
               }, 1000);
             }, 200);
+
+            // Hide the photobooth before showing the preview
+            var photoboothContainer = document.querySelector('#photobooth_container');
+            photoboothContainer.style.display = "none";
 
             var canvas = Photobooth.getCanvas();
             document.getElementById('shutter-sound').play();

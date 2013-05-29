@@ -1,9 +1,9 @@
 {% extends "sheet/base.html" %}
 
 {% block content %}
-<div class="flash" style="display:none"></div>
+<div class="flash"></div>
 
-<div id="error" style="display:none">
+<div id="error">
   <h3></h3>
   <p class="description"></p>
 </div>
@@ -37,21 +37,22 @@
       </div>
 
       <div  id="picture">
-        <h2>Take a picture</h2>
-        <h4>Name: <span class="yourname"></span></h4>
+        <h2>Take a picture <span class="yourname"></span></h2>
 
         <div class="uploading">
           <p>Uploading your gorgeous mug...</p>
         </div>
 
+        <div id="photobooth_container">
           <canvas class="photobooth"></canvas>
           <audio src="{{ static('sheet/sounds/shutter.ogg') }}" id="shutter-sound"></audio>
-          <video style="display:none;"></video>
-          <p class="debugging-fps" style="display:none"></p>
+          <video></video>
+          <p class="debugging-fps"></p>
           <p>
               <a class="button snap" href="#">Snap!</a>
               <a class="button skip" href="#">Skip This &raquo;</a>
           </p>
+        </div>
 
         <div class="preview">
           <img src="javascript:void(0)" alt="Preview" />

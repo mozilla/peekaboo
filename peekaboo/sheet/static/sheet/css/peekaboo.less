@@ -6,17 +6,18 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-html {
+html,
+body {
     height: 100%;
 }
-body {
-    min-height: 100%;
+#outer-wrapper {
+    height: 98%;
+}
+#wrapper {
+    width: 1200px;
 }
 #main-content {
     padding-bottom: 0;
-}
-#outer-wrapper {
-    min-height: 100%;
 }
 .topnav {
     position: absolute;
@@ -42,12 +43,15 @@ body {
 }
 #thankyou {
     text-align: center;
+    h2 {
+        font-size: 60px;
+    }
+    h3 {
+        font-size: 36px;
+    }
 }
 .yourname {
     font-size: 36px;
-}
-.restart {
-    display: none;
 }
 .thumbnail {
     border: 5px solid #333;
@@ -74,6 +78,7 @@ body {
     left: -1760px;
     width: 0;
     height: 0;
+    overflow: hidden;
     opacity: 0;
     transition: left 400ms,
                 opacity 400ms,
@@ -83,10 +88,11 @@ body {
 #signin:target,
 #picture:target,
 #thankyou:target {
-    top: 0;
-    left: 15%;
-    width: 650px;
+    top: -50px;
+    left: 20%;
+    width: 65%;
     height: auto;
+    overflow: visible;
     opacity: 1;
 }
 /* Form styles */
@@ -122,6 +128,9 @@ form {
     .button {
         min-width: 110px;
     }
+    .controls {
+        margin-bottom: 1rem;
+    }
 }
 .photobooth {
     display: none;
@@ -139,11 +148,12 @@ form {
     }
 }
 #colophon {
-    position: absolute;
+    position: fixed;
+    left: 0;
+    bottom: 0;
     background-color: rgb(39, 97, 149);
     color: #fff;
-    bottom: 0;
-    left: 0;
+    margin-top: 2rem;
     padding: 5px 5px 5px 10px;
     height: 40px;
     width: 100%;
@@ -155,6 +165,7 @@ form {
     }
 }
 .flash {
+    display: none;
     z-index: 1000;
     position:fixed;
     top:0;
@@ -179,9 +190,13 @@ form {
         border: 7px solid #333;
     }
 }
+.restart,
  .uploading,
 .preview,
 .error,
-.thumbnail {
+.thumbnail,
+audio,
+video,
+.debugging-fps {
     display: none;
 }
