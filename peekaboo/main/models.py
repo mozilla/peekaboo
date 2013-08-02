@@ -46,7 +46,6 @@ class Visitor(models.Model):
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     job_title = models.CharField(max_length=150, blank=True)
-    email = models.EmailField(blank=True)
     company = models.CharField(max_length=250, blank=True)
     visiting = models.CharField(max_length=250, blank=True)
     created = models.DateTimeField(default=_now)

@@ -108,7 +108,6 @@ def log_entries(request, location):
             'thumbnail': None,
             'visiting': visitor.visiting,
             'company': visitor.company,
-            'email': visitor.email,
         }
         if visitor.picture:
             thumbnail = get_thumbnail(
