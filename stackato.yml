@@ -36,7 +36,7 @@ services:
 hooks:
   post-staging:
     - python manage.py syncdb --noinput
-    - python manage.py migrate peekaboo.main
+    - python manage.py migrate --delete-ghost-migrations peekaboo.main --noinput
     - python manage.py collectstatic --noinput
 ignores:
   - ".git"
