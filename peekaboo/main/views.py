@@ -1,14 +1,11 @@
 import calendar
-import functools
 import os
 import subprocess
 import tempfile
 import shutil
 import stat
-import time
 import datetime
 import time
-from cStringIO import StringIO
 from collections import defaultdict
 from pyquery import PyQuery as pq
 from django import http
@@ -24,15 +21,7 @@ from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor, Location
 from .utils import json_view
-
-
-def ajax_login_required(view_func):
-    @functools.wraps(view_func)
-    def inner(request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return http.HttpResponse('Forbidden', status=403)
-        return view_func(request, *args, **kwargs)
-    return inner
+from peekaboo.base.utils import ajax_login_required
 
 
 def robots_txt(request):

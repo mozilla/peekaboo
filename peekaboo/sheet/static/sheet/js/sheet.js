@@ -186,9 +186,10 @@ var SignIn = (function() {
     });
   }
 
-  function upload_current_file(image, callback) {
+  function upload_current_file(image, csrfmiddlewaretoken, callback) {
     var fd = new FormData();
     fd.append('picture', image);
+    fd.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
     $.ajax({
        url: 'upload/' + $('#picture').data('id') + '/',
       type: 'POST',
@@ -239,7 +240,8 @@ var SignIn = (function() {
 
       $('#picture .proceed').click(function() {
         $('#picture .uploading').show();
-        upload_current_file(snap_blob, function(response) {
+        var csrfmiddlewaretoken = $('#picture input[name="csrfmiddlewaretoken"]').val();
+        upload_current_file(snap_blob, csrfmiddlewaretoken, function(response) {
           if (response.errors) {
             Utils.general_error(response.errors);
           } else {

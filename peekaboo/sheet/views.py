@@ -10,6 +10,7 @@ from sorl.thumbnail import get_thumbnail
 from peekaboo.main import forms
 from peekaboo.main.utils import json_view
 from peekaboo.main.models import Location, Visitor
+from peekaboo.base.utils import ajax_login_required
 
 
 def home(request):
@@ -39,7 +40,7 @@ def signin(request):
 
 @require_POST
 @json_view
-@csrf_exempt
+@ajax_login_required
 def upload(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
