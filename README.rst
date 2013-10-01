@@ -3,6 +3,39 @@ Peek-a-boo
 
 Peek-a-boo! Who's visiting a Mozilla office?
 
+Getting Your Dev Environment Up
+-------------------------------
+
+First of you will need to clone this project (If you are planning on working on the
+project and submitting pull requests, first fork this repo and clone your fork).
+
+    git clone --init --recursive https://github.com/youruser/peekaboo.git && cd peekaboo
+
+The next dependency you will need is MySQL, you can have a look at the download instructions at:
+http://dev.mysql.com/downloads/ or, if you have brew installed, just run:
+
+    brew install mysql
+
+Once MySQL is installed, we need to create the database for peekaboo. If your instance of MySQL
+is not already running, start it up.
+
+Log into your MySQL instance using the username and password you have set, and create the DB:
+
+    create database peekaboo;
+
+Next step is to create and update your local settings to reflect this. From the root of your repo run:
+
+    cp peekaboo/settings/local.py-dist peekaboo/settings/local.py
+
+With an editor open up local.py and update the database credentials you will find at line 12 - 14.
+
+Lastly install your remaining dependencies using pip:
+
+    pip install -r requirements/dev.txt
+    pip install -r requirements/compiled.txt
+
+With all of this done, you are ready to move on to the next step below.
+
 
 Setting up database
 -------------------
