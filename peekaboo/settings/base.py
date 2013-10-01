@@ -102,3 +102,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # Whether the picture taking part of sign in process should be enabled
 DEFAULT_TAKE_PICTURE = True
+
+BROWSERID_REQUEST_ARGS = {'siteName': 'Peek-a-boo!'}
