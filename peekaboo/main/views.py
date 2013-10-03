@@ -156,7 +156,6 @@ def log_entry(request, pk):
             'first_name': visitor.first_name,
             'last_name': visitor.last_name,
             'job_title': visitor.job_title,
-            'email': visitor.email,
             'company': visitor.company,
             'visiting': visitor.visiting,
             'thumbnail_url': None,
