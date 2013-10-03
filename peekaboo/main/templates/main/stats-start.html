@@ -1,0 +1,24 @@
+{% extends 'main/main_base.html' %}
+
+{% block extrahead %}
+<style type="text/css">
+.options p,
+.options h3 {
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+
+{% block main %}
+
+<div class="options">
+<h3>Pick a default location</h3>
+{% for location in all_locations %}
+<p>
+  <a class="btn btn-large" href="{{ url('main:stats', location.slug) }}">{{ location.name }}</a>
+</p>
+{% endfor %}
+</div>
+
+{% endblock %}

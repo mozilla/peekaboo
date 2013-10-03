@@ -19,7 +19,7 @@ from django.core.files import File
 from funfactory.urlresolvers import reverse
 from sorl.thumbnail import get_thumbnail
 from . import forms
-from .models import Visitor, Location
+from .models import Visitor, Location, VisitorCount
 from .utils import json_view
 from peekaboo.base.utils import ajax_login_required
 
@@ -320,3 +320,49 @@ def print_entry_pdf(request, pk):
 
 
     return http.HttpResponse("PDF could not be created")
+
+
+@login_required
+def stats_start(request):
+    data = {}
+    return render(request, 'main/stats-start.html', data)
+
+
+@login_required
+def stats(request, location):
+    location = get_object_or_404(Location, slug=location)
+    request.session['default-location'] = location.slug
+    rows = []
+
+    _months = defaultdict(int)
+    for vc in VisitorCount.objects.all().order_by('year', 'month', 'day'):
+        date = datetime.date(vc.year, vc.month, vc.day)
+        rows.append({
+            'year': vc.year,
+            'month': vc.month,
+            'day': vc.day,
+            'date': date,
+            'count': vc.count,
+        })
+        _month_key = date.strftime('%Y-%m')
+        _months[_month_key] += vc.count
+
+    months = []
+    for key in sorted(_months.keys()):
+        y, m = [int(x) for x in key.split('-')]
+        date = datetime.date(y, m, 1)
+        months.append({
+            'year': date.year,
+            'month': date.month,
+            'date': date,
+            'count': _months[key],
+        })
+
+    context = {
+        'location': location,
+        'days': int(settings.RECYCLE_MINIMUM_HOURS / 24.0),
+        'rows': rows,
+        'months': months,
+    }
+
+    return render(request, 'main/stats.html', context)
