@@ -68,3 +68,46 @@ def update_modified(sender, instance, raw, *args, **kwargs):
     if instance.modified < now:
         # only if it's not already been set
         instance.modified = now
+
+
+class VisitorCount(models.Model):
+    count = models.IntegerField()
+    day = models.IntegerField()
+    month = models.IntegerField()
+    year = models.IntegerField()
+
+    class Meta:
+        unique_together = ('day', 'month', 'year')
+
+    def __repr__(self):
+        return (
+            '<%s: %d (%d/%d/%d)>' % (
+                self.__class__.__name__,
+                self.count,
+                self.year,
+                self.month,
+                self.day,
+            )
+        )
+
+    @classmethod
+    def create_from_visitor(self, visitor):
+        day = visitor.created.day
+        month = visitor.created.month
+        year = visitor.created.year
+        try:
+            record = VisitorCount.objects.get(
+                day=day,
+                month=month,
+                year=year
+            )
+            record.count += 1
+            record.save()
+            return record
+        except VisitorCount.DoesNotExist:
+            return VisitorCount.objects.create(
+                count=1,
+                day=day,
+                month=month,
+                year=year
+            )

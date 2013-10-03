@@ -98,7 +98,7 @@ def log_entries(request, location):
             'visiting': visitor.visiting,
             'company': visitor.company,
         }
-        if visitor.picture:
+        if visitor.picture and os.path.isfile(visitor.picture.path):
             thumbnail = get_thumbnail(
                 visitor.picture,
                 thumbnail_geometry

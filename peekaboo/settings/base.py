@@ -15,7 +15,7 @@ TIME_ZONE = 'US/Pacific'
 # Defines the views served for root URLs.
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 
-INSTALLED_APPS = list(INSTALLED_APPS) + [
+INSTALLED_APPS += (
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
     '%s.main' % PROJECT_MODULE,
@@ -25,15 +25,17 @@ INSTALLED_APPS = list(INSTALLED_APPS) + [
     'south',
     'bootstrapform',
     'django.contrib.admin'
-]
+)
 
 
 # django_browserid is supposed to be *after* django.contrib.auth
+INSTALLED_APPS = list(INSTALLED_APPS)
 INSTALLED_APPS.remove('django_browserid')
 INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.auth') + 1, 'django_browserid')
 
 INSTALLED_APPS.remove('django_nose')
 INSTALLED_APPS.append('django_nose')
+INSTALLED_APPS = tuple(INSTALLED_APPS)
 
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
@@ -104,3 +106,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 DEFAULT_TAKE_PICTURE = True
 
 BROWSERID_REQUEST_ARGS = {'siteName': 'Peek-a-boo!'}
+
+RECYCLE_MINIMUM_HOURS = 24 * 30  # 30 days
