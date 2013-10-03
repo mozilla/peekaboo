@@ -190,8 +190,9 @@ var SignIn = (function() {
     var fd = new FormData();
     fd.append('picture', image);
     fd.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
+    var canvas_width = $('#photobooth_container canvas').attr('width');
     $.ajax({
-       url: 'upload/' + $('#picture').data('id') + '/',
+       url: 'upload/' + $('#picture').data('id') + '/?thumbnail_geometry=' + canvas_width,
       type: 'POST',
       data: fd,
       cache: false,
