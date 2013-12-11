@@ -9,6 +9,7 @@ import time
 from collections import defaultdict
 from pyquery import PyQuery as pq
 from django import http
+from django.core.cache import cache
 from django.utils.timezone import utc, make_aware
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -366,3 +367,26 @@ def stats(request, location):
     }
 
     return render(request, 'main/stats.html', context)
+
+
+
+def debugger(request):
+    r = http.HttpResponse()
+    r.write('absolute_uri: %s\n' % request.build_absolute_uri())
+    r.write('DEBUG: %s\n\n' % settings.DEBUG)
+    if request.is_secure():
+        r.write('request.is_secure()\n')
+        r.write('Expect SITE_URL to contain HTTPS: %s\n' % (settings.SITE_URL,))
+        r.write('Expect SESSION_COOKIE_SECURE to be True: %s\n' % (settings.SESSION_COOKIE_SECURE,))
+    else:
+        r.write('NOT request.is_secure()\n')
+        r.write('Expect SITE_URL to contain HTTP: %s\n' % (settings.SITE_URL,))
+        r.write('Expect SESSION_COOKIE_SECURE to be False: %s\n' % (settings.SESSION_COOKIE_SECURE,))
+
+    if cache.get('foo'):
+        r.write('\nCache seems to work!\n')
+    else:
+        r.write('\nReload to see if cache works\n')
+        cache.set('foo', 'bar', 60)
+    r['content-type'] = 'text/plain'
+    return r
