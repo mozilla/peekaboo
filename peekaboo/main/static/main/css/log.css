@@ -37,3 +37,15 @@
 .entry .clear {
     clear: both;
 }
+
+
+.auto-refresh {
+    text-align: right;
+}
+#auto-refresh-enabled {
+    color: #666;
+}
+#auto-refresh-stopped {
+    display: none;
+    color: red;
+}

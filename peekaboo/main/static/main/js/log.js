@@ -1,5 +1,6 @@
 var Log = (function() {
   var latest = null;
+  var reload_interval = null;
 
   function make_timeago($element) {
     var datetime = $element.attr('datetime');
@@ -16,6 +17,15 @@ var Log = (function() {
       .data('id', id);
     $.getJSON(url, function(response) {
       var container = $('#edit-entry');
+      if (response.thumbnail) {
+        $('.thumbnail img', container)
+          .attr('src', response.thumbnail.url)
+          .attr('width', response.thumbnail.width)
+          .attr('height', response.thumbnail.height);
+        $('.thumbnail', container).show();
+      } else {
+        $('.thumbnail', container).hide();
+      }
       $.each(response, function(key, value) {
         $('[name="' + key + '"]', container).val(value);
       });
@@ -66,11 +76,19 @@ var Log = (function() {
 
   function submit_edit_entry(event) {
     var $form = $(this);
-    $.post($form.attr('action'), $form.serializeObject(), function(response) {
+    var req = $.post($form.attr('action'), $form.serializeObject());
+    req.then(function(response) {
       var $entry = $('#entry-' + $form.data('id'));
       _fill_row_data($entry, response);
       $entry.addClass('new');
       $('#edit-entry').modal('hide');
+    });
+    req.fail(function(jqXHR, textStatus, errorThrown) {
+      Utils.ajax_error("Unable to save",
+                       "An error occured when trying to save the edit.");
+      console.warn('textStatus', textStatus);
+      console.warn('errorThrown', errorThrown);
+
     });
     return false;
   }
@@ -142,6 +160,7 @@ var Log = (function() {
   }
 
   function _fill_row_data(container, data) {
+    container.data('modified', data.modified_iso);
     $('.name', container).text(data.name);
     $('.job_title', container).text(data.job_title);
     $('.company', container).text(data.company);
@@ -161,7 +180,8 @@ var Log = (function() {
         .attr('src', data.thumbnail.url)
         .attr('width', data.thumbnail.width)
         .attr('height', data.thumbnail.height)
-        .attr('alt', data.name);
+        .attr('alt', data.name)
+        .show();
     } else {
       $('img', container).hide();
     }
@@ -189,12 +209,23 @@ var Log = (function() {
   }
 
   function fetch(highlight) {
-    $.getJSON(getURL(), {latest: latest}, function(response) {
+    var req = $.getJSON(getURL(), {latest: latest});
+    req.then(function(response) {
       if (response.latest) {
         latest = response.latest;
       }
       add_rows(response.created, highlight);
       modify_rows(response.modified, highlight);
+    });
+    req.fail(function(jqXHR, textStatus, errorThrown) {
+      // it failed :(
+      Utils.ajax_error("Auto-refresh stopped working",
+                       "An error happened server-side. Reload this page to re-enable auto-refresh.");
+      clearInterval(reload_interval);
+      $('#auto-refresh-enabled').hide();
+      $('#auto-refresh-stopped').show();
+      console.warn('textStatus', textStatus);
+      console.warn('errorThrown', errorThrown);
     });
   }
 
@@ -202,9 +233,9 @@ var Log = (function() {
     init: function() {
       fetch(false);
       setTimeout(function() {
-        setInterval(function() {
+        reload_interval = setInterval(function() {
           fetch(true);
-        }, 10 * 1000);
+        }, 5 * 1000);
       }, 10 * 1000);
       $('#edit-entry form').submit(submit_edit_entry);
     }

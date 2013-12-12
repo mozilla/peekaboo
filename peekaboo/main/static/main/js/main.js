@@ -24,12 +24,4 @@ $(function() {
     }
   });
 
-  $(document).ajaxError(function(event, jqxhr, settings, exception) {
-    var description = jqxhr.responseText;
-    if (description === 'Forbidden') {
-      description = "Un unauthorized data retrieval attempted happend. Are you logged in?";
-    }
-    Utils.ajax_error("AJAX Server Error", description);
-  });
-
 });

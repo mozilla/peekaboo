@@ -93,6 +93,7 @@ def log_entries(request, location):
             'id': visitor.pk,
             'created': format_date(visitor.created),
             'created_iso': visitor.created.isoformat(),
+            'modified_iso': visitor.modified.isoformat(),
             'job_title': visitor.job_title,
             'name': visitor.get_name(formal=True),
             'thumbnail': None,
@@ -116,10 +117,12 @@ def log_entries(request, location):
         return row
 
     first = None
-    for visitor in recently_created.order_by('created'):
+    for visitor in recently_created.order_by('-created')[:5]:
         row = make_row(visitor)
         data['created'].append(row)
-        first = max(visitor.created, visitor.modified)
+        if first is None:
+            first = max(visitor.created, visitor.modified)
+    data['created'].reverse()
 
     # now how about those recently updated
     if latest:
@@ -136,6 +139,11 @@ def log_entries(request, location):
     if first:
         data['latest'] = calendar.timegm(first.utctimetuple())
 
+#    from time import sleep
+#    sleep(1)
+
+#    from pprint import pprint
+#    pprint(data)
     return data
 
 

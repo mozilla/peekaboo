@@ -25,6 +25,9 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>Edit entry</h3>
     </div>
+    <p class="thumbnail">
+      <img>
+    </p>
     <form action="" method="post" class="form-horizontal">
     <div class="modal-body">
       {{ csrf() }}
@@ -75,6 +78,11 @@
   <div class="clear">&nbsp;</div>
   </div>
 </div>
+
+<p id="auto-refresh-stopped" class="auto-refresh">Auto-refresh is currently not working.</p>
+<p id="auto-refresh-enabled" class="auto-refresh">
+  <abbr title="Meaning it automatically fetches new entries here on this page.">Auto-refresh <b>on</b></abbr>.
+</p>
 
 <div id="entries">
 
