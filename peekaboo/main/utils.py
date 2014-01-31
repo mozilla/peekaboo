@@ -1,6 +1,10 @@
 import json
 import functools
+
+from django.shortcuts import redirect
 from django import http
+from django.contrib import messages
+from django.conf import settings
 
 
 def json_view(f):
@@ -27,3 +31,18 @@ def _json_clean(value):
     # http://stackoverflow.com/questions/1580647/json-why-are-forward\
     # -slashes-escaped
     return value.replace("</", "<\\/")
+
+
+def non_mortals_required(view_func):
+    @functools.wraps(view_func)
+    def inner(request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return redirect(settings.LOGIN_URL)
+        elif not (request.user.is_staff or request.user.is_superuser):
+            messages.error(
+                request,
+                'You need special permission to reach this.'
+            )
+            return redirect('/')
+        return view_func(request, *args, **kwargs)
+    return inner

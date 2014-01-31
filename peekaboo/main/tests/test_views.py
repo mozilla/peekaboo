@@ -41,6 +41,7 @@ class TestViews(TestCase):
             username='shannon',
             email='shannon@mozilla.com',
         )
+        user.is_staff = True
         user.set_password('secret')
         user.save()
         assert self.client.login(username='shannon', password='secret')
@@ -54,7 +55,7 @@ class TestViews(TestCase):
 
         url = reverse('main:log_entries', args=('mv',))
         response = self.client.get(url)
-        eq_(response.status_code, 403)
+        eq_(response.status_code, 302)
 
         self._login()
         response = self.client.get(url)

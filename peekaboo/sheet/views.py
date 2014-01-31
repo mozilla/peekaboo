@@ -8,11 +8,12 @@ from django.shortcuts import render, get_object_or_404
 from sorl.thumbnail import get_thumbnail
 
 from peekaboo.main import forms
-from peekaboo.main.utils import json_view
+from peekaboo.main.utils import json_view, non_mortals_required
 from peekaboo.main.models import Location, Visitor
 from peekaboo.base.utils import ajax_login_required
 
 
+@non_mortals_required
 def home(request):
     data = {}
     data['form'] = forms.SignInForm()

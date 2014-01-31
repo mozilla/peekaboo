@@ -32,6 +32,7 @@
               Logged in as <b>{{ user.first_name or user.email or user.username }}</b>
               <small>(<a href="{{ url('auth:logout') }}">Log out</a>)</small>
             </p>
+            {% if request.user.is_staff or request.user.is_superuser %}
             <ul class="nav">
                 <li><a href="{{ url('main:home') }}">Home</a></li>
                 <li><a href="{{ url('sheet:home') }}">Sign-in Sheet</a></li>
@@ -63,7 +64,11 @@
 
 		    </ul>
 		</li>
+                {% if request.user.is_superuser %}
+                <li><a href="{{ url('users:home') }}">User Management</a></li>
+                {% endif %}
             </ul>
+            {% endif %}
             {% else %}
             <p class="navbar-text pull-right">
               <a href="{{ url('auth:login') }}">Log in</a>

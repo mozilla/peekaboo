@@ -21,7 +21,7 @@ from funfactory.urlresolvers import reverse
 from sorl.thumbnail import get_thumbnail
 from . import forms
 from .models import Visitor, Location, VisitorCount
-from .utils import json_view
+from .utils import json_view, non_mortals_required
 from peekaboo.base.utils import ajax_login_required
 
 
@@ -39,13 +39,13 @@ def home(request):
     return render(request, 'main/home.html', data)
 
 
-@login_required
+@non_mortals_required
 def log_start(request):
     data = {}
     return render(request, 'main/log-start.html', data)
 
 
-@login_required
+@non_mortals_required
 def log(request, location):
     location = get_object_or_404(Location, slug=location)
     data = {
@@ -57,6 +57,7 @@ def log(request, location):
 
 
 @json_view
+@non_mortals_required
 @ajax_login_required
 def log_entries(request, location):
     data = {
@@ -149,6 +150,7 @@ def log_entries(request, location):
 
 @json_view
 @csrf_exempt
+@non_mortals_required
 def log_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
@@ -184,6 +186,7 @@ def log_entry(request, pk):
 
 @json_view
 @csrf_exempt
+@non_mortals_required
 def log_entry_picture(request, pk, format):
     visitor = get_object_or_404(Visitor, pk=pk)
     if not visitor.picture:
@@ -204,6 +207,7 @@ def log_entry_picture(request, pk, format):
 @login_required
 @json_view
 @require_POST
+@non_mortals_required
 def delete_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     visitor.delete()
@@ -211,7 +215,7 @@ def delete_entry(request, pk):
     return {'deleted': True}
 
 
-@login_required
+@non_mortals_required
 def print_entry(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     data = {
@@ -225,7 +229,7 @@ def print_entry(request, pk):
     return response
 
 
-@login_required
+@non_mortals_required
 def print_entry_pdf(request, pk):
     visitor = get_object_or_404(Visitor, pk=pk)
     data = {
@@ -331,13 +335,13 @@ def print_entry_pdf(request, pk):
     return http.HttpResponse("PDF could not be created")
 
 
-@login_required
+@non_mortals_required
 def stats_start(request):
     data = {}
     return render(request, 'main/stats-start.html', data)
 
 
-@login_required
+@non_mortals_required
 def stats(request, location):
     location = get_object_or_404(Location, slug=location)
     request.session['default-location'] = location.slug
@@ -375,7 +379,6 @@ def stats(request, location):
     }
 
     return render(request, 'main/stats.html', context)
-
 
 
 def debugger(request):

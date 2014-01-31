@@ -21,6 +21,7 @@ INSTALLED_APPS += (
     '%s.main' % PROJECT_MODULE,
     '%s.sheet' % PROJECT_MODULE,
     '%s.auth' % PROJECT_MODULE,
+    '%s.users' % PROJECT_MODULE,
     'sorl.thumbnail',
     'south',
     'bootstrapform',
@@ -51,8 +52,7 @@ JINGO_EXCLUDE_APPS = [
 
 # BrowserID configuration
 AUTHENTICATION_BACKENDS = [
-    '%s.auth.backends.SelectiveBrowserIDBackend' % PROJECT_MODULE,
-    #'django_browserid.auth.BrowserIDBackend',
+    'django_browserid.auth.BrowserIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

@@ -1,0 +1,61 @@
+{% extends 'users/base.html' %}
+
+
+{% block main %}
+<form action="" method="post">{{ csrf() }}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Last Login</th>
+      <th>Staff<sup>*</sup></th>
+      <th>Superuser<sup>**</sup></th>
+      <th>Permissions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.email }}</td>
+      <td>{{ user.last_login.strftime('%d %B %Y %I:%M%p %Z') }}</td>
+      <td>
+        {% if user.is_superuser %}
+          n/a
+        {% else %}
+          {% if user.is_staff %}
+          Yes!
+          {% else %}
+          No
+          {% endif %}
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_superuser %}
+          Yes!
+        {% else %}
+          No
+        {% endif %}
+      </td>
+      <td>
+
+        Toggle
+        <button type="submit" name="staff" value="{{ user.pk }}">Staff</button>
+        <button type="submit" name="superuser" value="{{ user.pk }}">Superuser</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</form>
+
+<p>
+  <sup>*</sup>
+  Staff are people who can open the Sign-in Sheet and access the Logs and Stats but can't
+  manage other users.
+</p>
+
+<p>
+  <sup>**</sup>
+  Superusers can do everything Staff but can also manage other users.
+</p>
+{% endblock %}

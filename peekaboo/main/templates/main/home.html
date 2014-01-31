@@ -1,10 +1,14 @@
 {% extends 'main/main_base.html' %}
 
 {% block pre_main %}
+  {% if request.user.is_staff or request.user.is_superuser %}
       <!-- Jumbotron -->
       <div class="jumbotron">
         <a class="btn btn-large btn-success" href="{{ url('sheet:home') }}">Open Sign-in Sheet</a>
       </div>
+  {% else %}
+  <p>You currently do not have permission to use Peekaboo. Talk to WPR to have your account upgraded.</p>
+  {% endif %}
 {% endblock %}
 
 

@@ -74,6 +74,17 @@ To apply migrations:
 In each command, replace peekaboo.main with the appropriate app.
 
 
+Setting up superusers
+---------------------
+
+To be able to get any access you need to be a staff user or a superuser.
+
+Only superusers can decide who can be staff and superuser. To
+bootstrap, if there are no superusers available at all, you can create
+one like this::
+
+    ./manage.py make-superuser pbengtsson@mozilla.com
+
 
 Stackato
 --------
