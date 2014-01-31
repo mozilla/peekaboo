@@ -61,7 +61,7 @@ h2 {
 
     {% if visitor.picture %}
     <p class="thumbnail">
-    {% set thumb = thumbnail(visitor.picture, '160x160') %}
+    {% set thumb = thumbnail(visitor.picture, '200x200') %}
       <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
             alt="{{ visitor.get_name() }}">
     </p>
