@@ -1,26 +1,7 @@
-import functools
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.conf import settings
-from django.contrib import messages
 
-from peekaboo.main.utils import json_view
-
-
-def superuser_required(view_func):
-    @functools.wraps(view_func)
-    def inner(request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return redirect(settings.LOGIN_URL)
-        elif not request.user.is_superuser:
-            messages.error(
-                request,
-                'You need to be a superuser to access this.'
-            )
-            return redirect(settings.LOGIN_URL)
-        return view_func(request, *args, **kwargs)
-    return inner
+from peekaboo.base.utils import superuser_required
 
 
 @superuser_required

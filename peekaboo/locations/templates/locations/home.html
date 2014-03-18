@@ -1,0 +1,31 @@
+{% extends 'locations/base.html' %}
+
+
+{% block main %}
+<form action="" method="post">{{ csrf() }}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Slug</th>
+      <th>Timezone</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for location in locations %}
+    <tr>
+      <td>{{ location.name }}</td>
+      <td>{{ location.slug }}</td>
+      <td>{{ location.timezone }}</td>
+      <td>
+        <a href="{{ url('locations:edit', location.pk) }}" class="btn">Edit</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</form>
+
+<p><a href="{{ url('locations:new') }}" class="btn">New Location</a></p>
+
+{% endblock %}

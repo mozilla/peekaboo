@@ -7,7 +7,7 @@ from django.test import TestCase, Client
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from funfactory.urlresolvers import reverse, set_url_prefix, split_path
+from funfactory.urlresolvers import reverse, split_path
 #from django.core.urlresolvers import reverse
 
 from peekaboo.main.models import Location, Visitor
@@ -32,19 +32,26 @@ class LocalizingClient(Client):
         return super(LocalizingClient, self).request(**request)
 
 
-class TestViews(TestCase):
+class BaseTestCase(TestCase):
 
     client_class = LocalizingClient
 
-    def _login(self):
+    def _login(self, is_staff=True, is_superuser=False):
         user, __ = User.objects.get_or_create(
             username='shannon',
             email='shannon@mozilla.com',
         )
-        user.is_staff = True
+        if is_superuser:
+            is_staff = True
+        user.is_staff = is_staff
+        user.is_superuser = is_superuser
         user.set_password('secret')
         user.save()
         assert self.client.login(username='shannon', password='secret')
+        return user
+
+
+class TestViews(BaseTestCase):
 
     def test_log_entries(self):
         location = Location.objects.create(

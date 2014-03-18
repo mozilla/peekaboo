@@ -22,6 +22,7 @@ INSTALLED_APPS += (
     '%s.sheet' % PROJECT_MODULE,
     '%s.auth' % PROJECT_MODULE,
     '%s.users' % PROJECT_MODULE,
+    '%s.locations' % PROJECT_MODULE,
     'sorl.thumbnail',
     'south',
     'bootstrapform',
@@ -32,7 +33,10 @@ INSTALLED_APPS += (
 # django_browserid is supposed to be *after* django.contrib.auth
 INSTALLED_APPS = list(INSTALLED_APPS)
 INSTALLED_APPS.remove('django_browserid')
-INSTALLED_APPS.insert(INSTALLED_APPS.index('django.contrib.auth') + 1, 'django_browserid')
+INSTALLED_APPS.insert(
+    INSTALLED_APPS.index('django.contrib.auth') + 1,
+    'django_browserid'
+)
 
 INSTALLED_APPS.remove('django_nose')
 INSTALLED_APPS.append('django_nose')
@@ -98,7 +102,7 @@ DOMAIN_METHODS['messages'] = [
 #    ('media/js/**.js', 'javascript'),
 # ]
 
-LOGGING = dict(loggers=dict(playdoh = {'level': logging.DEBUG}))
+LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG}))
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 

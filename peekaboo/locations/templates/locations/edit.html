@@ -1,0 +1,12 @@
+{% extends 'locations/base.html' %}
+
+
+{% block main %}
+<form action="" method="post">{{ csrf() }}
+    {{ bootstrapform(form)|safe }}
+    <div class="modal-footer" style="text-align:left">
+        <button class="btn btn-primary">Save changes</button>
+        <a href="{{ url('locations:home') }}" class="btn" data-dismiss="modal">Close</a>
+    </div>
+</form>
+{% endblock %}

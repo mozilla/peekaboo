@@ -1,25 +1,13 @@
 from nose.tools import eq_, ok_
 
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.conf import settings
 
 from funfactory.urlresolvers import reverse
+from peekaboo.main.tests.test_views import BaseTestCase
 
 
-class TestViews(TestCase):
-
-    def _login(self, is_staff=False, is_superuser=True):
-        user, __ = User.objects.get_or_create(
-            username='shannon',
-            email='shannon@mozilla.com',
-        )
-        user.is_staff = is_staff
-        user.is_superuser = is_superuser
-        user.set_password('secret')
-        user.save()
-        assert self.client.login(username='shannon', password='secret')
-        return user
+class TestViews(BaseTestCase):
 
     def test_home_page(self):
         url = reverse('users:home')
@@ -29,7 +17,7 @@ class TestViews(TestCase):
 
         bob = User.objects.create(username='bob', email='bob@example.com')
 
-        user = self._login()
+        self._login(is_superuser=True)
         response = self.client.get(url)
         eq_(response.status_code, 200)
 

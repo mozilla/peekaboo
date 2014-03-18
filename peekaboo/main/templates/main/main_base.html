@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Peek-a-boo!</title>
+    <title>{% block page_title %}Peek-a-boo!{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% compress css %}
@@ -37,7 +37,7 @@
                 <li><a href="{{ url('main:home') }}">Home</a></li>
                 <li><a href="{{ url('sheet:home') }}">Sign-in Sheet</a></li>
                 <li class="dropdown">
-		    <a href="{% if current_location %}{{ url('main:log', current_location.slug) }}{% else %}{{ url('main:log_start') }}{% endif %}"
+                    <a href="{% if current_location %}{{ url('main:log', current_location.slug) }}{% else %}{{ url('main:log_start') }}{% endif %}"
 		       class="dropdown-toggle" data-toggle="dropdown">Log <b class="caret"></b></a>
 		    <ul class="dropdown-menu">
 		        {% for location in all_locations %}
@@ -62,10 +62,11 @@
 		        <li><a href="{{ url('main:stats_start') }}">Change default location</a></li>
                         {% endif %}
 
-		    </ul>
-		</li>
+                </ul>
+            </li>
                 {% if request.user.is_superuser %}
                 <li><a href="{{ url('users:home') }}">User Management</a></li>
+                <li><a href="{{ url('locations:home') }}">Location Management</a></li>
                 {% endif %}
             </ul>
             {% endif %}

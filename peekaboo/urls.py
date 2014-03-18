@@ -9,12 +9,14 @@ patch()
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Example:
+urlpatterns = patterns(
+    '',
     (r'', include('peekaboo.main.urls', namespace='main')),
     (r'^sheet/', include('peekaboo.sheet.urls', namespace='sheet')),
     (r'^auth/', include('peekaboo.auth.urls', namespace='auth')),
     (r'^users/', include('peekaboo.users.urls', namespace='users')),
+    (r'^locations/',
+     include('peekaboo.locations.urls', namespace='locations')),
     (r'^admin/', include(admin.site.urls)),
     (r'^browserid/', include('django_browserid.urls')),
 )
