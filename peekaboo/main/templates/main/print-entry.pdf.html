@@ -5,48 +5,48 @@
     <title>{{ visitor.get_name() }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style type="text/css">
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, hr, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figure, figcaption, hgroup, menu, footer, header, nav, section, summary, time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+}
 body {
     font-family: Helvetica, Arial, sans-serif;
-    margin: 0; padding: 0;
 }
+
 h1, h2 {
     text-align: center;
 }
 h1 {
-    font-size: 50pt;
+    font-size: 18pt;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 h2 {
-    font-size: 37pt;
+    font-size: 14pt;
     color: #999;
+    margin-bottom: 10px;
 }
 
 #wrap {
     z-index: 1;
     position: relative;
     /*border: 1px solid black;*/
+    padding-top: 20px;
 }
 
 .logo {
+    display: none;
+    /*
     position: absolute;
     z-index: 100;
     top: 305px;
     right: 5px;
-    /*float: right;*/
-    opacity: 0.7;
+    opacity: 0.7;*/
 
 }
-
 .thumbnail {
     text-align: center;
-}
-
-@page {
-    @top-left{
-        font-family: Helvetica, Arial, sans-serif;
-        font-size: 18pt;
-        font-weight: bolder;
-        content: "TEST";
-    }
 }
     </style>
   </head>
@@ -61,7 +61,7 @@ h2 {
 
     {% if visitor.picture %}
     <p class="thumbnail">
-    {% set thumb = thumbnail(visitor.picture, '200x200') %}
+    {% set thumb = thumbnail(visitor.picture, 'x100') %}
       <img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}"
             alt="{{ visitor.get_name() }}">
     </p>

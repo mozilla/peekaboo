@@ -281,8 +281,24 @@ def print_entry_pdf(request, pk):
     with open(input_file, 'w') as f:
         f.write(html)
 
-    pdf_program = getattr(settings, 'PDF_PROGRAM', 'wkhtmltopdf')
-    if 'wkpdf' in pdf_program:
+    _here = os.path.dirname(__file__)
+    rasterize_full_path = os.path.join(
+        _here,
+        'rasterize.js'
+    )
+    pdf_program = getattr(
+        settings,
+        'PDF_PROGRAM',
+        'phantomjs %s' % rasterize_full_path
+    )
+    if 'rasterize.js' in pdf_program:
+        cmd = (
+            pdf_program +
+            ' "%(input_file)s"'
+            ' "%(output_file)s"'
+            ' "10.2cm*5.7cm"'
+        )
+    elif 'wkpdf' in pdf_program:
         cmd = (
             pdf_program +
             ' --orientation %(orientation)s'
@@ -299,6 +315,8 @@ def print_entry_pdf(request, pk):
         'output_file': output_file,
         'orientation': 'landscape',
     }
+    #print "CMD"
+    #print cmd
     proc = subprocess.Popen(
         cmd,
         shell=True,
@@ -327,8 +345,8 @@ def print_entry_pdf(request, pk):
         #response["Access-Control-Allow-Origin"] = "*"
         response.write(open(output_file).read())
 
-        os.remove(input_file)
-        os.remove(output_file)
+        #os.remove(input_file)
+        #os.remove(output_file)
         return response
 
 
