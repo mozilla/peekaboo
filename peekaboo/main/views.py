@@ -10,13 +10,12 @@ from collections import defaultdict
 from pyquery import PyQuery as pq
 from django import http
 from django.core.cache import cache
-from django.utils.timezone import utc, make_aware
+from django.utils.timezone import utc
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.core.files import File
 from funfactory.urlresolvers import reverse
 from sorl.thumbnail import get_thumbnail
 from . import forms
@@ -263,9 +262,10 @@ def print_entry_pdf(request, pk):
                 src.replace(settings.MEDIA_URL, '')
             )
         if not os.path.isfile(source):
-            raise IOError("Couldn't find %s (Tried: %s)" %
-                (img.attrib['src'], source)
-            )
+            raise IOError("Couldn't find %s (Tried: %s)" % (
+                img.attrib['src'],
+                source
+            ))
         filename = os.path.basename(source)
         destination = os.path.join(
             tmp_dir, filename
@@ -324,7 +324,7 @@ def print_entry_pdf(request, pk):
         stderr=subprocess.PIPE,
     )
     out, err = proc.communicate()
-    exit_code = proc.returncode
+    #exit_code = proc.returncode
     #print output_file
     #print "EXIT"
     #print exit_code
@@ -348,7 +348,6 @@ def print_entry_pdf(request, pk):
         #os.remove(input_file)
         #os.remove(output_file)
         return response
-
 
     return http.HttpResponse("PDF could not be created")
 
@@ -405,12 +404,28 @@ def debugger(request):
     r.write('DEBUG: %s\n\n' % settings.DEBUG)
     if request.is_secure():
         r.write('request.is_secure()\n')
-        r.write('Expect SITE_URL to contain HTTPS: %s\n' % (settings.SITE_URL,))
-        r.write('Expect SESSION_COOKIE_SECURE to be True: %s\n' % (settings.SESSION_COOKIE_SECURE,))
+        r.write(
+            'Expect SITE_URL to contain HTTPS: %s\n' % (
+                settings.SITE_URL,
+            )
+        )
+        r.write(
+            'Expect SESSION_COOKIE_SECURE to be True: %s\n' % (
+                settings.SESSION_COOKIE_SECURE,
+            )
+        )
     else:
         r.write('NOT request.is_secure()\n')
-        r.write('Expect SITE_URL to contain HTTP: %s\n' % (settings.SITE_URL,))
-        r.write('Expect SESSION_COOKIE_SECURE to be False: %s\n' % (settings.SESSION_COOKIE_SECURE,))
+        r.write(
+            'Expect SITE_URL to contain HTTP: %s\n' % (
+                settings.SITE_URL,
+            )
+        )
+        r.write(
+            'Expect SESSION_COOKIE_SECURE to be False: %s\n' % (
+                settings.SESSION_COOKIE_SECURE,
+            )
+        )
 
     if cache.get('foo'):
         r.write('\nCache seems to work!\n')
