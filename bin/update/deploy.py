@@ -67,7 +67,7 @@ def install_cron(ctx):
     """
     with ctx.lcd(settings.SRC_DIR):
         ctx.local('python2.6 ./bin/crontab/gen-crons.py -w %s -u apache > '
-                  '/etc/cron.d/.%' % (settings.WWW_DIR, settings.CRON_NAME))
+                  '/etc/cron.d/.%s' % (settings.SOURCE_DIR, settings.CRON_NAME))
         ctx.local('mv /etc/cron.d/.%s /etc/cron.d/%s' %
                   (settings.CRON_NAME,  settings.CRON_NAME))
 
