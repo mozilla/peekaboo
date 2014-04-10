@@ -25,18 +25,18 @@ def update_code(ctx, tag):
         ctx.local('git submodule update --init --recursive')
 
 
-@task
-def update_locales(ctx):
-    """Update a locale directory from SVN.
-
-    Assumes localizations 1) exist, 2) are in SVN, 3) are in SRC_DIR/locale and
-    4) have a compile-mo.sh script. This should all be pretty standard, but
-    change it if you need to.
-
-    """
-    with ctx.lcd(os.path.join(settings.SRC_DIR, 'locale')):
-        ctx.local('svn up')
-        ctx.local('./compile-mo.sh .')
+#@task
+#def update_locales(ctx):
+#    """Update a locale directory from SVN.
+#
+#    Assumes localizations 1) exist, 2) are in SVN, 3) are in SRC_DIR/locale and
+#    4) have a compile-mo.sh script. This should all be pretty standard, but
+#    change it if you need to.
+#
+#    """
+#    with ctx.lcd(os.path.join(settings.SRC_DIR, 'locale')):
+#        ctx.local('svn up')
+#        ctx.local('./compile-mo.sh .')
 
 
 @task
@@ -48,15 +48,14 @@ def update_assets(ctx):
         #ctx.local('LANG=en_US.UTF8 python2.6 manage.py compress_assets')
 
 
+
 @task
 def update_db(ctx):
-    """Update the database schema, if necessary.
+    """Update the database schema, if necessary."""
 
-    Uses schematic by default. Change to south if you need to.
-
-    """
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local('python2.6 ./vendor/src/schematic/schematic migrations')
+        ctx.local('python2.6 manage.py syncdb')
+        ctx.local('python2.6 manage.py migrate peekaboo.main')
 
 
 @task
@@ -102,11 +101,6 @@ def update_info(ctx):
         ctx.local('git log -3')
         ctx.local('git status')
         ctx.local('git submodule status')
-        ctx.local('python2.6 ./vendor/src/schematic/schematic -v migrations/')
-        with ctx.lcd('locale'):
-            ctx.local('svn info')
-            ctx.local('svn status')
-
         ctx.local('git rev-parse HEAD > media/revision.txt')
 
 
