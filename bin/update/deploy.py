@@ -73,23 +73,9 @@ def install_cron(ctx):
 
 
 @task
-def checkin_changes(ctx):
-    """Use the local, IT-written deploy script to check in changes."""
-    ctx.local(settings.DEPLOY_SCRIPT)
-
-
-@hostgroups(settings.WEB_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
 def deploy_app(ctx):
     """Call the remote update script to push changes to webheads."""
-    ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
-    ctx.remote('/bin/touch %s' % settings.REMOTE_WSGI)
-
-
-@hostgroups(settings.CELERY_HOSTGROUP, remote_kwargs={'ssh_key': settings.SSH_KEY})
-def update_celery(ctx):
-    """Update and restart Celery."""
-    ctx.remote(settings.REMOTE_UPDATE_SCRIPT)
-    ctx.remote('/sbin/service %s restart' % settings.CELERY_SERVICE)
+    ctx.remote('/bin/touch %s' % settings.LOCAL_WSGI)
 
 
 @task
