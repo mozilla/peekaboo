@@ -75,7 +75,7 @@ def install_cron(ctx):
 @task
 def deploy_app(ctx):
     """Call the remote update script to push changes to webheads."""
-    ctx.remote('/bin/touch %s' % settings.LOCAL_WSGI)
+    ctx.local('/bin/touch %s' % settings.LOCAL_WSGI)
 
 
 @task
