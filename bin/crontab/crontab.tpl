@@ -2,19 +2,12 @@
 # {{ header }}
 #
 
-# MAILTO=some-email-list
+MAILTO=peterbe@mozilla.com
 
 HOME=/tmp
 
-# Every minute!
-* * * * * {{ cron }}
+# Daily
+7 0 * * * {{ cron }} recycle 2>&1 | grep -Ev '(DeprecationWarning|UserWarning|from pkg_resources)'
 
-# Every hour.
-42 * * * * {{ django }} cleanup
-
-# Every 2 hours.
-1 */2 * * * {{ cron }} something
-
-# Etc...
 
 MAILTO=root
