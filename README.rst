@@ -3,6 +3,11 @@ Peek-a-boo
 
 Peek-a-boo! Who's visiting a Mozilla office?
 
+Production environment: https://peekaboo.mozilla.org
+
+Dev/Stage environment: https://peekaboo.allizom.org
+
+
 Getting Your Dev Environment Up
 -------------------------------
 
