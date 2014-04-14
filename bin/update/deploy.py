@@ -107,7 +107,6 @@ def update(ctx):
 @task
 def deploy(ctx):
     install_cron()
-    checkin_changes()
     deploy_app()
 
 
