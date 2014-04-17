@@ -2,6 +2,10 @@
     background-color: #ffd773;
 }
 
+#entries {
+    max-width: 900px;
+    margin: 0 auto;
+}
 .entry {
     padding: 6px;
     border-bottom: 1px solid #ccc;
@@ -48,4 +52,9 @@
 #auto-refresh-stopped {
     display: none;
     color: red;
+}
+
+/* Make the bootstrap form on the edit modal use a bit less margin */
+#edit-entry.modal .control-group {
+    margin-bottom: 10px;
 }

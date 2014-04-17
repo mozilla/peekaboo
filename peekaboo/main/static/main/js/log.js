@@ -15,7 +15,7 @@ var Log = (function() {
     $('#edit-entry form')
       .attr('action', url)
       .data('id', id);
-    $.getJSON(url, function(response) {
+    $.getJSON(url, {thumbnail_geometry: 300}, function(response) {
       var container = $('#edit-entry');
       if (response.thumbnail) {
         $('.thumbnail img', container)
