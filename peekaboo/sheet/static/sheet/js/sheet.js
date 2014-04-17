@@ -264,6 +264,8 @@ var SignIn = (function() {
       $('#picture .skip').click(function() {
           Utils.showPanel('thankyou');
           Utils.setActiveStep('#step_thankyou');
+          // make sure there previous mug thumbnail is hidden
+          $('#thankyou .thumbnail').hide();
           return false;
       });
 
