@@ -293,7 +293,6 @@ def print_entry_pdf(request, pk):
         settings,
         'PDF_PROGRAM',
         'phantomjs --debug=true %s' % rasterize_full_path
-        #'phantomjs %s' % rasterize_full_path
     )
     if 'rasterize.js' in pdf_program:
         cmd = (
