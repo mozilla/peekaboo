@@ -247,6 +247,9 @@ def print_entry_pdf(request, pk):
     input_file = os.path.join(tmp_dir, 'visitor-%s.html' % visitor.pk)
     output_file = os.path.join(tmp_dir, 'visitor-%s.pdf' % visitor.pk)
 
+    if os.path.isfile(output_file):
+        os.remove(output_file)
+
     dom = pq(html)
 
     for img in dom('img'):
