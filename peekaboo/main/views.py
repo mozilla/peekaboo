@@ -343,6 +343,9 @@ def print_entry_pdf(request, pk):
     #print '-' * 70
     log_output_file = output_file + '.log'
     with open(log_output_file, 'w') as f:
+        f.write('COMMAND:\n')
+        f.write(cmd)
+        f.write('\n\n')
         f.write(err)
         #print "Created", log_output_file, "for your debugging pleasures"
     if os.path.isfile(output_file):
