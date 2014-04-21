@@ -318,8 +318,8 @@ def print_entry_pdf(request, pk):
         'output_file': output_file,
         'orientation': 'landscape',
     }
-    #print "CMD"
-    #print cmd
+    print "CMD"
+    print cmd
     proc = subprocess.Popen(
         cmd,
         shell=True,
@@ -340,12 +340,19 @@ def print_entry_pdf(request, pk):
     #print
     #print "FILE CREATED", os.path.isfile(output_file) and "Yes!" or "No"
     #print '-' * 70
-    log_output_file = output_file + '.log'
-    with open(log_output_file, 'w') as f:
+    stderr_output_file = output_file + '.stderr.log'
+    with open(stderr_output_file, 'w') as f:
         f.write('COMMAND:\n')
         f.write(cmd)
         f.write('\n\n')
         f.write(err)
+    stdout_output_file = output_file + '.stdout.log'
+    with open(stdout_output_file, 'w') as f:
+        f.write('COMMAND:\n')
+        f.write(cmd)
+        f.write('\n\n')
+        f.write(err)
+
         #print "Created", log_output_file, "for your debugging pleasures"
     if os.path.isfile(output_file):
         #response['Content-Disposition'] = (
