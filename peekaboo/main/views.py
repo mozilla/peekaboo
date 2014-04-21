@@ -245,7 +245,7 @@ def print_entry_pdf(request, pk):
         os.mkdir(tmp_dir)
 
     input_file = os.path.join(tmp_dir, 'visitor-%s.html' % visitor.pk)
-    output_file = os.path.join(tmp_dir, 'visitor-%s.pdf' % visitor.pk)
+    output_file = os.path.join(tmp_dir, 'visitor-%s.debug.pdf' % visitor.pk)
 
     if os.path.isfile(output_file):
         os.remove(output_file)
