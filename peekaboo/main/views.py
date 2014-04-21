@@ -289,7 +289,8 @@ def print_entry_pdf(request, pk):
     pdf_program = getattr(
         settings,
         'PDF_PROGRAM',
-        'phantomjs %s' % rasterize_full_path
+        'phantomjs --debug=true %s' % rasterize_full_path
+        #'phantomjs %s' % rasterize_full_path
     )
     if 'rasterize.js' in pdf_program:
         cmd = (
@@ -330,11 +331,17 @@ def print_entry_pdf(request, pk):
     #print exit_code
     #print "OUT"
     #print out
+    #print
     #print "ERR"
     #print err
     #print
+    #print
     #print "FILE CREATED", os.path.isfile(output_file) and "Yes!" or "No"
     #print '-' * 70
+    log_output_file = output_file + '.log'
+    with open(log_output_file, 'w') as f:
+        f.write(err)
+        #print "Created", log_output_file, "for your debugging pleasures"
     if os.path.isfile(output_file):
         #response['Content-Disposition'] = (
         #    'filename="%s.pdf"' % os.path.basename(output_file)
