@@ -252,6 +252,8 @@ def print_entry_pdf(request, pk):
 
     dom = pq(html)
 
+    copied_media_files = []
+
     for img in dom('img'):
         src = img.attrib['src']
         if settings.STATIC_URL in src:
@@ -279,6 +281,10 @@ def print_entry_pdf(request, pk):
                 shutil.copyfile(source, destination)
         else:
             shutil.copyfile(source, destination)
+
+        if settings.STATIC_URL not in src:
+            copied_media_files.append(destination)
+
         html = html.replace(img.attrib['src'], filename)
 
     with open(input_file, 'w') as f:
@@ -301,25 +307,13 @@ def print_entry_pdf(request, pk):
             ' "%(output_file)s"'
             ' "10.2cm*5.7cm"'
         )
-    elif 'wkpdf' in pdf_program:
-        cmd = (
-            pdf_program +
-            ' --orientation %(orientation)s'
-            ' --source %(input_file)s --output %(output_file)s'
-        )
-    elif 'wkhtmltopdf' in pdf_program:
-        cmd = (
-            pdf_program +
-            ' --orientation %(orientation)s'
-            ' %(input_file)s %(output_file)s'
-        )
+    else:
+        raise NotImplementedError(pdf_program)
     cmd = cmd % {
         'input_file': input_file,
         'output_file': output_file,
         'orientation': 'landscape',
     }
-    print "CMD"
-    print cmd
     proc = subprocess.Popen(
         cmd,
         shell=True,
@@ -327,33 +321,28 @@ def print_entry_pdf(request, pk):
         stderr=subprocess.PIPE,
     )
     out, err = proc.communicate()
-    #exit_code = proc.returncode
-    #print output_file
-    #print "EXIT"
-    #print exit_code
-    #print "OUT"
-    #print out
-    #print
-    #print "ERR"
-    #print err
-    #print
-    #print
-    #print "FILE CREATED", os.path.isfile(output_file) and "Yes!" or "No"
-    #print '-' * 70
-    stderr_output_file = output_file + '.stderr.log'
-    with open(stderr_output_file, 'w') as f:
-        f.write('COMMAND:\n')
-        f.write(cmd)
-        f.write('\n\n')
-        f.write(err)
-    stdout_output_file = output_file + '.stdout.log'
-    with open(stdout_output_file, 'w') as f:
-        f.write('COMMAND:\n')
-        f.write(cmd)
-        f.write('\n\n')
-        f.write(err)
 
-        #print "Created", log_output_file, "for your debugging pleasures"
+    if settings.DEBUG_PDF_PROGRAM:
+        stderr_output_file = output_file + '.stderr.log'
+        with open(stderr_output_file, 'w') as f:
+            f.write('COMMAND:\n')
+            f.write(cmd)
+            f.write('\n\n')
+            f.write(err)
+        stdout_output_file = output_file + '.stdout.log'
+        with open(stdout_output_file, 'w') as f:
+            f.write('COMMAND:\n')
+            f.write(cmd)
+            f.write('\n\n')
+            f.write(err)
+
+        print "For your debugging pleasures, created..."
+        print input_file
+        print output_file
+        print stdout_output_file
+        print stderr_output_file
+        print
+
     if os.path.isfile(output_file):
         #response['Content-Disposition'] = (
         #    'filename="%s.pdf"' % os.path.basename(output_file)
@@ -361,11 +350,13 @@ def print_entry_pdf(request, pk):
         response = http.HttpResponse(mimetype='application/pdf')
         # so we can print from an iframe
         response['X-Frame-Options'] = 'SAMEORIGIN'
-        #response["Access-Control-Allow-Origin"] = "*"
         response.write(open(output_file).read())
 
-        #os.remove(input_file)
-        #os.remove(output_file)
+        if not settings.DEBUG_PDF_PROGRAM:
+            os.remove(input_file)
+            os.remove(output_file)
+            for media_file in copied_media_files:
+                os.remove(media_file)
         return response
 
     return http.HttpResponse("PDF could not be created")
