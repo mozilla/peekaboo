@@ -117,7 +117,7 @@ def log_entries(request, location):
         return row
 
     first = None
-    for visitor in recently_created.order_by('-created')[:25]:
+    for visitor in recently_created.order_by('-created')[:100]:
         row = make_row(visitor)
         data['created'].append(row)
         if first is None:
