@@ -116,6 +116,18 @@ var SignIn = (function() {
       return;
     }
 
+    if (was_group_signin && !group_signin) {
+      // You clicked the "Done" button.
+      // This can mean two things, either you've just entered the last
+      // person and want to submit that. Or you previously entered the last
+      // person and now is ready to finish.
+      // Basically, in this scenario, if no name has been entered exit out.
+      if (!($('input[name="first_name"]', $form).val() || $('input[name="last_name"]', $form).val())) {
+        reset_all();
+        return;
+      }
+    }
+
     var company = $('#id_company').val();
     var visiting = $('#id_visiting').val();
 
@@ -129,7 +141,7 @@ var SignIn = (function() {
               var $input = $('[name="' + key + '"]', form);
               $input
                 .parents('.control-group')
-                  .addClass('error');
+                .addClass('error');
               $input.on('change', function() {
                 $(this).parents('.error').removeClass('error');
                 $('.help-inline', $(this).parents('.controls')).remove();
@@ -138,7 +150,7 @@ var SignIn = (function() {
               $('.help-inline', $controls).remove();
               $('<span class="help-inline">')
                 .text(errors.join(' '))
-                  .appendTo($controls);
+                .appendTo($controls);
             }
           });
 
@@ -192,7 +204,7 @@ var SignIn = (function() {
     fd.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
     var canvas_width = $('#photobooth_container canvas').attr('width');
     $.ajax({
-       url: 'upload/' + $('#picture').data('id') + '/?thumbnail_geometry=' + canvas_width,
+      url: 'upload/' + $('#picture').data('id') + '/?thumbnail_geometry=' + canvas_width,
       type: 'POST',
       data: fd,
       cache: false,
@@ -203,7 +215,11 @@ var SignIn = (function() {
   }
 
   function reset_all() {
-    $('#signin form')[0].reset();
+    var $form = $('#signin form');
+    was_group_signin = false;
+    $('.individual', $form).show();
+    $('.group', $form).hide();
+    $form[0].reset();
     $('.yourname').text('');
     $('.preview').hide();
     $('.restart').hide();
@@ -223,6 +239,9 @@ var SignIn = (function() {
 
   return {
     init: function() {
+
+      // in case the browser caches any input fields
+      $('#signin form')[0].reset();
 
       $('a.restart').click(function() {
         reset_all();
@@ -249,8 +268,8 @@ var SignIn = (function() {
             if (response.thumbnail) {
               $('#thankyou .thumbnail')
                 .attr('src', response.thumbnail.url)
-                  .attr('width', response.thumbnail.width)
-                    .attr('height', response.thumbnail.height);
+                .attr('width', response.thumbnail.width)
+                .attr('height', response.thumbnail.height);
               $('#thankyou .thumbnail').show();
             } else {
               $('#thankyou .thumbnail').hide();
