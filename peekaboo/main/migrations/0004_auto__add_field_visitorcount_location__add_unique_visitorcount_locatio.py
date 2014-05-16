@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
                       keep_default=False)
 
         # Adding unique constraint on 'VisitorCount', fields ['location', 'year', 'day', 'month']
-        db.delete_unique(u'main_visitorcount', ['year', 'day', 'month'])
+        #db.delete_unique(u'main_visitorcount', ['year', 'day', 'month'])
         db.create_unique(u'main_visitorcount', ['location_id', 'year', 'day', 'month'])
 
 
