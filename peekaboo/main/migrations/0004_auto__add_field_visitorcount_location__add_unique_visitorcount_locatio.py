@@ -3,18 +3,21 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from django.db.utils import DatabaseError
 
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'VisitorCount.location'
-        db.add_column(u'main_visitorcount', 'location',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['main.Location'], null=True),
-                      keep_default=False)
+        try:
+            # Adding field 'VisitorCount.location'
+            db.add_column(u'main_visitorcount', 'location',
+                          self.gf('django.db.models.fields.related.ForeignKey')(to=orm['main.Location'], null=True),
+                          keep_default=False)
+        except DatabaseError:
+            print "Unable to add the location foreign key"
 
         # Adding unique constraint on 'VisitorCount', fields ['location', 'year', 'day', 'month']
-        #db.delete_unique(u'main_visitorcount', ['year', 'day', 'month'])
         db.create_unique(u'main_visitorcount', ['location_id', 'year', 'day', 'month'])
 
 
