@@ -11,7 +11,6 @@
     {% compress js %}
     <script src="{{ static('main/js/libs/jquery.timeago.js') }}"></script>
     <script src="{{ static('main/js/libs/moment.min.js') }}"></script>
-    <script src="{{ static('main/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ static('main/js/libs/magnific-popup-v0.8.5.min.js') }}"></script>
     <!--<script src="{{ static('main/js/printer.js') }}"></script>-->
     <script src="{{ static('main/js/log.js') }}"></script>
@@ -20,25 +19,33 @@
 
 {% block main %}
 
-<div class="modal hide fade" id="edit-entry">
-    <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Edit entry</h3>
-    </div>
-    <p class="thumbnail">
-      <img>
-    </p>
-    <form action="" method="post" class="form-horizontal">
-    <div class="modal-body">
-      {{ csrf() }}
-      {{ bootstrapform(edit_form)|safe }}
-    </div>
-    <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
-    <button class="btn btn-primary">Save changes</button>
-    </div>
-    </form>
-</div>
+
+<div class="modal fade" id="edit-entry">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Edit entry</h4>
+      </div>
+      <form action="" method="post" class="form-horizontal">
+        <div class="modal-body">
+          <p class="picture">
+            <img class="img-thumbnail">
+          </p>
+          <div class="modal-body">
+            {{ csrf() }}
+            {{ bootstrapform_horizontal(edit_form)|safe }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <div class="hide" id="delete-entry">
   <form action="" method="post" class="form-horizontal">
@@ -56,13 +63,13 @@
   </h4>
 
   <div class="buttons">
-  <button class="btn btn-small print" name="print">Print</button>
-  <button class="btn btn-small edit" name="edit">Edit</button>
-  <button class="btn btn-small delete" name="delete">Delete</button>
+  <button class="btn btn-default btn-sm print" name="print">Print</button>
+  <button class="btn btn-default btn-sm edit" name="edit">Edit</button>
+  <button class="btn btn-default btn-sm delete" name="delete">Delete</button>
     <div class="delete-confirmation">
       <b>Sure?</b>
-      <button class="btn btn-small delete-confirm">Yes</button>
-      <button class="btn btn-small delete-cancel">Cancel</button>
+      <button class="btn btn-sm btn-danger delete-confirm">Yes</button>
+      <button class="btn btn-sm btn-default delete-cancel">Cancel</button>
     </div>
   </div>
 

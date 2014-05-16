@@ -8,7 +8,13 @@
 
 {% block main %}
 
-<h3>Stats for {{ location.name }}</h3>
+<h3>Stats for
+  {% if location %}
+    {{ location.name }}
+  {% else %}
+    All locations
+  {% endif %}
+</h3>
 
 <ul id="tabs" class="nav nav-tabs nav-justified">
   <li class="active"><a href="#condensed">Condensed</a></li>
@@ -58,6 +64,12 @@
   {% endfor %}
   </tbody>
 </table>
+
+
+<small>
+  Initially Peek-a-boo used to not tally visitor counts <b>per location</b>.
+  This was changed on 2014-05-19.
+</small>
 
 
 {% endblock %}

@@ -2,6 +2,7 @@ from jingo import register
 from django.template import Context
 from django.template.loader import get_template
 from sorl.thumbnail import get_thumbnail
+from bootstrapform.templatetags.bootstrap import bootstrap_horizontal
 
 
 @register.function
@@ -9,6 +10,11 @@ def bootstrapform(form):
     template = get_template("bootstrapform/form.html")
     context = Context({'form': form})
     return template.render(context)
+
+
+@register.function
+def bootstrapform_horizontal(form):
+    return bootstrap_horizontal(form, 'col-sm-3 col-lg-3')
 
 
 @register.filter

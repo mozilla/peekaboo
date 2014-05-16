@@ -54,7 +54,10 @@
     color: red;
 }
 
-/* Make the bootstrap form on the edit modal use a bit less margin */
-#edit-entry.modal .control-group {
-    margin-bottom: 10px;
+#edit-entry .picture {
+    text-align: center;
+}
+/* Make the bootstrap form on the edit modal use a bit less padding */
+#edit-entry .modal-body {
+    padding: 5px 20px 0px 20px;
 }

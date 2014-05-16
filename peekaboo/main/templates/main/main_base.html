@@ -8,112 +8,42 @@
     {% compress css %}
     <link href="{{ static('main/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ static('main/css/main.css') }}" rel="stylesheet" type="text/css">
+    <style>
+    body {
+      min-height: 2000px;
+    }
+    .navbar-static-top {
+      margin-bottom: 19px;
+    }
+    </style>
     {% endcompress %}
 
     <link rel="shortcut icon" href="{{ static('img/favicon.ico') }}">
+
     {% block extrahead %}
     {% endblock %}
   </head>
+ <body>
+    {% include "main/_main_navbar.html" %}
 
-  <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="/">Peek-a-boo!</a>
-          <div class="nav-collapse collapse">
-            {% if user.is_authenticated() %}
-            <p class="navbar-text pull-right">
-              Logged in as <b>{{ user.first_name or user.email or user.username }}</b>
-              <small>(<a href="{{ url('auth:logout') }}">Log out</a>)</small>
-            </p>
-            {% if request.user.is_staff or request.user.is_superuser %}
-            <ul class="nav">
-                <li><a href="{{ url('main:home') }}">Home</a></li>
-                <li><a href="{{ url('sheet:home') }}">Sign-in Sheet</a></li>
-                <li class="dropdown">
-                    <a href="{% if current_location %}{{ url('main:log', current_location.slug) }}{% else %}{{ url('main:log_start') }}{% endif %}"
-		       class="dropdown-toggle" data-toggle="dropdown">Log <b class="caret"></b></a>
-		    <ul class="dropdown-menu">
-		        {% for location in all_locations %}
-		        <li><a href="{{ url('main:log', location.slug) }}">{{ location.name }}</a></li>
-			{% endfor %}
-                        {% if current_location %}
-                        <li class="divider"></li>
-		        <li><a href="{{ url('main:log_start') }}">Change default location</a></li>
-                        {% endif %}
-
-		    </ul>
-		</li>
-                <li class="dropdown">
-		    <a href="{% if current_location %}{{ url('main:stats', current_location.slug) }}{% else %}{{ url('main:stats_start') }}{% endif %}"
-		       class="dropdown-toggle" data-toggle="dropdown">Stats <b class="caret"></b></a>
-		    <ul class="dropdown-menu">
-		        {% for location in all_locations %}
-		        <li><a href="{{ url('main:stats', location.slug) }}">{{ location.name }}</a></li>
-			{% endfor %}
-                        {% if current_location %}
-                        <li class="divider"></li>
-		        <li><a href="{{ url('main:stats_start') }}">Change default location</a></li>
-                        {% endif %}
-
-                </ul>
-            </li>
-                {% if request.user.is_superuser %}
-                <li><a href="{{ url('users:home') }}">User Management</a></li>
-                <li><a href="{{ url('locations:home') }}">Location Management</a></li>
-                {% endif %}
-            </ul>
-            {% endif %}
-            {% else %}
-            <p class="navbar-text pull-right">
-              <a href="{{ url('auth:login') }}">Log in</a>
-            </p>
-            {% endif %}
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
+    <div class="container">
 
       {% block pre_main %}
       {% endblock %}
 
-      <!-- Example row of columns -->
-      <div class="row-fluid">
+      <!-- <div class="row-fluid"> -->
       {% block main %}
       {% endblock %}
-      </div>
+      <!-- </div> -->
 
-      <div id="ajax-error-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3></h3>
-        </div>
-        <div class="modal-body">
-          <p class="description"></p>
-	</div>
-	<div class="modal-footer">
-    	  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        </div>
-      </div>
-
-      <div class="footer">
-        <!--<p>&copy; Mozilla</p>-->
-      </div>
+      {% include "main/_ajax_error_modal.html" %}
 
     </div> <!-- /container -->
+
     <script src="{{ static('js/libs/jquery-1.9.1.min.js') }}"></script>
+    <script src="{{ static('main/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ static('main/js/main.js') }}"></script>
     {% block extrajs %}
     {% endblock %}
   </body>
 </html>
-
-<!-- version 1.0  (note to self that the deployments work) -->

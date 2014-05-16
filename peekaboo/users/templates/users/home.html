@@ -3,14 +3,14 @@
 
 {% block main %}
 <form action="" method="post">{{ csrf() }}
-<table class="table">
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Email</th>
       <th>Last Login</th>
       <th>Staff<sup>*</sup></th>
       <th>Superuser<sup>**</sup></th>
-      <th>Permissions</th>
+      <th>Toggle Permissions</th>
     </tr>
   </thead>
   <tbody>
@@ -37,10 +37,10 @@
         {% endif %}
       </td>
       <td>
-
-        Toggle
-        <button type="submit" name="staff" value="{{ user.pk }}">Staff</button>
-        <button type="submit" name="superuser" value="{{ user.pk }}">Superuser</button>
+        <button class="btn btn-sm {% if user.is_staff %}btn-success{% else %}btn-default{% endif %}"
+          type="submit" name="staff" value="{{ user.pk }}">Staff</button>
+        <button class="btn btn-sm {% if user.is_superuser %}btn-success{% else %}btn-default{% endif %}"
+          type="submit" name="superuser" value="{{ user.pk }}">Superuser</button>
       </td>
     </tr>
     {% endfor %}

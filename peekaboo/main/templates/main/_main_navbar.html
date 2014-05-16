@@ -1,0 +1,70 @@
+<!-- Static navbar -->
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Peek-a-boo!</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      {% if user.is_authenticated() %}
+      <ul class="nav navbar-nav">
+
+        <li><a href="{{ url('sheet:home') }}">Sign-in Sheet</a></li>
+        <li class="dropdown">
+          <a href="#"
+          class="dropdown-toggle" data-toggle="dropdown">Log <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            {% for location in all_locations %}
+            <li><a {% if current_location == location %}style="font-weight:bold"{% endif %}
+              href="{{ url('main:log', location.slug) }}">{{ location.name }}</a></li>
+            {% endfor %}
+            {% if current_location %}
+            <li class="divider"></li>
+            <li><a href="{{ url('main:log_start') }}">Change default location</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stats <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            {% for location in all_locations %}
+            <li><a
+                {% if current_location == location %}style="font-weight:bold"{% endif %}
+                href="{{ url('main:stats', location.slug) }}">{{ location.name }}</a></li>
+            {% endfor %}
+            <li><a href="{{ url('main:stats', 'ALL') }}">ALL</a></li>
+
+            {% if current_location %}
+            <li class="divider"></li>
+            <li><a href="{{ url('main:stats_start') }}">Change default location</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% if request.user.is_superuser %}
+        <li><a href="{{ url('users:home') }}">Users</a></li>
+        <li><a href="{{ url('locations:home') }}">Locations</a></li>
+        {% endif %}
+
+      </ul>
+      {% endif %}
+
+      <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated() %}
+        <li style="padding-top:15px">
+          Logged in as <b>{{ user.first_name or user.email or user.username }}</b>
+          <small>(<a href="{{ url('auth:logout') }}">Log out</a>)</small>
+        </li>
+        {% else %}
+        <li>
+          <a href="{{ url('auth:login') }}">Log in</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>

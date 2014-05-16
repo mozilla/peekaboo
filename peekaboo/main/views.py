@@ -159,6 +159,7 @@ def log_entry(request, pk):
         if form.is_valid():
             form.save()
             data = form.cleaned_data
+            data['name'] = visitor.get_name(formal=True)
         else:
             return {'errors': form.errors}
     else:
@@ -369,13 +370,19 @@ def stats_start(request):
 
 
 @non_mortals_required
-def stats(request, location):
-    location = get_object_or_404(Location, slug=location)
-    request.session['default-location'] = location.slug
+def stats(request, location=None):
+    if location == 'ALL':
+        location = None
+    if location:
+        location = get_object_or_404(Location, slug=location)
+        request.session['default-location'] = location.slug
     rows = []
 
     _months = defaultdict(int)
-    for vc in VisitorCount.objects.all().order_by('year', 'month', 'day'):
+    visitors = VisitorCount.objects.all()
+    if location:
+        visitors = visitors.filter(location=location)
+    for vc in visitors.order_by('year', 'month', 'day'):
         date = datetime.date(vc.year, vc.month, vc.day)
         rows.append({
             'year': vc.year,

@@ -18,13 +18,13 @@ var Log = (function() {
     $.getJSON(url, {thumbnail_geometry: 300}, function(response) {
       var container = $('#edit-entry');
       if (response.thumbnail) {
-        $('.thumbnail img', container)
+        $('.picture img', container)
           .attr('src', response.thumbnail.url)
           .attr('width', response.thumbnail.width)
           .attr('height', response.thumbnail.height);
-        $('.thumbnail', container).show();
+        $('.picture', container).show();
       } else {
-        $('.thumbnail', container).hide();
+        $('.picture', container).hide();
       }
       $.each(response, function(key, value) {
         $('[name="' + key + '"]', container).val(value);

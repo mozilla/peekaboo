@@ -75,9 +75,12 @@ class VisitorCount(models.Model):
     day = models.IntegerField()
     month = models.IntegerField()
     year = models.IntegerField()
+    # the reason for allowing `null=True` here is because of legacy
+    # see https://bugzilla.mozilla.org/show_bug.cgi?id=1011556
+    location = models.ForeignKey(Location, null=True)
 
     class Meta:
-        unique_together = ('day', 'month', 'year')
+        unique_together = ('day', 'month', 'year', 'location')
 
     def __repr__(self):
         return (
@@ -99,7 +102,8 @@ class VisitorCount(models.Model):
             record = VisitorCount.objects.get(
                 day=day,
                 month=month,
-                year=year
+                year=year,
+                location=visitor.location
             )
             record.count += 1
             record.save()
@@ -109,5 +113,6 @@ class VisitorCount(models.Model):
                 count=1,
                 day=day,
                 month=month,
-                year=year
+                year=year,
+                location=visitor.location
             )
