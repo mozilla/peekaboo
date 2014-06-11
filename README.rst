@@ -115,5 +115,5 @@ information, read the file ``LICENSE``.
 .. _Mozilla Public License v. 2.0: http://mozilla.org/MPL/2.0/
 
 
-[south]: http://south.aeracode.org/
-[stackto]: https://mana.mozilla.org/wiki/display/websites/Dev.Paas+Stackato+Cluster
+.. _south: http://south.aeracode.org/
+.. _stackto: https://mana.mozilla.org/wiki/display/websites/Dev.Paas+Stackato+Cluster
