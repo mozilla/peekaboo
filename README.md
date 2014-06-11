@@ -7,6 +7,10 @@ Production environment: https://peekaboo.mozilla.org
 
 Dev/Stage environment: https://peekaboo.allizom.org
 
+Filing bugs
+-----------
+
+File bugs on bugzilla under [Webtools:Peekaboo](https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Peekaboo).
 
 Getting Your Dev Environment Up
 -------------------------------
@@ -61,7 +65,7 @@ haven't already created this file you first have to run:
 Migrations
 ----------
 
-We're using [South][south] to handle database migrations.
+We're using [South](http://south.aeracode.org/) to handle database migrations.
 To generate a schema migration, make changes to models.py, then run:
 
 ``./manage.py schemamigration peekaboo.main --auto``
@@ -94,7 +98,7 @@ one like this::
 Stackato
 --------
 
-To use `stackato <http://api.stacka.to/docs/>`_ you need to be log in and then you can
+To use [stackato](http://api.stacka.to/docs/) you need to be log in and then you can
 simply run::
 
     $ stackato push -n
@@ -109,11 +113,7 @@ If you make changes to the stackato.yml file run::
 License
 -------
 
-This software is licensed under the `Mozilla Public License v. 2.0`_. For more
+This software is licensed under the
+[Mozilla Public License v. 2.0](http://mozilla.org/MPL/2.0/).
+For more
 information, read the file ``LICENSE``.
-
-.. _Mozilla Public License v. 2.0: http://mozilla.org/MPL/2.0/
-
-
-.. _south: http://south.aeracode.org/
-.. _stackto: https://mana.mozilla.org/wiki/display/websites/Dev.Paas+Stackato+Cluster
