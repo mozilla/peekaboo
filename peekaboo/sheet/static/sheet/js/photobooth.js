@@ -112,8 +112,11 @@ var Photobooth = (function() {
     processVideoFrame();
 
     frameNumber++;
-    if (startTime == null)
+    // console.log(frameNumber);
+    // console.log($('.debugging-fps'));
+    if (startTime == null) {
       startTime = (new Date).getTime(); // in milliseconds
+    }
     // Every 60 frames calculate our actual framerate and display it
     if (frameNumber >= 60) {
       var currentTime = (new Date).getTime();            // in milliseconds

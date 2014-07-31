@@ -1,0 +1,43 @@
+{% extends "sheet/base.html" %}
+
+{% block site_header_topnav %}<!-- deliberately empty -->{% endblock %}
+{% block footer %}<!-- deliberately empty -->{% endblock %}
+
+{% block site_css %}
+<style>
+#photobooth_container .debugging-fps {
+    display: block;
+}
+#previews img {
+  margin: 3px;
+  border: 1px solid #ccc;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="flash"></div>
+
+<div id="main-content">
+  <div id="photobooth_container">
+    <canvas class="photobooth"></canvas>
+    <audio src="{{ static('sheet/sounds/shutter.ogg') }}" id="shutter-sound"></audio>
+    <video></video>
+    <p class="debugging-fps" style="display:block"></p>
+    <p>
+        <a class="button button-green snap" href="#">Snap!</a>
+    </p>
+    <hr>
+    <div id="previews">
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block page_js %}
+  <script src="{{ static('sheet/js/photobooth.js') }}"></script>
+  <script src="{{ static('sheet/js/test-photobooth.js') }}"></script>
+
+{% endblock %}

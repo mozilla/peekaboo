@@ -25,10 +25,12 @@
                 {% block site_header %}
                 <header id="masthead">
 
+                    {% block site_header_topnav %}
                     <ul class="topnav">
                         <li><a href="{{ url('sheet:home') }}" class="restart">&laquo; Start Over</a></li>
                         <li><a href="#" class="fullscreen">&laquo; Fullscreen</a></li>
                     </ul>
+                    {% endblock %}
 
                     {% block site_header_logo %}
                     <h2><a href="/"><img src="{{ static('img/sandstone/header-mozilla-stone.png') }}" alt="mozilla"></a></h2>
@@ -44,9 +46,11 @@
             </div>
 
             <footer id="colophon">
+              {% block footer %}
               <p class="current-location">
                 Current location: <a href="#">No Location Selected</a>
               </p>
+              {% endblock %}
             </footer>
 
         </div>

@@ -21,6 +21,12 @@ def home(request):
     return render(request, 'sheet/home.html', data)
 
 
+
+@non_mortals_required
+def test_photobooth(request):
+    return render(request, 'sheet/test_photobooth.html')
+
+
 @require_POST
 @json_view
 def signin(request):
