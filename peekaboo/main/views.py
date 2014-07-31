@@ -345,9 +345,9 @@ def print_entry_pdf(request, pk):
         print
 
     if os.path.isfile(output_file):
-        #response['Content-Disposition'] = (
+        # response['Content-Disposition'] = (
         #    'filename="%s.pdf"' % os.path.basename(output_file)
-        #)
+        # )
         response = http.HttpResponse(mimetype='application/pdf')
         # so we can print from an iframe
         response['X-Frame-Options'] = 'SAMEORIGIN'
@@ -376,23 +376,45 @@ def stats(request, location=None):
     if location:
         location = get_object_or_404(Location, slug=location)
         request.session['default-location'] = location.slug
-    rows = []
 
     _months = defaultdict(int)
     visitors = VisitorCount.objects.all()
+    active_visitors = Visitor.objects.all()
     if location:
         visitors = visitors.filter(location=location)
+        active_visitors = active_visitors.filter(location=location)
+
+    _rows = defaultdict(list)
+    for v in active_visitors.order_by('created'):
+        _row_key = v.created.strftime('%Y-%m-%d')
+        before = _rows.get(_row_key, {'count': 0})
+        _rows[_row_key] = {
+            'year': v.created.year,
+            'month': v.created.month,
+            'day': v.created.day,
+            'date': v.created,
+            'count': 1 + before['count']
+        }
+
     for vc in visitors.order_by('year', 'month', 'day'):
         date = datetime.date(vc.year, vc.month, vc.day)
-        rows.append({
+        count = vc.count
+        _row_key = date.strftime('%Y-%m-%d')
+        before = _rows.get(_row_key, {'count': 0})
+        count = before['count'] + vc.count
+        _rows[_row_key] = {
             'year': vc.year,
             'month': vc.month,
             'day': vc.day,
             'date': date,
-            'count': vc.count,
-        })
+            'count': count,
+        }
         _month_key = date.strftime('%Y-%m')
-        _months[_month_key] += vc.count
+        _months[_month_key] += count
+
+    for v in active_visitors.order_by('created'):
+        _month_key = v.created.strftime('%Y-%m')
+        _months[_month_key] += 1
 
     months = []
     for key in sorted(_months.keys()):
@@ -404,6 +426,10 @@ def stats(request, location=None):
             'date': date,
             'count': _months[key],
         })
+
+    rows = []
+    for _row_key in sorted(_rows):
+        rows.append(_rows[_row_key])
 
     context = {
         'location': location,

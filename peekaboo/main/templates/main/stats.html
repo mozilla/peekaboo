@@ -52,7 +52,6 @@
   </thead>
   <tbody>
   {% for row in rows %}
-
   <tr>
     <td>{% if row['year'] != previous_year %}{{ row.year }}{% endif %}</td>
     <td>{% if row['month'] != previous_month %}{{ row.date.strftime('%B') }}{% endif %}</td>
