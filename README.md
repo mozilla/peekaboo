@@ -95,6 +95,13 @@ one like this::
     ./manage.py make-superuser pbengtsson@mozilla.com
 
 
+What's deployed
+---------------
+
+To find out what commits have made it where, use the
+[Whatsdeployed tool for
+peekaboo](https://whatsdeployed.paas.allizom.org/?owner=mozilla&repo=peekaboo&name[]=Stage&url[]=https%3A%2F%2Fpeekaboo.allizom.org%2Fmedia%2Frevision.txt&name[]=Prod&url[]=https%3A%2F%2Fpeekaboo.mozilla.org%2Fmedia%2Frevision.txt).
+
 Stackato
 --------
 
