@@ -1,0 +1,27 @@
+{
+    "name": "Peekaboo",
+    "description": "Who's visiting a Mozilla office?",
+    "repository": {
+        "url": "https://github.com/mozilla/peekaboo",
+        "license": "MPL2"
+    },
+    "participate": {
+        "docs": "https://github.com/mozilla/peekaboo#peek-a-boo"
+    },
+    "bugs": {
+        "list": "https://bugzilla.mozilla.org/buglist.cgi?product=Webtools&component=Peekaboo&resolution=---",
+        "report": "https://bugzilla.mozilla.org/enter_bug.cgi?product=Webtools&component=Peekaboo"
+    },
+    "urls": {
+        "prod": "https://peekaboo.mozilla.org/",
+        "stage": "https://peekaboo.allizom.org/"
+    },
+    "keywords": [
+        "python",
+        "django",
+        "jquery",
+        "mysql",
+        "webrtc",
+        "browserid"
+    ]
+}

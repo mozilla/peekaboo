@@ -8,7 +8,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from funfactory.urlresolvers import reverse, split_path
-#from django.core.urlresolvers import reverse
 
 from peekaboo.main.models import Location, Visitor
 
@@ -52,6 +51,13 @@ class BaseTestCase(TestCase):
 
 
 class TestViews(BaseTestCase):
+
+    def test_contribute_json(self):
+        response = self.client.get('/contribute.json')
+        eq_(response.status_code, 200)
+        # should be valid JSON
+        ok_(json.loads(response.content))
+        eq_(response['Content-Type'], 'application/json')
 
     def test_log_entries(self):
         location = Location.objects.create(

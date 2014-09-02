@@ -11,6 +11,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
+    (r'^(?P<path>contribute\.json)$', 'django.views.static.serve',
+     {'document_root': settings.ROOT}),
     (r'', include('peekaboo.main.urls', namespace='main')),
     (r'^sheet/', include('peekaboo.sheet.urls', namespace='sheet')),
     (r'^auth/', include('peekaboo.auth.urls', namespace='auth')),
@@ -21,13 +23,13 @@ urlpatterns = patterns(
     (r'^browserid/', include('django_browserid.urls')),
 )
 
-## In DEBUG mode, serve media files through Django.
+# In DEBUG mode, serve media files through Django.
 if settings.DEBUG:
     # Remove leading and trailing slashes so the regex matches.
     media_url = settings.MEDIA_URL.lstrip('/').rstrip('/')
     urlpatterns += patterns(
         '',
         (r'^%s/(?P<path>.*)$' % media_url, 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT}),
+         {'document_root': settings.MEDIA_ROOT}),
     )
     urlpatterns += staticfiles_urlpatterns()
