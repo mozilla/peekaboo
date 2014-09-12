@@ -2,3 +2,4 @@ sorl-thumbnail==11.12
 South==0.7.5
 python-memcached==1.48
 django-bootstrap-form==2.0.5
+raven==3.4.1

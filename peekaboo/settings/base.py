@@ -26,7 +26,9 @@ INSTALLED_APPS += (
     'sorl.thumbnail',
     'south',
     'bootstrapform',
-    'django.contrib.admin'
+    'django.contrib.admin',
+    'raven.contrib.django.raven_compat',
+
 )
 
 
