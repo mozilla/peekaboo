@@ -2,7 +2,6 @@ from collections import defaultdict
 
 from django.conf import settings
 from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, get_object_or_404
 
 from sorl.thumbnail import get_thumbnail
@@ -19,7 +18,6 @@ def home(request):
     data['form'] = forms.SignInForm()
     data['take_picture'] = settings.DEFAULT_TAKE_PICTURE
     return render(request, 'sheet/home.html', data)
-
 
 
 @non_mortals_required
