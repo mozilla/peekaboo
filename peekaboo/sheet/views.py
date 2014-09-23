@@ -53,7 +53,7 @@ def upload(request, pk):
     form = forms.PictureForm(request.POST, request.FILES, instance=visitor)
     if form.is_valid():
         visitor = form.save()
-        thumbnail_geometry = request.GET.get('thumbnail_geometry', '100')
+        thumbnail_geometry = request.POST.get('thumbnail_geometry', '640')
         thumbnail = get_thumbnail(
             visitor.picture,
             thumbnail_geometry

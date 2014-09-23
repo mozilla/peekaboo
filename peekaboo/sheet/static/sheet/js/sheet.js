@@ -203,8 +203,13 @@ var SignIn = (function() {
     fd.append('picture', image);
     fd.append('csrfmiddlewaretoken', csrfmiddlewaretoken);
     var canvas_width = $('#photobooth_container canvas').attr('width');
+    if (!canvas_width) {
+      console.warn('Unable to read canvas width. Defaulting to 640');
+      canvas_width = '640';
+    }
+    fd.append('thumbnail_geometry', canvas_width);
     $.ajax({
-      url: 'upload/' + $('#picture').data('id') + '/?thumbnail_geometry=' + canvas_width,
+      url: 'upload/' + $('#picture').data('id') + '/',
       type: 'POST',
       data: fd,
       cache: false,
