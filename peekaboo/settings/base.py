@@ -103,6 +103,10 @@ DOMAIN_METHODS['messages'] = [
 #    ('media/js/**.js', 'javascript'),
 # ]
 
+# We're never storing any passwords so this can be anything
+HMAC_KEYS = {'something': 'anything'}
+PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
+
 LOGGING = dict(loggers=dict(playdoh={'level': logging.DEBUG}))
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
