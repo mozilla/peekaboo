@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html LANG="{{ LANG }}" dir="{{ DIR }}">
+<html>
   <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <title>{{ _('Something went wrong!') }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something went wrong!</title>
+    <style>
+
+    body {
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 14px;
+        line-height: 1.42857;
+        color: #333;
+    }
+    </style>
   </head>
   <body>
-    <h1>{{ _('Page not found') }}</h1>
+    <h1>Internal Server Error</h1>
     <p>
-      {% trans %}
         Sorry, but something went wrong.
-      {% endtrans %}
     </p>
   </body>
 </html>
