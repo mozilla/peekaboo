@@ -7,6 +7,12 @@ Production environment: https://peekaboo.mozilla.org
 
 Dev/Stage environment: https://peekaboo.allizom.org
 
+Contribute.json
+---------------
+
+All links and information about how to contribute is available on
+[https://peekaboo.mozilla.org/contribute.json](https://peekaboo.mozilla.org/contribute.json)
+
 Filing bugs
 -----------
 
