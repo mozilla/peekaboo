@@ -48,15 +48,6 @@ DEV = True
 # Uncomment the following line if you prefer to access your app via localhost
 # SITE_URL = 'http://localhost:8000'
 
-# Playdoh ships with Bcrypt+HMAC by default because it's the most secure.
-# To use bcrypt, fill in a secret HMAC key. It cannot be blank.
-HMAC_KEYS = {
-    #'2012-06-06': 'some secret',
-}
-
-from django_sha2 import get_password_hashers
-PASSWORD_HASHERS = get_password_hashers(base.BASE_PASSWORD_HASHERS, HMAC_KEYS)
-
 # Make this unique, and don't share it with anybody.  It cannot be blank.
 SECRET_KEY = ''
 
