@@ -96,3 +96,9 @@ CACHES = {
 
 # To hook up to Errormill set this:
 #SENTRY_DSN = 'https://....@errormill.mozilla.org/57'
+
+
+# This MUST be set when DEBUG=False
+ALLOWED_HOSTS = (
+    'example.com',
+)
