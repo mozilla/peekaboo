@@ -181,12 +181,15 @@ var SignIn = (function() {
           } else {
             if (Config.get('take-picture')) {
               // make the canvas visible
-              $('#photobooth_container').show();
-              $('.photobooth').show();
-              Utils.showPanel('picture');
-              Utils.setActiveStep('#step_picture');
-              $('#picture').data('id', response.id);
-              $('#picture').fadeIn(300);
+              Photobooth.setup(function() {
+                $('#photobooth_container').show();
+                $('.photobooth').show();
+                Utils.showPanel('picture');
+                Utils.setActiveStep('#step_picture');
+                $('#picture').data('id', response.id);
+                $('#picture').fadeIn(300);
+              });
+
             } else {
               Utils.showPanel('thankyou');
               Utils.setActiveStep('#step_thankyou');
@@ -285,40 +288,43 @@ var SignIn = (function() {
         return false;
       });
 
-      $('#picture .skip').click(function() {
-          Utils.showPanel('thankyou');
-          Utils.setActiveStep('#step_thankyou');
-          // make sure there previous mug thumbnail is hidden
-          $('#thankyou .thumbnail').hide();
-          return false;
-      });
-
       if (Config.get('take-picture')) {
-        Photobooth.setup(function() {
-          $('a.snap').click(function(e) {
-            e.preventDefault();
 
-            var flash = $('.flash').show();
-            setTimeout(function() {
-              flash.addClass('fadeout');
-              setTimeout(function() {
-                flash.hide().removeClass('fadeout');
-              }, 1000);
-            }, 200);
-
-            // Hide the photobooth before showing the preview
-            var photoboothContainer = document.querySelector('#photobooth_container');
-            photoboothContainer.style.display = "none";
-
-            var canvas = Photobooth.getCanvas();
-            document.getElementById('shutter-sound').play();
-            canvas.toBlob(function(blob) {
-              snap_blob = blob; // keep it in memory
-            });
-            $('.preview img').attr('src', canvas.toDataURL());
-            $('#picture form').hide();
-            $('.preview').show();
+        $('#picture .skip').click(function() {
+          Photobooth.teardown(function() {
+            Utils.showPanel('thankyou');
+            Utils.setActiveStep('#step_thankyou');
+            // make sure there previous mug thumbnail is hidden
+            $('#thankyou .thumbnail').hide();
           });
+          return false;
+        });
+
+        $('a.snap').click(function(e) {
+          e.preventDefault();
+
+          var flash = $('.flash').show();
+          setTimeout(function() {
+            flash.addClass('fadeout');
+            setTimeout(function() {
+              flash.hide().removeClass('fadeout');
+            }, 1000);
+          }, 200);
+
+          // Hide the photobooth before showing the preview
+          var photoboothContainer = document.querySelector('#photobooth_container');
+          photoboothContainer.style.display = "none";
+
+          var canvas = Photobooth.getCanvas();
+          document.getElementById('shutter-sound').play();
+          canvas.toBlob(function(blob) {
+            snap_blob = blob; // keep it in memory
+          });
+          $('.preview img').attr('src', canvas.toDataURL());
+          $('#picture form').hide();
+          $('.preview').show();
+          Photobooth.teardown();
+
         });
       }
 

@@ -101,6 +101,24 @@ one like this::
     ./manage.py make-superuser pbengtsson@mozilla.com
 
 
+Always allowing the camera in Firefox
+-------------------------------------
+
+When you use the web camera in the sign-in sheet app for the first
+time it will popup open a little dialog and you click to allow the
+camera. You can select "Always Share" and that gets remembered.
+
+![Always Share](always-share-screenshot.png)
+
+However, to avoid this question to even ever come up, you can change
+the config to never pop-up this dialog and always trust. This is only
+recommended for dedicated devices that act as kiosks for Peekaboo.
+
+Go to `about:config` and search for `media.navigator.permission` and
+double click the found setting till it says "true" at the end.
+
+![about:config](about-config-screenshot.png)
+
 What's deployed
 ---------------
 

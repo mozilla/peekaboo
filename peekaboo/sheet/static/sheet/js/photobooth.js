@@ -4,6 +4,7 @@ var Photobooth = (function() {
   var canvas;
   var context;
   var imageFilter;
+  var stream;
 
   // Alias the vendor prefixed variants of getUserMedia so we can access them
   // via navigator.getUserMedia
@@ -34,7 +35,10 @@ var Photobooth = (function() {
 
   // This function will be called if a webcam is available and the user has
   // granted access for the web application to use it.
-  function successCallback(stream) {
+  function successCallback(_stream) {
+    // store this in the "closure global" space so we can stop it later
+    stream = _stream;
+
     // Firefox has a special property that you can use to associate the stream with the
     // video object.  Other browsers require you to use createObjectURL.
     if (video.mozSrcObject !== undefined) {
@@ -114,7 +118,7 @@ var Photobooth = (function() {
     frameNumber++;
     // console.log(frameNumber);
     // console.log($('.debugging-fps'));
-    if (startTime == null) {
+    if (startTime === null) {
       startTime = (new Date).getTime(); // in milliseconds
     }
     // Every 60 frames calculate our actual framerate and display it
@@ -161,6 +165,10 @@ var Photobooth = (function() {
        navigator.getUserMedia({video: true}, successCallback, failureCallback);
        if (callback) callback();
 
+     },
+     teardown: function(callback) {
+       stream.stop();
+       if (callback) callback();
      },
      getCanvas: function() {
        return canvas;
