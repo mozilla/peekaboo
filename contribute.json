@@ -6,6 +6,7 @@
         "license": "MPL2"
     },
     "participate": {
+        "home": "https://github.com/mozilla/peekaboo",
         "docs": "https://github.com/mozilla/peekaboo#peek-a-boo"
     },
     "bugs": {
