@@ -116,7 +116,7 @@ DEFAULT_TAKE_PICTURE = True
 
 BROWSERID_REQUEST_ARGS = {'siteName': 'Peek-a-boo!'}
 
-RECYCLE_MINIMUM_HOURS = 24 * 365  # 1 year
+RECYCLE_MINIMUM_HOURS = 30  # days
 
 # Set to True if you want to keep the components that are made to generate
 # PDFs when printing badges
