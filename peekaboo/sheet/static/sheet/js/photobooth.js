@@ -28,11 +28,6 @@ var Photobooth = (function() {
       };
   })();
 
-  function showStatus(s) {
-    console.log('STATUS:', s);
-    //document.querySelector("#status").innerHTML = s;
-  }
-
   // This function will be called if a webcam is available and the user has
   // granted access for the web application to use it.
   function successCallback(_stream) {
@@ -49,25 +44,18 @@ var Photobooth = (function() {
     }
     video.play();
 
-    // Show the DOM elements that contain the rest of the UI
-    //document.querySelector("#videodivs").style.display = "inline";
-    showStatus("You should be seeing video from your camera.");
+    console.log("You should be seeing video from your camera.");
 
     // capture the first frame of video and start the animation loop that
     // continuously update the video to the screen
     update();
   }
 
-  // This function will be called if there is no webcam available or the user has
-  // denied access for the web application to use it.
   function failureCallback() {
-    $('.error span').text("No camera is available or you have denied access.");
-    $('.error').hide().fadeIn(400);
+    console.warn('Unable to start getUserMedia');
+    console.error(arguments);
   }
 
-  // filter that brightens an image by adding a fixed value
-  // to each color component
-  // a javascript closure is used to parameterize the filter
   // with the delta value
   brightness = function(delta) {
     return function (pixels, args) {
@@ -96,10 +84,12 @@ var Photobooth = (function() {
     // the stream.
     if (context && video.videoWidth > 0 && video.videoHeight > 0) {
       // Resize the canvas to match the current video dimensions
-      if (canvas.width != video.videoWidth)
+      if (canvas.width != video.videoWidth) {
         canvas.width = video.videoWidth;
-      if (canvas.height != video.videoHeight)
+      }
+      if (canvas.height != video.videoHeight) {
         canvas.height = video.videoHeight;
+      }
 
       // Copy the current video frame by drawing it onto the
       // canvas's context
@@ -132,6 +122,10 @@ var Photobooth = (function() {
     requestAnimationFrame(update);
   }
 
+  function clearCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   return {
      setup: function(callback) {
        callback = callback || null;
@@ -145,7 +139,7 @@ var Photobooth = (function() {
        canvas = document.querySelector("canvas");
        context = canvas.getContext("2d");
 
-       showStatus("Waiting for you to grant access to the camera...");
+       console.log("Waiting for you to grant access to the camera...");
 
        // We can retrieve the video dimensions from the video object once we have
        // registered for and received the loadeddata event
@@ -162,12 +156,19 @@ var Photobooth = (function() {
        }
 
        // Ask the user for access to the camera
-       navigator.getUserMedia({video: true}, successCallback, failureCallback);
-       if (callback) callback();
-
+       navigator.getUserMedia(
+         {video: true},
+         function(stream) {
+           clearCanvas();
+           successCallback(stream);
+           if (callback) callback(true);
+         }, failureCallback);
+         if (callback) callback(false);
      },
-     teardown: function(callback) {
-       stream.stop();
+     teardown: function(stopstream, callback) {
+       if (stopstream) {
+         stream.stop();
+       }
        if (callback) callback();
      },
      getCanvas: function() {

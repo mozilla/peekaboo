@@ -87,6 +87,21 @@ var SignIn = (function() {
   //var snap_data_url = null;
   var snap_blob = null;
 
+  // Because of https://bugzilla.mozilla.org/show_bug.cgi?id=1142123 if you
+  // use a USB webcamera, you can't leave it "Always Share" because when
+  // to start the stream the next time it goes back to the default camera
+  // instead. So we leave in this hack to disable the stream being always on.
+  var stream_always_on = !!localStorage.getItem('stream-always-on');
+  if (stream_always_on) {
+    console.warn(
+      "NOTE! you have a localStorage key 'stream-always-on' " +
+      "which means it will never stop the webcamera stream in " +
+      "between panels.");
+    console.log("To disable, type in:");
+    console.log("localStorage.removeItem('stream-always-on')");
+  }
+
+
   function opened(id) {
     /* Called when a pane is opened */
 
@@ -104,6 +119,7 @@ var SignIn = (function() {
   }
 
   var was_group_signin = false;
+  var stream_started = false;
 
   function submit($form, group_signin) {
     var location_id = Location.get_current_location().id;
@@ -125,6 +141,24 @@ var SignIn = (function() {
       if (!($('input[name="first_name"]', $form).val() || $('input[name="last_name"]', $form).val())) {
         reset_all();
         return;
+      }
+    }
+
+    function setupCallback(camera_started) {
+      if (camera_started) {
+        $('div.photobooth.loading-canvas').hide();
+        $('canvas.photobooth').show();
+        // $('canvas.photobooth').show();
+        $('#photobooth_container p.buttons').show();
+        stream_started = true;
+      } else {
+        $('div.photobooth.loading-canvas').show();
+        $('canvas.photobooth').hide();
+        $('#photobooth_container').show();
+        $('#photobooth_container p.buttons').hide();
+        Utils.showPanel('picture');
+        Utils.setActiveStep('#step_picture');
+        $('#picture').fadeIn(300);
       }
     }
 
@@ -171,6 +205,7 @@ var SignIn = (function() {
 
           $('.yourname').text(response.name);
 
+
           if (group_signin) {
             $('.individual', $form).hide();
             $('.group', $form).show();
@@ -181,14 +216,14 @@ var SignIn = (function() {
           } else {
             if (Config.get('take-picture')) {
               // make the canvas visible
-              Photobooth.setup(function() {
-                $('#photobooth_container').show();
-                $('.photobooth').show();
-                Utils.showPanel('picture');
-                Utils.setActiveStep('#step_picture');
-                $('#picture').data('id', response.id);
-                $('#picture').fadeIn(300);
-              });
+              $('#picture').data('id', response.id);
+              console.log(stream_always_on, stream_started);
+              if (stream_always_on && stream_started) {
+                setupCallback(false);
+                setupCallback(true);
+              } else {
+                Photobooth.setup(setupCallback);
+              }
 
             } else {
               Utils.showPanel('thankyou');
@@ -291,7 +326,7 @@ var SignIn = (function() {
       if (Config.get('take-picture')) {
 
         $('#picture .skip').click(function() {
-          Photobooth.teardown(function() {
+          Photobooth.teardown(!stream_always_on, function() {
             Utils.showPanel('thankyou');
             Utils.setActiveStep('#step_thankyou');
             // make sure there previous mug thumbnail is hidden
@@ -323,7 +358,7 @@ var SignIn = (function() {
           $('.preview img').attr('src', canvas.toDataURL());
           $('#picture form').hide();
           $('.preview').show();
-          Photobooth.teardown();
+          Photobooth.teardown(!stream_always_on);
 
         });
       }
@@ -342,10 +377,8 @@ var Location = (function() {
 
   function clicked_location(event) {
     var $self = $(this);
-    current_location_name = $self.data('name');
-    current_location_id = $self.data('id');
-    localStorage.setItem('location-name', current_location_name);
-    localStorage.setItem('location-id', current_location_id);
+    localStorage.setItem('location-name', $self.data('name'));
+    localStorage.setItem('location-id', $self.data('id'));
     location_chosen();
     return false;
   }

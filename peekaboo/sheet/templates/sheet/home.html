@@ -47,11 +47,14 @@
         </div>
 
         <div id="photobooth_container">
+          <div class="photobooth loading-canvas">
+            <p>Starting camera...</p>
+          </div>
           <canvas class="photobooth"></canvas>
           <audio src="{{ static('sheet/sounds/shutter.ogg') }}" id="shutter-sound"></audio>
           <video></video>
           <p class="debugging-fps"></p>
-          <p>
+          <p class="buttons">
               <a class="button button-green snap" href="#">Snap!</a>
               <a class="button skip" href="#">Skip This &raquo;</a>
           </p>
