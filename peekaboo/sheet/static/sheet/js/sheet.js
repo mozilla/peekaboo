@@ -124,7 +124,7 @@ var SignIn = (function() {
   function submit($form, group_signin) {
     var location_id = Location.get_current_location().id;
     if (!location_id) {
-      showPanel('location');
+      Utils.showPanel('location');
       return;
     }
     if (group_signin && !$('#id_company').val()) {
@@ -217,7 +217,7 @@ var SignIn = (function() {
             if (Config.get('take-picture')) {
               // make the canvas visible
               $('#picture').data('id', response.id);
-              console.log(stream_always_on, stream_started);
+              // console.log(stream_always_on, stream_started);
               if (stream_always_on && stream_started) {
                 setupCallback(false);
                 setupCallback(true);
@@ -377,8 +377,10 @@ var Location = (function() {
 
   function clicked_location(event) {
     var $self = $(this);
-    localStorage.setItem('location-name', $self.data('name'));
-    localStorage.setItem('location-id', $self.data('id'));
+    current_location_name = $self.data('name');
+    localStorage.setItem('location-name', current_location_name);
+    current_location_id = $self.data('id');
+    localStorage.setItem('location-id', current_location_id);
     location_chosen();
     return false;
   }
