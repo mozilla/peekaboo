@@ -121,3 +121,6 @@ RECYCLE_MINIMUM_HOURS = 30  # days
 # Set to True if you want to keep the components that are made to generate
 # PDFs when printing badges
 DEBUG_PDF_PROGRAM = False
+
+# Default in Django is 2 weeks (1209600 = 60 * 60 * 24 * 7 * 2)
+SESSION_COOKIE_AGE =  60 * 60 * 24 * 365  # 1 year

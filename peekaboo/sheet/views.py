@@ -27,6 +27,7 @@ def test_photobooth(request):
 
 @require_POST
 @json_view
+@ajax_login_required
 def signin(request):
     form = forms.SignInForm(request.POST)
     if form.is_valid():
@@ -70,6 +71,7 @@ def upload(request, pk):
 
 
 @json_view
+@ajax_login_required
 def locations(request):
     locations = []
     # temporary hack

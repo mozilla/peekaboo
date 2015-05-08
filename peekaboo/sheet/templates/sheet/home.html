@@ -13,6 +13,18 @@
         <img src="{{ static('sheet/images/loader.png') }}" alt="Loading" />
       </p>
 
+      <div id="security">
+        <h2>Permission Error</h2>
+        <p>
+          It appears you have to
+          <a href="{{ url('auth:login') }}"><b>log in</b> again</a>.
+        </p>
+        <p>
+          Once you have dealt with the problem you can
+          <a href="#signin" class="start-over">Start over</a>.
+        </p>
+      </div>
+
       <div id="location">
         <h2>Choose location</h2>
         <div class="current-location"></div>

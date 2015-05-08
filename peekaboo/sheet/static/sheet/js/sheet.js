@@ -50,8 +50,6 @@ var Utils = (function() {
       alert(msg);
     },
     ajax_error: function(msg, description, callback) {
-      console.log(msg);
-      console.log(description);
       $('#error h3').text(msg);
       if (description) {
         $('#error .description').text(description);
@@ -166,7 +164,8 @@ var SignIn = (function() {
     var visiting = $('#id_visiting').val();
 
     $('#id_location', $form).val(location_id);
-    $.post($form.attr('action'), $form.serializeObject(), function(response) {
+    $.post($form.attr('action'), $form.serializeObject())
+    .then(function(response) {
         if (response.errors) {
           $.each(response.errors, function(key, errors) {
             if (key === '__all__') {
@@ -187,7 +186,6 @@ var SignIn = (function() {
                 .appendTo($controls);
             }
           });
-
         } else {
           $form[0].reset();
           if (group_signin) {
@@ -282,6 +280,11 @@ var SignIn = (function() {
 
   return {
     init: function() {
+
+      $('#security a.start-over').click(function() {
+        reset_all();
+        return false;
+      });
 
       // in case the browser caches any input fields
       $('#signin form')[0].reset();
@@ -487,8 +490,14 @@ $(function() {
 
   $(document).ajaxError(function(event, jqxhr, settings, exception) {
     $('#loading').hide();
-    Utils.ajax_error("Internal server error", jqxhr.responseText, function() {
-      // reset_all() ??
-    });
+    console.warn.apply(console, arguments);
+    if (jqxhr.status === 403) {
+      // CSRF failed so you must be signed out
+      Utils.showPanel('security');
+    } else {
+      Utils.ajax_error("Internal server error", jqxhr.responseText, function() {
+        // reset_all() ??
+      });
+    }
   });
 });
