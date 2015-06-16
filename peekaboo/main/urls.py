@@ -34,4 +34,6 @@ urlpatterns = patterns(
     url(r'^logout/?$', 'django.contrib.auth.views.logout', {'next_page': '/'},
         name='logout'),
     url(r'^debugger', views.debugger),
+    url(r'^csv/$', views.csv_upload,
+        name='csv_upload'),
 )

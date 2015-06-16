@@ -14,4 +14,40 @@
 
 {% block main %}
 <!-- nothing here at the moment -->
+
+<div class="row">
+  <div class="col-xs-6 col-lg-4">
+    <h3>CSV Upload</h3>
+    <p>
+      If you have a group of visitors you can upload them in bulk.
+    </p>
+    <p><a class="btn btn-default" href="{{ url('main:csv_upload') }}" role="button">EventBrite CVS Upload »</a></p>
+  </div><!--/.col-xs-6.col-lg-4-->
+  {% if request.user.is_superuser %}
+  <div class="col-xs-6 col-lg-4">
+    <h3>Users</h3>
+    <p>
+      You can manage the <b>{{ count_users }} users</b> currently in the system.
+    </p>
+    <p><a class="btn btn-default" href="{{ url('users:home') }}" role="button">Manage Users »</a></p>
+  </div><!--/.col-xs-6.col-lg-4-->
+  <div class="col-xs-6 col-lg-4">
+    <h3>Locations</h3>
+    <p>
+      You can manage the <b>{{ count_locations }} locations</b> currently in the system.
+    </p>
+    <p><a class="btn btn-default" href="{{ url('locations:home') }}" role="button">View Locations »</a></p>
+  </div><!--/.col-xs-6.col-lg-4-->
+  {% endif %}
+  {% if current_location %}
+  <div class="col-xs-6 col-lg-4">
+    <h3>Current Location</h3>
+    <p>
+      You have currently chosen <b>{{ current_location }}</b>.
+    </p>
+    <p><a class="btn btn-default" href="{{ url('main:stats_start') }}" role="button">Change current location »</a></p>
+  </div><!--/.col-xs-6.col-lg-4-->
+  {% endif %}
+</div>
+
 {% endblock %}

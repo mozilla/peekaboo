@@ -1,7 +1,5 @@
 from django import forms
-from .models import (
-    Visitor
-)
+from .models import Visitor, Location
 
 
 def _(s):
@@ -67,3 +65,25 @@ class PictureForm(BaseModelForm):
     class Meta:
         model = Visitor
         fields = ('picture',)
+
+
+class CSVUploadForm(BaseForm):
+
+    location = forms.ModelChoiceField(
+        queryset=Location.objects
+    )
+    file = forms.FileField()
+    format = forms.ChoiceField(
+        choices=(
+            ('eventbrite', 'EventBrite'),
+        )
+    )
+    date = forms.DateTimeField(
+        required=False,
+        help_text=(
+            'Optional. Date format is YYYY-MM-DD HH:MM using the '
+            '24 hour clock. The time is expected to be local to the '
+            'location\'s time zone.'
+        )
+
+    )
