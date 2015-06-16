@@ -1,6 +1,9 @@
+import time
+
 from jingo import register
 from django.template import Context
 from django.template.loader import get_template
+from django.db.utils import IntegrityError
 from sorl.thumbnail import get_thumbnail
 from bootstrapform.templatetags.bootstrap import bootstrap_horizontal
 

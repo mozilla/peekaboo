@@ -1,0 +1,30 @@
+# http://travis-ci.org/#!/mozilla/peekaboo
+
+# This indicates to Travis that we will not use or need sudo
+# so that we can benefit from and use the cache->directories
+# directive.
+sudo: no
+
+env: PIP_DOWNLOAD_CACHE="pip_cache"
+cache:
+    directories:
+        - pip_cache
+
+language: python
+
+python:
+    - 2.6
+    #- 2.7
+
+before_install:
+#     - export DISPLAY=:99.0
+#     - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16
+    - git submodule update --init --recursive
+
+install:
+    - bin/travis/install.sh
+before_script:
+    - bin/travis/lint.sh
+    - bin/travis/setup.sh
+script:
+    - bin/travis/test.sh
