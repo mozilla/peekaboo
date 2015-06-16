@@ -43,11 +43,9 @@ class SignInForm(BaseModelForm):
         self.fields['first_name'].widget.attrs['autocomplete'] = 'off'
         self.fields['first_name'].widget.attrs['spellcheck'] = 'false'
         self.fields['first_name'].widget.attrs['autocorrect'] = 'off'
-        #self.fields['first_name'].widget.attrs['autocapitalize'] = 'on'
         self.fields['last_name'].widget.attrs['autocomplete'] = 'off'
         self.fields['last_name'].widget.attrs['spellcheck'] = 'false'
         self.fields['last_name'].widget.attrs['autocorrect'] = 'off'
-        #self.fields['last_name'].widget.attrs['autocapitalize'] = 'on'
 
     def clean(self):
         data = super(SignInForm, self).clean()
