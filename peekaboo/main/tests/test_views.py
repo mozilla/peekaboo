@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+import os
 import datetime
 import json
 
@@ -172,3 +175,32 @@ class TestViews(BaseTestCase):
         eq_(data['created'], [])
         eq_(data['modified'], [])
         eq_(data['latest'], None)
+
+    def test_eventbrite_upload(self):
+
+        url = reverse('main:csv_upload')
+        response = self.client.get(url)
+        eq_(response.status_code, 302)
+
+        self._login()
+        response = self.client.get(url)
+        eq_(response.status_code, 200)
+
+        location = Location.objects.create(
+            name='Berlin',
+            slug='berlin',
+            timezone='Europe/Berlin',
+        )
+        _here = os.path.dirname(__file__)
+        response = self.client.post(url, {
+            'file': open(os.path.join(_here, 'sample-eventbrite.csv')),
+            'format': 'eventbrite',
+            'location': location.id,
+            'date': '2015-06-16 13:00:00',
+        })
+
+        visitors = Visitor.objects.filter(location=location)
+        first_names = [x.first_name for x in visitors.order_by('first_name')]
+        eq_(first_names, [u'Nicolai Froehlich', u'Södan'])
+        first_created = [x.created for x in visitors][0]
+        eq_(first_created.strftime('%H:%M %Z'), '12:00 UTC')

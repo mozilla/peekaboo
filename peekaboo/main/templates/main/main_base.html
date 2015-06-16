@@ -25,13 +25,20 @@
 
     <div class="container">
 
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+      {% endfor %}
+
       {% block pre_main %}
       {% endblock %}
 
-      <!-- <div class="row-fluid"> -->
       {% block main %}
       {% endblock %}
-      <!-- </div> -->
 
       {% include "main/_ajax_error_modal.html" %}
 

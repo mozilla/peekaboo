@@ -1,0 +1,29 @@
+{% extends 'main/main_base.html' %}
+
+{% block main %}
+<h3>CSV Upload</h3>
+
+<form action="" method="post" enctype="multipart/form-data">{{ csrf() }}
+    {{ bootstrapform(form)|safe }}
+    <div class="modal-footer" style="text-align:left">
+        <button class="btn btn-primary">Upload</button>
+        <a href="{{ url('main:home') }}" class="btn btn-default" data-dismiss="modal">Cancel</a>
+    </div>
+</form>
+<p>
+  The format dictates how we decipher the columns in the CSV file.
+</p>
+
+<h4>EventBrite</h4>
+<ol>
+  <li>Name &rarr; <b>First name</b></li>
+  <li>User ID</li>
+  <li>Title &rarr; <b>Job title</b></li>
+  <li>Event Host</li>
+  <li>RSVP</li>
+  <li>Guests</li>
+  <li>RSVPed on</li>
+  <li>Joined Group on</li>
+  <li>URL of Member Profile</li>
+</ol>
+{% endblock %}

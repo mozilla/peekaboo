@@ -6,16 +6,22 @@ import shutil
 import stat
 import datetime
 import time
+import csv
 from collections import defaultdict
+from io import StringIO
+import pytz
 from pyquery import PyQuery as pq
 from django import http
 from django.core.cache import cache
 from django.utils.timezone import utc
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.conf import settings
+from django.db import transaction
+from django.contrib import messages
 from funfactory.urlresolvers import reverse
 from sorl.thumbnail import get_thumbnail
 from . import forms
@@ -34,8 +40,11 @@ def robots_txt(request):
 
 @login_required
 def home(request):
-    data = {}
-    return render(request, 'main/home.html', data)
+    context = {
+        'count_users': User.objects.all().count(),
+        'count_locations': Location.objects.all().count(),
+    }
+    return render(request, 'main/home.html', context)
 
 
 @non_mortals_required
@@ -477,3 +486,76 @@ def debugger(request):
         cache.set('foo', 'bar', 60)
     r['content-type'] = 'text/plain'
     return r
+
+
+@transaction.commit_on_success
+@non_mortals_required
+def csv_upload(request):
+    context = {}
+
+    def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
+        # csv.py doesn't do Unicode; encode temporarily as UTF-8:
+        csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
+                                dialect=dialect, **kwargs)
+        for row in csv_reader:
+            # decode UTF-8 back to Unicode, cell by cell:
+            yield [unicode(cell, 'utf-8') for cell in row]
+
+    def utf_8_encoder(unicode_csv_data):
+        for line in unicode_csv_data:
+            yield line.encode('utf-8')
+
+    if request.method == 'POST':
+        form = forms.CSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            created = 0
+            location = form.cleaned_data['location']
+            tz = pytz.timezone(location.timezone)
+
+            if form.cleaned_data['format'] == 'eventbrite':
+                stream = StringIO(
+                    unicode(form.cleaned_data['file'].read(), 'utf-8'),
+                    newline='\r'
+                )
+                reader = unicode_csv_reader(stream)
+                first = True
+                for i, row in enumerate(reader):
+                    if first:
+                        first = False
+                        continue
+                    visitor = Visitor(
+                        location=location,
+                        first_name=row[0],  # Name
+                        job_title=row[2],  # Title
+                    )
+                    if form.cleaned_data['date']:
+                        date = form.cleaned_data['date']
+                        date = date.replace(tzinfo=tz)
+                        # Stagger the entries by 1 second each
+                        # so they are loaded in the order they appeared
+                        # in the CSV.
+                        visitor.created = date + datetime.timedelta(seconds=i)
+                    visitor.save()
+                    created += 1
+            else:
+                raise NotImplementedError(form.cleaned_data['format'])
+
+            messages.success(
+                request,
+                'Created %d records from the CSV upload' % (created,)
+            )
+            return redirect('main:home')
+    else:
+        initial = {
+            'format': 'eventbrite',  # will change once there are more choices
+        }
+        if request.session.get('default-location'):
+            try:
+                initial['location'] = Location.objects.get(
+                    slug=request.session['default-location']
+                ).id
+            except Location.DoesNotExist:
+                pass
+        form = forms.CSVUploadForm(initial=initial)
+    context['form'] = form
+    return render(request, 'main/csv_upload.html', context)
