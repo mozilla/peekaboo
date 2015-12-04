@@ -3,14 +3,13 @@
 MySQL-python==1.2.5
 # sha256: IvlnXkLcZAxEadT30hC67LXmlYI6-VTIE9UckwI1Z10
 Jinja2==2.5.5
-# sha256: jORTsQ5HtdemI7dcoOtsOf7oDZ1yt5ksWX60TDHJRF4
-# sha256: 18bkCEYoGgG3K6Srcc5u1Bfy2jKnxsciZkEGE4DIVEs
-# sha256: KfjO9nLfLKhHz510mRSjptJoxkY7-wtBZLB2Xa6RYlQ
-# sha256: lHp9LionC0JUsSem-o5qzByNK_oxwcA6BrWEolvAzes
-# sha256: v1vAIO7xab5d5LupjCJD17pV75LfgujuTkrGGoW4Xg0
-# sha256: p-56p_aMIcuJCoAjaeHRM-iIrfSMGQu39qMd_x-f2XM
-# sha256: iHSqFJaIy-qGEg7X9IbB7J7yTRnAfYgmALBt1wulf9I
-lxml==3.1.0
+# sha256: NJ-T46SwnMWUGIVKuAE9An0kZ1fFF0S_IAabyJAW9Xg
+# sha256: hijMgpV8Qb4Qq86Imhl2zre54_Nuv_pPyxqAkBv3etw
+# sha256: HJwmu2wxw9WzwQToQyEdnBBdtgtN9ncKxCZzJj1V1JQ
+# sha256: AeVFEQNDM_GHcsM17Aszp2u6mIE16vcnoHWJeGbRlgQ
+# sha256: Kr9srJt5UgR9i3JlOEqVZeQZpyfbpnXoPkt_W3iStrs
+# sha256: bf-QkCDQwDD7JgBGJsj4f5EW4DgXAv7UFcr5T1qblJM
+lxml==3.5.0
 # sha256: wgiBtqi-uzLn45aVS9RCFOqRMmp4lS8gR07mdHzyNbA
 # sha256: vIA-QX3tLgc3df5O6Z2f6ZWGkbH_Kwhd9FtifP82Gqs
 # sha256: AQR0SbxuRnkiF_5i3rpoOXmmCzPefv2Z7VZM9DkHAhs
