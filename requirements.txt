@@ -74,16 +74,6 @@ pyquery==1.2.9
 # sha256: mSZu8wo35Dky3uwrfKc-g8jbw7n_cD7HPsprHa5r7-o
 # sha256: i2zhyZOQl4O8luC0806iI7_3pN8skL25xODxrJKGieM
 pytz==2015.7
-# become these odd Local Mean Time, E.g. Europe/Berlin +05:13 (instead of
-# +02:00)
-# See https://bugs.launchpad.net/pytz/+bug/1319939
-# sha256: uXL04cetx5BNAypstgfawi0OFgkrup0MzrP2GVaTsTI
-# sha256: aIFLcE8wYPLHbwBQ4lhWZyd-QisEZLkiaNDEJAoHjwc
-# sha256: UB5LBBoVr6cVwCBqRZIj0qrZInDxwx9WltUkKVZF9aQ
-# sha256: SnUuNZOCfpNf_T__9oMU2jjXJPATCaBVYbZ3jockv3Q
-# sha256: FGr1goHsRE90J7Giuwj5SEkFY3d-eO7zj6INRLEIia4
-# sha256: 9xZxtSuJci8veHHmz0hJOWMX9-bmXbqbYFbfCH9MPQ4
-pytz==2014.2
 # sha256: wn5AqzzPN_MKn3estJFzcNk0HiWr2o6Uub1IxxJ_fUg
 raven==3.4.1
 # sha256: O2iaE1r7L9ttoimNUhN4D0Oj8hDPjJYNULJSrLP2KQI
