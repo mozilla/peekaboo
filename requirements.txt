@@ -1,8 +1,6 @@
 # sha256: qyLRMiCZCYcwpX_VnWEPYHOPlaHLaNrMotHEfLDL6O4
 # sha256: gRBAtkfl1WhvhNtBXv1pfmJQAIsRK2kJunesBZ4UDHQ
 MySQL-python==1.2.5
-# sha256: IvlnXkLcZAxEadT30hC67LXmlYI6-VTIE9UckwI1Z10
-Jinja2==2.5.5
 # sha256: NJ-T46SwnMWUGIVKuAE9An0kZ1fFF0S_IAabyJAW9Xg
 # sha256: hijMgpV8Qb4Qq86Imhl2zre54_Nuv_pPyxqAkBv3etw
 # sha256: HJwmu2wxw9WzwQToQyEdnBBdtgtN9ncKxCZzJj1V1JQ
@@ -10,6 +8,9 @@ Jinja2==2.5.5
 # sha256: Kr9srJt5UgR9i3JlOEqVZeQZpyfbpnXoPkt_W3iStrs
 # sha256: bf-QkCDQwDD7JgBGJsj4f5EW4DgXAv7UFcr5T1qblJM
 lxml==3.5.0
+# sha256: HMA-8ytkvhngpbVFeN15CQajSUP-kQLP2uDUSVvVNrQ
+# sha256: vB_y_4jb-s795N3eRx0UF9OzBOjfEDp6lDfUcmkgG_Q
+Jinja2==2.8
 # sha256: wgiBtqi-uzLn45aVS9RCFOqRMmp4lS8gR07mdHzyNbA
 # sha256: vIA-QX3tLgc3df5O6Z2f6ZWGkbH_Kwhd9FtifP82Gqs
 # sha256: AQR0SbxuRnkiF_5i3rpoOXmmCzPefv2Z7VZM9DkHAhs
@@ -114,3 +115,5 @@ django-multidb-router==0.6
 tower==0.4.1
 # sha256: nwLQNXGE3h8JPBABK1LnRUoQCL5qXBhat6Mwes6x0S4
 Babel==1.3
+# sha256: pOwa_1m5WhS0XrLiN2GgF56YMZ2lp-t2tW6ozce4ccM
+markupsafe==0.23
