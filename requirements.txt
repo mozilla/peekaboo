@@ -102,8 +102,6 @@ funfactory==2.3.0
 django-appconf==0.6
 # sha256: RORjnsBXprap3duGnU46SBj8knjsSQzOOa7whEBZKpM
 django-session-csrf==0.5
-# sha256: HoPvJ_k1BxRo0rZo9fKlP1aQ8853W-nMVcFP8EarkcE
-https://github.com/jbalogh/test-utils/archive/4ae9327.zip#egg=test-utils
 # sha256: sGqGRRqZ1sJr-mUIKZnb9ljgh-WW6SkszmiLU-q6qto
 django-sha2==0.4
 # sha256: 1BuH0etCTRi6Lb5zMTHp2HPnCcwR63PaJIw07sHV7W4
