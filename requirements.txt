@@ -51,8 +51,8 @@ Pillow==2.7.0
 sorl-thumbnail==11.12
 # sha256: m3_LmdICiRiewPHgbR0r7TtHcuOjk_3b-wBup8P5v68
 Django==1.5.6
-# sha256: eSR4xEBbkOKHgeaU2Li64AojS1V7n6w8kwgrk40xO74
-cssselect==0.8
+# sha256: BTWn4nAUh0snrjpNM-h0njRb36YnZhlSCLeZa_EQBoI
+cssselect==0.9.1
 # sha256: AV1uiepPkO_mjIg3AvAKUDzsw82lsCCLCp6J6q_4naM
 django-bootstrap-form==3.2
 # sha256: aoy0QBER4BG1ecjFKlHNq5cAQcxUOBS72Vd6RSn-HNs
