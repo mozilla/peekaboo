@@ -15,7 +15,17 @@ TIME_ZONE = 'US/Pacific'
 # Defines the views served for root URLs.
 ROOT_URLCONF = '%s.urls' % PROJECT_MODULE
 
-INSTALLED_APPS += (
+INSTALLED_APPS = (
+    'funfactory',
+    'compressor',
+    'django_browserid',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
+    'commonware.response.cookies',
+    'session_csrf',
+
     # Application base, containing global templates.
     '%s.base' % PROJECT_MODULE,
     '%s.main' % PROJECT_MODULE,
@@ -28,21 +38,9 @@ INSTALLED_APPS += (
     'bootstrapform',
     'django.contrib.admin',
     'raven.contrib.django.raven_compat',
-
+    'django_nose',  # deliberately making this the last one
 )
 
-
-# django_browserid is supposed to be *after* django.contrib.auth
-INSTALLED_APPS = list(INSTALLED_APPS)
-INSTALLED_APPS.remove('django_browserid')
-INSTALLED_APPS.insert(
-    INSTALLED_APPS.index('django.contrib.auth') + 1,
-    'django_browserid'
-)
-
-INSTALLED_APPS.remove('django_nose')
-INSTALLED_APPS.append('django_nose')
-INSTALLED_APPS = tuple(INSTALLED_APPS)
 
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
@@ -67,9 +65,16 @@ LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL_FAILURE = '/auth/login/'
 
-TEMPLATE_CONTEXT_PROCESSORS = list(TEMPLATE_CONTEXT_PROCESSORS) + [
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'session_csrf.context_processor',
+    'django.contrib.messages.context_processors.messages',
+    'funfactory.context_processors.globals',
     'peekaboo.main.context_processors.main',
-]
+)
 
 # Should robots.txt deny everything or disallow a calculated list of URLs we
 # don't want to be crawled?  Default is false, disallow everything.
@@ -79,29 +84,16 @@ ENGAGE_ROBOTS = False
 # Always generate a CSRF token for anonymous users.
 ANON_ALWAYS = True
 
-# Tells the extract script what files to look for L10n in and what function
-# handles the extraction. The Tower library expects this.
-DOMAIN_METHODS['messages'] = [
-    ('%s/**.py' % PROJECT_MODULE,
-        'tower.management.commands.extract.extract_tower_python'),
-    ('%s/**/templates/**.html' % PROJECT_MODULE,
-        'tower.management.commands.extract.extract_tower_template'),
-    ('templates/**.html',
-        'tower.management.commands.extract.extract_tower_template'),
-]
-
-# # Use this if you have localizable HTML files:
-# DOMAIN_METHODS['lhtml'] = [
-#    ('**/templates/**.lhtml',
-#        'tower.management.commands.extract.extract_tower_template'),
-# ]
-
-# # Use this if you have localizable JS files:
-# DOMAIN_METHODS['javascript'] = [
-#    # Make sure that this won't pull in strings from external libraries you
-#    # may use.
-#    ('media/js/**.js', 'javascript'),
-# ]
+MIDDLEWARE_CLASSES = (
+    'funfactory.middleware.LocaleURLMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'session_csrf.CsrfMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'commonware.middleware.FrameOptionsHeader',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
+)
 
 # We're never storing any passwords so this can be anything
 HMAC_KEYS = {'something': 'anything'}
@@ -123,4 +115,4 @@ RECYCLE_MINIMUM_HOURS = 30  # days
 DEBUG_PDF_PROGRAM = False
 
 # Default in Django is 2 weeks (1209600 = 60 * 60 * 24 * 7 * 2)
-SESSION_COOKIE_AGE =  60 * 60 * 24 * 365  # 1 year
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 365  # 1 year

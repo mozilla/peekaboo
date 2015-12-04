@@ -530,7 +530,8 @@ def csv_upload(request):
                     )
                     if form.cleaned_data['date']:
                         date = form.cleaned_data['date']
-                        date = date.replace(tzinfo=tz)
+                        date = date.replace(tzinfo=None)
+                        date = tz.localize(date)
                         # Stagger the entries by 1 second each
                         # so they are loaded in the order they appeared
                         # in the CSV.
