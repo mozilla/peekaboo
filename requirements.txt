@@ -57,8 +57,9 @@ Jinja2==2.8
 Pillow==3.0.0
 # sha256: hPtZujVa8xIv8lqpikSYECSgI4S6d8fx0Fuevv5MCxQ
 sorl-thumbnail==11.12
-# sha256: m3_LmdICiRiewPHgbR0r7TtHcuOjk_3b-wBup8P5v68
-Django==1.5.6
+# sha256: byzISLK3Kt9TpvPyG-BJxHfoLECLznzttX7-sJhL3iQ
+# sha256: flDlc-SEQ1hzs1FdeYLYAJOyaVq6F_0P8CQwdFTcOlY
+Django==1.6.11
 # sha256: BTWn4nAUh0snrjpNM-h0njRb36YnZhlSCLeZa_EQBoI
 cssselect==0.9.1
 # sha256: AV1uiepPkO_mjIg3AvAKUDzsw82lsCCLCp6J6q_4naM
@@ -107,8 +108,9 @@ django-browserid==0.10.1
 commonware==0.4.2
 # sha256: LRy1WDkWc99RCaP-XoT95hYO3IskGz6xmrPTq-m43zE
 cef==0.5
-# sha256: NmfSakH-wwNkoO9yWAgyylMogC1VP21ucq9awhyzY2U
-django-nose==1.3
+# sha256: c2rlPj7EfbuzBJmZwYzlRYWvKZ74gXLZony1_aKdqgA
+# sha256: gPnTaQ4NuDDDdq6XFygUjXYN1k1ETRwJJ0fWY6DXL3M
+django-nose==1.4.2
 # sha256: 2Do6I2EzM_G3FdEna1QBhbwfy2l12E7b_8WX-SONZlk
 # sha256: M5Jsd1SCG68taPfJcoBMWEuUxR234uEvBX3GgUdhnk4
 django_compressor==1.6
