@@ -1,4 +1,0 @@
-MySQL-python==1.2.5
-Jinja2==2.5.5
-lxml==3.1.0
-Pillow==2.7.0

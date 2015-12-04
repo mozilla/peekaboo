@@ -11,43 +11,47 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from commander.deploy import task, hostgroups
+from commander.deploy import task
 import commander_settings as settings
+
+venv_path = '../venv'
+py_path = venv_path + '/bin/python'
 
 
 @task
 def update_code(ctx, tag):
     """Update the code to a specific git reference (tag/sha/etc)."""
     with ctx.lcd(settings.SRC_DIR):
+        ctx.local('git fetch')
         ctx.local('git checkout -f %s' % tag)
-        ctx.local('git pull -f')
-        ctx.local('git submodule sync')
-        ctx.local('git submodule update --init --recursive')
         ctx.local("find . -type f -name '*.pyc' -delete")
 
+        # Creating a virtualenv tries to open virtualenv/bin/python for
+        # writing, but because virtualenv is using it, it fails.
+        # So we delete it and let virtualenv create a new one.
+        ctx.local('rm -f {}/bin/python {}/bin/python2.7'.format(
+            venv_path,
+            venv_path,
+        ))
+        ctx.local('virtualenv-2.7 {}'.format(venv_path))
 
-#@task
-#def update_locales(ctx):
-#    """Update a locale directory from SVN.
-#
-#    Assumes localizations 1) exist, 2) are in SVN, 3) are in SRC_DIR/locale and
-#    4) have a compile-mo.sh script. This should all be pretty standard, but
-#    change it if you need to.
-#
-#    """
-#    with ctx.lcd(os.path.join(settings.SRC_DIR, 'locale')):
-#        ctx.local('svn up')
-#        ctx.local('./compile-mo.sh .')
+        # Activate virtualenv to append to path.
+        activate_env = os.path.join(
+            settings.SRC_DIR, venv_path, 'bin', 'activate_this.py'
+        )
+        execfile(activate_env, dict(__file__=activate_env))
+
+        ctx.local('{}/bin/pip install bin/peep-2.*.tar.gz'.format(venv_path))
+        ctx.local('{}/bin/peep install -r requirements.txt'.format(venv_path))
+        ctx.local('virtualenv-2.7 --relocatable {}'.format(venv_path))
+
+        ctx.local('./bin/peep install -r requirements.txt')
 
 
 @task
 def update_assets(ctx):
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local("python2.6 manage.py collectstatic --noinput")
-        # un-comment if you haven't moved to django-compressor yet
-        ## LANG=en_US.UTF-8 is sometimes necessary for the YUICompressor.
-        #ctx.local('LANG=en_US.UTF8 python2.6 manage.py compress_assets')
-
+        ctx.local('{} manage.py collectstatic --noinput'.format(py_path))
 
 
 @task
@@ -55,8 +59,11 @@ def update_db(ctx):
     """Update the database schema, if necessary."""
 
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local('python2.6 manage.py syncdb')
-        ctx.local('python2.6 manage.py migrate peekaboo.main')
+        ctx.local('{}/bin/python manage.py syncdb'.format(py_path))
+        # XXX we should be able to just do `migrate` without specifying the app
+        ctx.local(
+            '{}/bin/python manage.py migrate peekaboo.main'.format(py_path)
+        )
 
 
 @task
@@ -67,10 +74,20 @@ def install_cron(ctx):
 
     """
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local('python2.6 ./bin/crontab/gen-crons.py -w %s -u apache > '
-                  '/etc/cron.d/.%s' % (settings.SRC_DIR, settings.CRON_NAME))
-        ctx.local('mv /etc/cron.d/.%s /etc/cron.d/%s' %
-                  (settings.CRON_NAME,  settings.CRON_NAME))
+        ctx.local(
+            '{} ./bin/crontab/gen-crons.py -w {} -u apache > '
+            '/etc/cron.d/.{}'.format(
+                py_path,
+                settings.SRC_DIR,
+                settings.CRON_NAME
+            )
+        )
+        ctx.local(
+            'mv /etc/cron.d/.{} /etc/cron.d/{}'.format(
+                settings.CRON_NAME,
+                settings.CRON_NAME
+            )
+        )
 
 
 @task
@@ -100,7 +117,7 @@ def pre_update(ctx, ref=settings.UPDATE_REF):
 @task
 def update(ctx):
     update_assets()
-    #update_locales()
+    # update_locales()  # commented out till we switch on i18n
     update_db()
 
 

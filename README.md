@@ -24,7 +24,7 @@ Getting Your Dev Environment Up
 First of you will need to clone this project (If you are planning on working on the
 project and submitting pull requests, first fork this repo and clone your fork).
 
-    git clone --init --recursive https://github.com/youruser/peekaboo.git && cd peekaboo
+    git clone https://github.com/youruser/peekaboo.git && cd peekaboo
 
 The next dependency you will need is MySQL, you can have a look at the download instructions at:
 http://dev.mysql.com/downloads/ or, if you have brew installed, just run:
@@ -44,10 +44,17 @@ Next step is to create and update your local settings to reflect this. From the 
 
 With an editor open up local.py and update the database credentials you will find at line 12 - 14.
 
-Lastly install your remaining dependencies using pip:
+First install peep:
 
-    pip install -r requirements/dev.txt
-    pip install -r requirements/compiled.txt
+    pip install bin/peep-2.5.0.tar.gz
+
+Lastly install your remaining dependencies using peep:
+
+    peep install -r requirements.txt
+
+The dev requirements are less strict and can be installed with pip:
+
+    pip install -r dev-requirements.txt
 
 With all of this done, you are ready to move on to the next step below.
 

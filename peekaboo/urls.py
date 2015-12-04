@@ -1,8 +1,10 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, include
+from django.conf.urls import patterns, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from funfactory.monkeypatches import patch
+from peekaboo.base.monkeypatches import patch
+
+
 patch()
 
 # Uncomment the next two lines to enable the admin:

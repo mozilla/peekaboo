@@ -196,11 +196,11 @@ class TestViews(BaseTestCase):
             'file': open(os.path.join(_here, 'sample-eventbrite.csv')),
             'format': 'eventbrite',
             'location': location.id,
-            'date': '2015-06-16 13:00:00',
+            'date': '2015-06-16 13:00:00',  # Europe summer time, is +2h
         })
 
         visitors = Visitor.objects.filter(location=location)
         first_names = [x.first_name for x in visitors.order_by('first_name')]
         eq_(first_names, [u'Nicolai Froehlich', u'Södan'])
         first_created = [x.created for x in visitors][0]
-        eq_(first_created.strftime('%H:%M %Z'), '12:00 UTC')
+        eq_(first_created.strftime('%H:%M %Z'), '11:00 UTC')
