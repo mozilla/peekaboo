@@ -1,7 +1,7 @@
 # This is your project's main settings file that can be committed to your
 # repo. If you need to override a setting locally, use settings_local.py
 
-from funfactory.settings_base import *
+from funfactory.settings_base import *  # NOQA
 
 # Name of the top-level module where you put all your apps.
 # If you did not install Playdoh with the funfactory installer script
@@ -45,6 +45,8 @@ INSTALLED_APPS = (
 LOCALE_PATHS = (
     os.path.join(ROOT, PROJECT_MODULE, 'locale'),
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # Because Jinja2 is the default template loader, add any non-Jinja templated
 # apps here:
