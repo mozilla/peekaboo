@@ -17,7 +17,7 @@ urlpatterns = patterns(
      {'document_root': settings.ROOT}),
     (r'', include('peekaboo.main.urls', namespace='main')),
     (r'^sheet/', include('peekaboo.sheet.urls', namespace='sheet')),
-    (r'^auth/', include('peekaboo.auth.urls', namespace='auth')),
+    (r'^auth/', include('peekaboo.authentication.urls', namespace='auth')),
     (r'^users/', include('peekaboo.users.urls', namespace='users')),
     (r'^locations/',
      include('peekaboo.locations.urls', namespace='locations')),
