@@ -68,7 +68,7 @@ From a blank newly created database with no tables, run:
 
 followed by:
 
-``./manage.py migrate peekaboo.main``
+``./manage.py migrate``
 
 This will apply the migration ``migrations/0001_initial.py``. If you
 haven't already created this file you first have to run:
@@ -78,22 +78,21 @@ haven't already created this file you first have to run:
 Migrations
 ----------
 
-We're using [South](http://south.aeracode.org/) to handle database migrations.
 To generate a schema migration, make changes to models.py, then run:
 
-``./manage.py schemamigration peekaboo.main --auto``
+``./manage.py makemigrations peekaboo.main``
 
 To generate a blank data migration, use:
 
-``./manage.py datamigration peekaboo.main data_migration_name``
+``./manage.py makemigrations peekaboo.main --empty``
 
 Then fill in the generated file with logic, fixtures, etc.
 
 To apply migrations:
 
-``./manage.py migrate peekaboo.main``
+``./manage.py migrate``
 
-In each command, replace peekaboo.main with the appropriate app.
+In each command, replace `peekaboo.main` with the appropriate app.
 
 
 Setting up superusers

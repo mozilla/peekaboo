@@ -23,22 +23,26 @@ class Location(models.Model):
         return self.name
 
 
-def _upload_path(tag):
-    def _upload_path_tagged(instance, filename):
-        if isinstance(filename, unicode):
-            filename = (
-                unicodedata
-                .normalize('NFD', filename)
-                .encode('ascii', 'ignore')
-            )
-        now = datetime.datetime.now()
-        path = os.path.join(now.strftime('%Y'), now.strftime('%m'),
-                            now.strftime('%d'))
-        hashed_filename = (hashlib.md5(filename +
-                           str(now.microsecond)).hexdigest())
-        __, extension = os.path.splitext(filename)
-        return os.path.join(tag, path, hashed_filename + extension)
-    return _upload_path_tagged
+# The reason this function is not *inside* _upload_path() is
+# because of migrations.
+def _upload_path_tagged(tag, instance, filename):
+    if isinstance(filename, unicode):
+        filename = (
+            unicodedata
+            .normalize('NFD', filename)
+            .encode('ascii', 'ignore')
+        )
+    now = datetime.datetime.now()
+    path = os.path.join(now.strftime('%Y'), now.strftime('%m'),
+                        now.strftime('%d'))
+    hashed_filename = (hashlib.md5(filename +
+                       str(now.microsecond)).hexdigest())
+    __, extension = os.path.splitext(filename)
+    return os.path.join(tag, path, hashed_filename + extension)
+
+
+def _upload_path_visitors(instance, filename):
+    return _upload_path_tagged('visitors', instance, filename)
 
 
 class Visitor(models.Model):
@@ -50,7 +54,7 @@ class Visitor(models.Model):
     visiting = models.CharField(max_length=250, blank=True)
     created = models.DateTimeField(default=_now)
     modified = models.DateTimeField(default=_now, db_index=True)
-    picture = ImageField(upload_to=_upload_path('visitors'))
+    picture = ImageField(upload_to=_upload_path_visitors)
 
     def get_name(self, formal=False):
         return ("%s %s" % (self.first_name, self.last_name)).strip()

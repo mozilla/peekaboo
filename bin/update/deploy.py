@@ -59,10 +59,8 @@ def update_db(ctx):
     """Update the database schema, if necessary."""
 
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local('{}/bin/python manage.py syncdb'.format(py_path))
-        # XXX we should be able to just do `migrate` without specifying the app
         ctx.local(
-            '{}/bin/python manage.py migrate peekaboo.main'.format(py_path)
+            '{}/bin/python manage.py migrate'.format(py_path)
         )
 
 
