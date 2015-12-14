@@ -4,6 +4,9 @@ Deploy this project in dev/stage/production.
 Requires commander_ which is installed on the systems that need it.
 
 .. _commander: https://github.com/oremj/commander
+
+This script is supposed to work in Python 2.6.
+The only outside dependency is `virtualenv-2.7`.
 """
 
 import os
