@@ -1,0 +1,2 @@
+[pep8]
+exclude=peekaboo/*/migrations/*,peekaboo/settings/local.py
