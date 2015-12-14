@@ -131,22 +131,7 @@ What's deployed
 
 To find out what commits have made it where, use the
 [Whatsdeployed tool for
-peekaboo](https://whatsdeployed.paas.allizom.org/?owner=mozilla&repo=peekaboo&name[]=Stage&url[]=https%3A%2F%2Fpeekaboo.allizom.org%2Fmedia%2Frevision.txt&name[]=Prod&url[]=https%3A%2F%2Fpeekaboo.mozilla.org%2Fmedia%2Frevision.txt).
-
-Stackato
---------
-
-To use [stackato](http://api.stacka.to/docs/) you need to be log in and then you can
-simply run::
-
-    $ stackato push -n
-
-Note: If it's already registered under that name you need to override
-the name with something else.
-
-If you make changes to the stackato.yml file run::
-
-    $ stackato update -n
+peekaboo](http://whatsdeployed.io/s-6w0).
 
 License
 -------
