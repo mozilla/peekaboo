@@ -29,11 +29,11 @@ def update_code(ctx, tag):
         # Creating a virtualenv tries to open virtualenv/bin/python for
         # writing, but because virtualenv is using it, it fails.
         # So we delete it and let virtualenv create a new one.
-        ctx.local('rm -f {}/bin/python {}/bin/python2.7'.format(
+        ctx.local('rm -f {0}/bin/python {1}/bin/python2.7'.format(
             venv_path,
             venv_path,
         ))
-        ctx.local('virtualenv-2.7 {}'.format(venv_path))
+        ctx.local('virtualenv-2.7 {0}'.format(venv_path))
 
         # Activate virtualenv to append to path.
         activate_env = os.path.join(
@@ -41,9 +41,9 @@ def update_code(ctx, tag):
         )
         execfile(activate_env, dict(__file__=activate_env))
 
-        ctx.local('{}/bin/pip install bin/peep-2.*.tar.gz'.format(venv_path))
-        ctx.local('{}/bin/peep install -r requirements.txt'.format(venv_path))
-        ctx.local('virtualenv-2.7 --relocatable {}'.format(venv_path))
+        ctx.local('{0}/bin/pip install bin/peep-2.*.tar.gz'.format(venv_path))
+        ctx.local('{0}/bin/peep install -r requirements.txt'.format(venv_path))
+        ctx.local('virtualenv-2.7 --relocatable {0}'.format(venv_path))
 
         ctx.local('./bin/peep install -r requirements.txt')
 
@@ -51,7 +51,7 @@ def update_code(ctx, tag):
 @task
 def update_assets(ctx):
     with ctx.lcd(settings.SRC_DIR):
-        ctx.local('{} manage.py collectstatic --noinput'.format(py_path))
+        ctx.local('{0} manage.py collectstatic --noinput'.format(py_path))
 
 
 @task
@@ -60,7 +60,7 @@ def update_db(ctx):
 
     with ctx.lcd(settings.SRC_DIR):
         ctx.local(
-            '{}/bin/python manage.py migrate'.format(py_path)
+            '{0}/bin/python manage.py migrate'.format(py_path)
         )
 
 
@@ -73,15 +73,15 @@ def install_cron(ctx):
     """
     with ctx.lcd(settings.SRC_DIR):
         ctx.local(
-            '{} ./bin/crontab/gen-crons.py -w {} -u apache > '
-            '/etc/cron.d/.{}'.format(
+            '{0} ./bin/crontab/gen-crons.py -w {1} -u apache > '
+            '/etc/cron.d/.{2}'.format(
                 py_path,
                 settings.SRC_DIR,
                 settings.CRON_NAME
             )
         )
         ctx.local(
-            'mv /etc/cron.d/.{} /etc/cron.d/{}'.format(
+            'mv /etc/cron.d/.{0} /etc/cron.d/{1}'.format(
                 settings.CRON_NAME,
                 settings.CRON_NAME
             )
