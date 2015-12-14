@@ -48,8 +48,6 @@ def update_code(ctx, tag):
         ctx.local('{0}/bin/peep install -r requirements.txt'.format(venv_path))
         ctx.local('virtualenv-2.7 --relocatable {0}'.format(venv_path))
 
-        ctx.local('./bin/peep install -r requirements.txt')
-
 
 @task
 def update_assets(ctx):
