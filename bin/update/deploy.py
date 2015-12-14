@@ -61,7 +61,7 @@ def update_db(ctx):
 
     with ctx.lcd(settings.SRC_DIR):
         ctx.local(
-            '{0}/bin/python manage.py migrate'.format(py_path)
+            '{0} manage.py migrate'.format(py_path)
         )
 
 
