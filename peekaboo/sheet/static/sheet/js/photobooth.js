@@ -1,4 +1,5 @@
 var Photobooth = (function() {
+  'use strict';
 
   var video;
   var canvas;
@@ -6,27 +7,9 @@ var Photobooth = (function() {
   var imageFilter;
   var stream;
 
-  // Alias the vendor prefixed variants of getUserMedia so we can access them
-  // via navigator.getUserMedia
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-  // Alias the vendor prefixed variants of the URL object so that we can access them
-  // via window.URL
-  window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
-
-  // Alias the vendor prefixed variants of requestAnimationFrame so that we can access
-  // them via window.requestAnimationFrame fallback to setTimeout at 60hz if not supported.
-  window.requestAnimationFrame = (function() {
-    return window.requestAnimationFrame  ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
-      window.oRequestAnimationFrame      ||
-      window.msRequestAnimationFrame     ||
-      function (callback) {
-        window.setTimeout(callback, 1000 / 60);
-      };
-  })();
+  if (!navigator.mediaDevices) {
+    throw new Error("navigator.mediaDevices not supported.");
+  }
 
   // This function will be called if a webcam is available and the user has
   // granted access for the web application to use it.
@@ -57,7 +40,7 @@ var Photobooth = (function() {
   }
 
   // with the delta value
-  brightness = function(delta) {
+  function brightness(delta) {
     return function (pixels, args) {
       var d = pixels.data;
       for (var i = 0; i < d.length; i += 4) {
@@ -67,7 +50,7 @@ var Photobooth = (function() {
       }
       return pixels;
     };
-  };
+  }
 
   function processImage() {
     if (canvas.width > 0 && canvas.height > 0) {
@@ -106,19 +89,17 @@ var Photobooth = (function() {
     processVideoFrame();
 
     frameNumber++;
-    // console.log(frameNumber);
-    // console.log($('.debugging-fps'));
     if (startTime === null) {
-      startTime = (new Date).getTime(); // in milliseconds
+      startTime = (new Date()).getTime(); // in milliseconds
     }
     // Every 60 frames calculate our actual framerate and display it
-    if (frameNumber >= 60) {
-      var currentTime = (new Date).getTime();            // in milliseconds
-      var deltaTime = (currentTime - startTime) / 1000.0;  // in seconds
-      $('.debugging-fps').text(Math.floor(frameNumber/deltaTime) + " fps");
-      startTime = currentTime;
-      frameNumber = 0;
-    }
+    // if (frameNumber >= 60) {
+    //   var currentTime = (new Date()).getTime();            // in milliseconds
+    //   var deltaTime = (currentTime - startTime) / 1000.0;  // in seconds
+    //   $('.debugging-fps').text(Math.floor(frameNumber/deltaTime) + " fps");
+    //   startTime = currentTime;
+    //   frameNumber = 0;
+    // }
     requestAnimationFrame(update);
   }
 
@@ -139,35 +120,27 @@ var Photobooth = (function() {
        canvas = document.querySelector("canvas");
        context = canvas.getContext("2d");
 
-       console.log("Waiting for you to grant access to the camera...");
-
-       // We can retrieve the video dimensions from the video object once we have
-       // registered for and received the loadeddata event
-       video.addEventListener('loadeddata', function(e) {
-         console.log('loadeddata Video dimensions: ' + video.videoWidth + ' x ' + video.videoHeight);
-       }, false);
-
-       video.addEventListener('playing', function(e) {
-         console.log('play Video dimensions: ' + video.videoWidth + ' x ' + video.videoHeight);
-       }, false);
-
-       if (!navigator.getUserMedia) {
-         throw 'The navigator.getUserMedia() method not supported in this browser.';
-       }
+      //  console.log("Waiting for you to grant access to the camera...");
+      //  video.addEventListener('loadeddata', function(e) {
+      //    console.log('loadeddata Video dimensions: ' + video.videoWidth + ' x ' + video.videoHeight);
+      //  }, false);
+      //  video.addEventListener('playing', function(e) {
+      //    console.log('play Video dimensions: ' + video.videoWidth + ' x ' + video.videoHeight);
+      //  }, false);
 
        // Ask the user for access to the camera
-       navigator.getUserMedia(
-         {video: true},
-         function(stream) {
-           clearCanvas();
-           successCallback(stream);
-           if (callback) callback(true);
-         }, failureCallback);
-         if (callback) callback(false);
+       navigator.mediaDevices.getUserMedia({video: true})
+       .then(function(stream) {
+         clearCanvas();
+         successCallback(stream);
+         if (callback) callback(true);
+       })
+       .catch(failureCallback);
+       if (callback) callback(false);
      },
      teardown: function(stopstream, callback) {
        if (stopstream) {
-         stream.stop();
+         stream.getTracks()[0].stop();
        }
        if (callback) callback();
      },
