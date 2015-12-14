@@ -55,8 +55,9 @@ Jinja2==2.8
 # sha256: IOeQ8IUZMCeGKB_lRH9GVSkD7TRw27UUlKHJ7tGJ5zE
 # sha256: ACT85XhUej2pJXmhY7rgmx2fC6882OSok9xsEeTmJLs
 Pillow==3.0.0
-# sha256: hPtZujVa8xIv8lqpikSYECSgI4S6d8fx0Fuevv5MCxQ
-sorl-thumbnail==11.12
+# sha256: zpHFsRKi75MKCWJa29mWgr1i80vhljwo8__A0BOKB_0
+# sha256: uyd9yY2qB-iS1Cm3Pu10lBH37_Hub-7xQqGeApWC6M0
+sorl-thumbnail==12.3
 # sha256: byzISLK3Kt9TpvPyG-BJxHfoLECLznzttX7-sJhL3iQ
 # sha256: flDlc-SEQ1hzs1FdeYLYAJOyaVq6F_0P8CQwdFTcOlY
 Django==1.6.11
